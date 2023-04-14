@@ -1,0 +1,129 @@
+From f5f594c2ff906aabdfb440d032687569231c5d98 Mon Sep 17 00:00:00 2001
+From: Johannes Schindelin <johannes.schindelin@gmx.de>
+Date: Tue, 21 Feb 2023 15:21:03 +0100
+Subject: [PATCH 62/N] amend! Avoid sharing cygheaps across Cygwin versions
+
+Avoid sharing cygheaps across Cygwin versions
+
+It frequently leads to problems when trying, say, to call from Git for
+Windows' Bash into Cygwin's or MSYS2's, merely because sharing that data
+is pretty finicky.
+
+For example, using the Git for Windows that is current at time of
+writing, trying to call MSYS2's Bash from Git for Windows' Bash fails
+somewhere in `_cmalloc()`, without any error message, and with the
+rather misleading exit code 127 (a code which is reserved to indicate
+that a command was not found).
+
+Let's just treat these as completely incompatible with one another, by
+virtue of using a different `CHILD_INFO_MAGIC` constant.
+
+Let's take the msys2-runtime commit as the tell-tale whether two MSYS2
+runtime versions are compatible with each other. To support building in
+the MSYS2-packages repository (where we do not check out the
+`msys2-runtime` but instead check out Cygwin and apply patches on top),
+let's accept a hard-coded commit hash as `./configure` option.
+
+One consequence is that spawned MSYS processes using a different MSYS2
+runtime will not be visible as such to the parent process, i.e. they
+cannot share any resources such as pseudo terminals. But that's okay,
+they are simply treated as if they were regular Win32 programs.
+
+This should also help the scenario where interactions between two
+different versions of Git for Windows lead to those infamous `cygheap
+base mismatch detected` problems mentioned e.g. in
+https://github.com/git-for-windows/git/issues/4255
+
+Note: We have to use a very rare form of encoding the brackets in the
+`expr` calls: quadrigraphs (for a thorough explanation, see
+https://www.gnu.org/savannah-checkouts/gnu/autoconf/manual/autoconf-2.70/html_node/Quadrigraphs.html#Quadrigraphs).
+This is necessary because it is apparently impossible in `configure.ac`
+files to encode brackets otherwise.
+
+Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
+---
+ winsup/configure.ac       | 28 ++++++++++++++++++++++++++++
+ winsup/cygwin/Makefile.am |  3 +++
+ winsup/cygwin/dcrt0.cc    |  2 +-
+ winsup/cygwin/sigproc.cc  |  2 +-
+ 4 files changed, 33 insertions(+), 2 deletions(-)
+
+diff --git a/winsup/configure.ac b/winsup/configure.ac
+index ca2b8c0..cfb0bbf 100644
+--- a/winsup/configure.ac
++++ b/winsup/configure.ac
+@@ -57,6 +57,34 @@ AC_CHECK_TOOL(RANLIB, ranlib, ranlib)
+ AC_CHECK_TOOL(STRIP, strip, strip)
+ AC_CHECK_TOOL(WINDRES, windres, windres)
+ 
++# Record msys2-runtime commit
++AC_ARG_WITH([msys2-runtime-commit],
++  [AS_HELP_STRING([--with-msys2-runtime-commit=COMMIT],
++		  [indicate the msys2-runtime commit corresponding to this build])],
++  [MSYS2_RUNTIME_COMMIT=$withval], [MSYS2_RUNTIME_COMMIT=yes])
++case "$MSYS2_RUNTIME_COMMIT" in
++no)
++    MSYS2_RUNTIME_COMMIT=
++    MSYS2_RUNTIME_COMMIT_HEX=0
++    ;;
++yes|auto)
++    if MSYS2_RUNTIME_COMMIT="$(git --git-dir="$srcdir/../.git" rev-parse HEAD)"
++    then
++        MSYS2_RUNTIME_COMMIT_HEX="0x$(expr "$MSYS2_RUNTIME_COMMIT" : '\(.\{,8\}\)')ull"
++    else
++        AC_MSG_WARN([Could not determine msys2-runtime commit"])
++        MSYS2_RUNTIME_COMMIT=
++        MSYS2_RUNTIME_COMMIT_HEX=0
++    fi
++    ;;
++*)
++    expr "$MSYS2_RUNTIME_COMMIT" : '@<:@0-9a-f@:>@\{6,64\}$' ||
++    AC_MSG_ERROR([Invalid commit name: "$MSYS2_RUNTIME_COMMIT"])
++    MSYS2_RUNTIME_COMMIT_HEX="0x$(expr "$MSYS2_RUNTIME_COMMIT" : '\(.\{,8\}\)')ull"
++    ;;
++esac
++AC_SUBST(MSYS2_RUNTIME_COMMIT_HEX)
++
+ AC_ARG_ENABLE(debugging,
+ [ --enable-debugging		Build a cygwin DLL which has more consistency checking for debugging],
+ [case "${enableval}" in
+diff --git a/winsup/cygwin/Makefile.am b/winsup/cygwin/Makefile.am
+index 01666e1..695ebeb 100644
+--- a/winsup/cygwin/Makefile.am
++++ b/winsup/cygwin/Makefile.am
+@@ -17,6 +17,9 @@ if TARGET_X86_64
+ COMMON_CFLAGS+=-mcmodel=small
+ endif
+ 
++VERSION_CFLAGS = -DMSYS2_RUNTIME_COMMIT_HEX="@MSYS2_RUNTIME_COMMIT_HEX@"
++COMMON_CFLAGS += $(VERSION_CFLAGS)
++
+ AM_CFLAGS=$(cflags_common) $(COMMON_CFLAGS)
+ AM_CXXFLAGS=$(cxxflags_common) $(COMMON_CFLAGS) -fno-threadsafe-statics
+ 
+diff --git a/winsup/cygwin/dcrt0.cc b/winsup/cygwin/dcrt0.cc
+index 45f3b0f..d354eab 100644
+--- a/winsup/cygwin/dcrt0.cc
++++ b/winsup/cygwin/dcrt0.cc
+@@ -545,7 +545,7 @@ get_cygwin_startup_info ()
+   child_info *res = (child_info *) si.lpReserved2;
+ 
+   if (si.cbReserved2 < EXEC_MAGIC_SIZE || !res
+-      || res->intro != PROC_MAGIC_GENERIC || res->magic != (CHILD_INFO_MAGIC ^ CYGWIN_VERSION_DLL_COMBINED))
++      || res->intro != PROC_MAGIC_GENERIC || res->magic != (CHILD_INFO_MAGIC ^ MSYS2_RUNTIME_COMMIT_HEX))
+     {
+       strace.activate (false);
+       res = NULL;
+diff --git a/winsup/cygwin/sigproc.cc b/winsup/cygwin/sigproc.cc
+index 65dc523..782c0d9 100644
+--- a/winsup/cygwin/sigproc.cc
++++ b/winsup/cygwin/sigproc.cc
+@@ -817,7 +817,7 @@ int child_info::retry_count = 0;
+    by fork/spawn/exec. */
+ child_info::child_info (unsigned in_cb, child_info_types chtype,
+ 			bool need_subproc_ready):
+-  cb (in_cb), intro (PROC_MAGIC_GENERIC), magic (CHILD_INFO_MAGIC ^ CYGWIN_VERSION_DLL_COMBINED),
++  cb (in_cb), intro (PROC_MAGIC_GENERIC), magic (CHILD_INFO_MAGIC ^ MSYS2_RUNTIME_COMMIT_HEX),
+   type (chtype), cygheap (::cygheap), cygheap_max (::cygheap_max),
+   flag (0), retry (child_info::retry_count), rd_proc_pipe (NULL),
+   wr_proc_pipe (NULL), sigmask (_my_tls.sigmask)

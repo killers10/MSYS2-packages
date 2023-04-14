@@ -1,0 +1,91 @@
+From 589fac65ff8f2a2c4d1f259dff87ec0c2aef0fcd Mon Sep 17 00:00:00 2001
+From: Johannes Schindelin <johannes.schindelin@gmx.de>
+Date: Wed, 14 Mar 2018 17:04:19 +0100
+Subject: [PATCH 35/N] Fix incorrect path conversion (trailing slash)
+
+The problem with the original approach is not that it is completely
+bogus. After all, when you pass the option --prefix=/tmp/ to Git, you do
+want to end up with a trailing slash.
+
+The real problem with the original approach is that it simply changed
+path_conv, completely oblivious and careless about other users of
+path_conv.
+
+That was really wrong, of course, and cost us time, sweat and tears. The
+appropriate approach is to *not* affect other users, but instead
+introduce a flag that we use in *our* caller, so that everybody gets
+what they want:
+
+- emulation of inodes on FAT by calculating the hash on the normalized
+  path: works.
+
+- MSYS2's conversion of "POSIX" paths to Windows paths: works.
+
+Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
+---
+ winsup/cygwin/msys2_path_conv.cc |  2 +-
+ winsup/cygwin/path.cc            | 16 +++++++++++++++-
+ winsup/cygwin/path.h             |  1 +
+ 3 files changed, 17 insertions(+), 2 deletions(-)
+
+diff --git a/winsup/cygwin/msys2_path_conv.cc b/winsup/cygwin/msys2_path_conv.cc
+index 2d401ca..cba028e 100644
+--- a/winsup/cygwin/msys2_path_conv.cc
++++ b/winsup/cygwin/msys2_path_conv.cc
+@@ -622,7 +622,7 @@ void posix_to_win32_path(const char* from, const char* to, char** dst, const cha
+         strncpy(one_path, from, to-from);
+         one_path[to-from] = '\0';
+ 
+-        path_conv conv (one_path, 0);
++        path_conv conv (one_path, PC_KEEP_FINAL_SLASH);
+         if (conv.error)
+         {
+           set_errno(conv.error);
+diff --git a/winsup/cygwin/path.cc b/winsup/cygwin/path.cc
+index 9a3ad7a..2b0110b 100644
+--- a/winsup/cygwin/path.cc
++++ b/winsup/cygwin/path.cc
+@@ -1254,9 +1254,22 @@ path_conv::check (const char *src, unsigned opt,
+ 		cfree (wide_path);
+ 	      wide_path = NULL;
+ 	    }
++
++	  if (need_directory)
++	    {
++	      size_t n = strlen (this->path);
++	      /* Do not add trailing \ to UNC device names like \\.\a: */
++	      if (this->path[n - 1] != '\\' &&
++		  (strncmp (this->path, "\\\\.\\", 4) != 0))
++		{
++		  this->modifiable_path ()[n] = '\\';
++		  this->modifiable_path ()[n + 1] = '\0';
++		}
++	      need_directory = 0;
++	    }
+ 	}
+ 
+-      if (need_directory)
++      if ((opt & PC_KEEP_FINAL_SLASH) && need_directory)
+ 	{
+ 	  size_t n = strlen (this->path);
+ 	  /* Do not add trailing \ to UNC device names like \\.\a: */
+@@ -1266,6 +1279,7 @@ path_conv::check (const char *src, unsigned opt,
+ 	      this->modifiable_path ()[n] = '\\';
+ 	      this->modifiable_path ()[n + 1] = '\0';
+ 	    }
++	  need_directory = 0;
+ 	}
+ 
+       if (opt & PC_OPEN)
+diff --git a/winsup/cygwin/path.h b/winsup/cygwin/path.h
+index adb0ca1..208147f 100644
+--- a/winsup/cygwin/path.h
++++ b/winsup/cygwin/path.h
+@@ -59,6 +59,7 @@ enum pathconv_arg
+   PC_KEEP_HANDLE	 = _BIT (12),	/* keep handle for later stat calls */
+   PC_NO_ACCESS_CHECK	 = _BIT (13),	/* helper flag for error check */
+   PC_SYM_NOFOLLOW_DIR	 = _BIT (14),	/* don't follow a trailing slash */
++  PC_KEEP_FINAL_SLASH	 = _BIT (15),   /* do not remove a trailing slash */
+   PC_DONT_USE		 = _BIT (31)	/* conversion to signed happens. */
+ };
+ 
