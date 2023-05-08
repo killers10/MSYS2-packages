@@ -1,0 +1,351 @@
+# Maintainer: Alexey Pavlov <alexpux@gmail.com>
+# Contributor: Ray Donnelly <mingw.android@gmail.com>
+
+pkgbase=msys2-runtime-3.3
+pkgname=('msys2-runtime-3.3' 'msys2-runtime-3.3-devel')
+pkgver=3.3.6
+pkgrel=1
+pkgdesc="Cygwin POSIX emulation engine"
+arch=('i686')
+url="https://www.cygwin.com/"
+license=('GPL')
+groups=('base')
+makedepends=('cocom'
+             'texinfo'
+             'git'
+             'perl'
+             'gcc'
+             'make'
+             'mingw-w64-cross-crt-git'
+             'mingw-w64-cross-gcc'
+             'mingw-w64-cross-zlib'
+             'zlib-devel'
+             'gettext-devel'
+             'libiconv-devel'
+             'diffutils')
+# options=('debug' '!strip')
+source=('msys2-runtime'::git+https://github.com/cygwin/cygwin#tag=cygwin-${pkgver//./_}-release
+        msys2-runtime.commit
+        0001-Add-MSYS2-triplet.patch
+        0002-Fix-msys-library-name-in-import-libraries.patch
+        0003-Rename-dll-from-cygwin-to-msys.patch
+        0004-Add-functionality-for-converting-UNIX-paths-in-argum.patch
+        0005-Add-functionality-for-changing-OS-name-via-MSYSTEM-e.patch
+        0006-Move-root-to-usr.-Change-sorting-mount-points.-By-de.patch
+        0007-Instead-of-creating-Cygwin-symlinks-use-deep-copy-by.patch
+        0008-Automatically-rewrite-TERM-msys-to-TERM-cygwin-With-.patch
+        0009-Do-not-convert-environment-for-strace.patch
+        0010-Special-case-for-converting-root-directory-to-have-t.patch
+        0011-dcrt0.cc-Untangle-allow_glob-from-winshell.patch
+        0012-dcrt0.cc-globify-Don-t-quote-literal-strings-differe.patch
+        0013-strace.cc-Don-t-set-MSYS-noglob.patch
+        0014-Add-debugging-for-build_argv.patch
+        0015-Add-debugging-for-strace-make_command_line.patch
+        0016-environ.cc-New-facility-environment-variable-MSYS2_E.patch
+        0017-Fix-native-symbolic-link-spawn-passing-wrong-arg0.patch
+        0018-QueryUnbiasedInterruptTime-must-be-load-from-kernel3.patch
+        0019-strace-quiet-be-really-quiet.patch
+        0020-Default-to-disable_pcon.patch
+        0021-Introduce-the-enable_pcon-value-for-MSYS.patch
+        0022-popen-call-usr-bin-sh-instead-of-bin-sh.patch
+        0023-Expose-full-command-lines-to-other-Win32-processes-b.patch
+        0024-Do-not-show-Error-dialogs-by-default.patch
+        0025-Add-a-helper-to-obtain-a-function-s-address-in-kerne.patch
+        0026-Emulate-GenerateConsoleCtrlEvent-upon-Ctrl-C.patch
+        0027-kill-kill-Win32-processes-more-gently.patch
+        0028-Cygwin-make-option-for-native-inner-link-handling.patch
+        0029-docs-skip-building-texinfo-and-PDF-files.patch
+        0030-install-libs-depend-on-the-toollibs.patch
+        0031-POSIX-ify-the-SHELL-variable.patch
+        0032-Handle-ORIGINAL_PATH-just-like-PATH.patch
+        0033-uname-allow-setting-the-system-name-to-CYGWIN.patch
+        0034-Implicitly-support-the-dev-fd-symlink-and-friends.patch
+        0035-Fix-incorrect-path-conversion-trailing-slash.patch
+        0036-Pass-environment-variables-with-empty-values.patch
+        0037-Handle-8-bit-characters-under-LOCALE-C.patch
+        0038-Mention-the-extremely-useful-small_printf-function.patch
+        0039-Add-a-helpful-debug-message-for-posix-to-windows-con.patch
+        0040-Stop-assuming-that-there-are-no-spaces-in-POSIX-styl.patch
+        0041-Avoid-unnecessary-recursion-in-find_path_start_and_t.patch
+        0042-Leave-arguments-starting-with-a-tilde-or-quote-alone.patch
+        0043-Leave-Git-s-name-and-message-arguments-alone-please.patch
+        0044-Leave-paths-containing-any-special-characters-alone.patch
+        0045-Leave-paths-containing-alone.patch
+        0046-Skip-posix-to-windows-conversion-when-is-seen.patch
+        0047-Also-leave-Git-s-rev-.-name-syntax-alone.patch
+        0048-Arguments-starting-with-are-no-paths.patch
+        0049-Prevent-scp-style-arguments-from-being-mangled.patch
+        0050-Fixed-path-converting-with-non-ascii-char.patch
+        0051-path-conversion-Introduce-ability-to-switch-off-conv.patch
+        0052-Allow-overriding-the-home-directory-via-the-HOME-var.patch
+        0053-Respect-db_home-setting-even-for-the-SYSTEM-account.patch
+        0054-Respect-the-db_home-env-setting-under-more-circumsta.patch
+        0055-Allow-native-symlinks-to-non-existing-targets-in-nat.patch
+        0056-Make-paths-WCS-MBS-conversion-explicit.patch
+        0057-Use-MB_CUR_MAX-6-by-default.patch
+        0058-Change-the-default-base-address-for-x86_64.patch
+        0059-Avoid-sharing-cygheaps-across-Cygwin-versions.patch
+        0060-dumper-avoid-linker-problem-when-libbfd-depends-on-l.patch
+        0061-Cygwin-console-Fix-hangup-of-less-on-quit-after-the-.patch
+        0062-amend-Avoid-sharing-cygheaps-across-Cygwin-versions.patch
+        0063-uname-report-msys2-runtime-commit-hash-too.patch)
+sha256sums=('SKIP'
+            'aff4697966936746e34f3e99132df62a4b4df7d9a424d29c309262324d129930'
+            'c375315e58181ee5589b7966101aa095de3f864a579c3c3f0f0683595d4e428d'
+            '01ea2b131cf5a3b27fdbc458019eac14e45a36782ce3ce33e62328eefcd2d02e'
+            '475ddea4d86605ab097f98ec764951a9d647ea3100dea0e1620f57044ea4a114'
+            '6775247d7a213268bbb2315f764ebc9faf9967b70a95dbc6e9de53fe04142433'
+            '91e2a72a980aeefadc215cd36147c56666679bbcd68c60120278b6270454b710'
+            '54cd198f3ce3931884220c8938bd0f348e0889c20b36d110ded9302ec7364c34'
+            '31a4bcb985e03c45f16644a1604ebc649dc50586968050f8819035b84f80bcf3'
+            'e9cfe4d79ac294e19e648f51a8bb491231204d8eb9c6a2e998a7cc2506ca47ea'
+            '816e98ee5ad15d3cfb75598e2e20e11272ac6867a7bd9b0a3fea0ac0ba4daf69'
+            'e895d76936f4668bb7b67581ef642e845968dfb86e21d654dde98727f0ebabb2'
+            'f416f109d323618ff3d7240ea7845d5ab3221a8a6c6074e36a34e62fbaabdbfd'
+            'e710a9eed8bd767d97acb2d2cdc56eef880e02b20f1b14fdf462678954e3a896'
+            'ce72bc18fcf101d14c0623c1d459b141ba883934939c70d198d69932ec4873c7'
+            '5f5850cd725c4df6ce6cc86d07da1ed696e119d8bb80602380c4941aa10d0784'
+            '8df334362506dbe9de56017c0df1d3459b5c6e29860b73a5e9ebd0421b2f3a6a'
+            '988a2d365302c73ab482bd1f0d4edea8e687de7fdf068e5bec3aafaf33d63a58'
+            'f9aa893686405b8b92b3d585b7a7dff35f9345a64a282f75d8962e92f86bea25'
+            'b3073a6b2acf836f5b3286ff8be66633ed4f93280d50186635a3fcfb4cdc3745'
+            '52cd166461fc2cc3c880c174160516a93d456dad44f382aed518aa9bfa36303f'
+            'cee973f136152e6a5cd987bba85937584c9459aff1c2777134a99526b2d5512d'
+            '221dacc354d4f27443665bfe32b114235ef7305c55c9189c77f636c46522ee80'
+            'bd985989895e51688072d7751976ecb83720c8e0786126d7025ba355b64f6edc'
+            '19cf0b89327e148763d19608cffbbc29fd4309048a65ede9dff808eea4858727'
+            '20d35886e3bf1c2f4fa7f3996739d674fd0eb26be357268219c522c35187ec3e'
+            'ff01c5404f80dd4d013316930f26063877f561c8698a1223269cf06f0df56d16'
+            '6c249925a88679544572fb4810119e008bb47ae2412cd261b02c786ee1c93dc4'
+            '3fd1c68bc249d52bb464390f2f0c5f1401882cc179f2b6f4adfb4e4b496804d9'
+            'c7ab2e59d4ff4016dd3336bf34f79a71a28ba892e6b6a005b618519071496db8'
+            '8a2b9b9ae1d376d2868967cb64a804d1ee2f6075b9a9b2747570e3da2c816d1e'
+            '00096872abc028236ebec61fba79483159b88b4f8fe7217026d9371a69dd7d0f'
+            '611f6d4835e9c1525448dc85bb62fced7375fc13d42379d448d8e15ada0f4f4a'
+            'a2eb84544c7e4ccd73d2388a80d04d4fa9e4bc26d77815d134f56ab44c4589e5'
+            'a84b205133f13ed41b154198c0ea60875bddb523711e77a870954b17eb2636de'
+            'e03c9cdff09e365db3e14d83985186418e0c91d5e8460f249e8c3c9f0b81a67d'
+            'b21a989fe7aef52fe6714d057d315d4833e4ab9880e63a92726438b79d4fe0a5'
+            'f4b982d58fe5c7ca0ca67e22e33f66f5c8ba8c33be849f8cba6e08cc831608c1'
+            'd00d89d69a31656553c30eafc882e05189a05cb5512d53464dc5e15f7a475ff0'
+            '8c757c188db90a75ba3699c3763f82c63ce6eb63b9f92208b447b0017184db7e'
+            '17a8925880446195c0c3acea4170402485c757ddba50cc008684e8a7b3537e04'
+            '17970e7fa0d13b5afb495586265593b436a7f67f84067e6aa541c4462022cebb'
+            'f055d9163c692688cd0cacbc78f55e955f64f46c42639d95f97c74bf018193c2'
+            '003777bb1688e76816604cbe5475cd44e377b25f437480cb71e7b87b5fa9a1ad'
+            '79d184396056983a6977548ea5185c6f3cc3c1ed18b8eab12ee3fca4841d5717'
+            'afec773fed494dac6791f17626b543e02cdcbeef84547b7abe20e1c00876458a'
+            '4d2409dffbef5aa3414275a697b2a6a491442e207f982e361d4b7e2c20926c4d'
+            'e618c29fa6faf550c1f6bf6c935ec6a0cf0a8f2847d7e57a5ec93ed3f96f3a06'
+            'c4480507ee66b7147523a8ff7882a73023ad45967a5377c8c80f4129f0810860'
+            '4da0a79e1c76b91e037a87f89bfad276c65ed14d4cbc1861c44ada524d3820ec'
+            '999e889f2750d9daaa897dca224f9d08dd28e6829c1e5a108207814a6c3fbc24'
+            '9b982d19f3ee5ce66cbc2accd1966385c4588a550517ac7891f4165cf13a64c9'
+            '07b24bd59f9b3ade352756d1d6b4ac90763e0928c2bd09fe77e9ffd6f6d5febb'
+            '16970918b9f641feaa2dd703ca45040dd802cfcf80fa1905ce7cae80e61a5c6e'
+            'f798f9a88c3937385a909383741e5afc2c5a6e06825b571bf42333864edc8900'
+            '5868415211674087674402233557fffac8b3016b3c4b3fe2141befcfd283fd38'
+            '14a354a4aa580e33f70bbb5bc2feae749c35f45eaffb58b877cfc688fdbd5cec'
+            'c1cd7a038fd3c94bbf7f29b911af35244e3989555aae19360fcf79542f4a9ae3'
+            '53644afaa88f8a78c0fa521d408052052bb9ce152b0cf1ed9a39f15e047c6788'
+            'd6e806768bc623a01cc29f7a47feb6da91b7bbdb49f8908a9ad2748c1ac41955'
+            '865bcaa5dc7275a79d732241c7e61c4c22cda537d1764227b96c9dd89a623593'
+            '6abfae0da52df37dcbde6eca92d66e5abd8a4e5460efc36fd7ce593fd9c9bad3'
+            '433685c3c366f0aa077d1230f027ed9314e7f0b1e91d4e98e6bfbaa92ed18f89'
+            '4b55c8fd81bdf4c552433e79fe24db7e1289ed3b99cd9c4d1272f1336b1a8b4b'
+            '7865ca781926f104a15fd659432b6b72462f54125c351122195b2314c6c74cf3')
+
+# Helper macro to help make tasks easier #
+del_file_exists() {
+  for _fname in "$@"
+  do
+    if [ -f $_fname ]; then
+      rm -rf $_fname
+    fi
+  done
+}
+
+prepare() {
+  cd "${srcdir}"/msys2-runtime
+  if test true != "$(git config core.symlinks)"
+  then
+    git config core.symlinks true &&
+    /usr/bin/git reset --hard
+  fi
+  if test false != "$(git config core.autocrlf)"
+  then
+    git config core.autocrlf false &&
+    rm "$(git rev-parse --git-path index)" &&
+    /usr/bin/git reset --hard
+  fi
+  del_file_exists winsup/cygwin/msys2_path_conv.cc \
+    winsup/cygwin/msys2_path_conv.h
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0001-Add-MSYS2-triplet.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0002-Fix-msys-library-name-in-import-libraries.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0003-Rename-dll-from-cygwin-to-msys.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0004-Add-functionality-for-converting-UNIX-paths-in-argum.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0005-Add-functionality-for-changing-OS-name-via-MSYSTEM-e.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0006-Move-root-to-usr.-Change-sorting-mount-points.-By-de.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0007-Instead-of-creating-Cygwin-symlinks-use-deep-copy-by.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0008-Automatically-rewrite-TERM-msys-to-TERM-cygwin-With-.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0009-Do-not-convert-environment-for-strace.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0010-Special-case-for-converting-root-directory-to-have-t.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0011-dcrt0.cc-Untangle-allow_glob-from-winshell.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0012-dcrt0.cc-globify-Don-t-quote-literal-strings-differe.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0013-strace.cc-Don-t-set-MSYS-noglob.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0014-Add-debugging-for-build_argv.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0015-Add-debugging-for-strace-make_command_line.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0016-environ.cc-New-facility-environment-variable-MSYS2_E.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0017-Fix-native-symbolic-link-spawn-passing-wrong-arg0.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0018-QueryUnbiasedInterruptTime-must-be-load-from-kernel3.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0019-strace-quiet-be-really-quiet.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0020-Default-to-disable_pcon.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0021-Introduce-the-enable_pcon-value-for-MSYS.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0022-popen-call-usr-bin-sh-instead-of-bin-sh.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0023-Expose-full-command-lines-to-other-Win32-processes-b.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0024-Do-not-show-Error-dialogs-by-default.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0025-Add-a-helper-to-obtain-a-function-s-address-in-kerne.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0026-Emulate-GenerateConsoleCtrlEvent-upon-Ctrl-C.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0027-kill-kill-Win32-processes-more-gently.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0028-Cygwin-make-option-for-native-inner-link-handling.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0029-docs-skip-building-texinfo-and-PDF-files.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0030-install-libs-depend-on-the-toollibs.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0031-POSIX-ify-the-SHELL-variable.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0032-Handle-ORIGINAL_PATH-just-like-PATH.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0033-uname-allow-setting-the-system-name-to-CYGWIN.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0034-Implicitly-support-the-dev-fd-symlink-and-friends.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0035-Fix-incorrect-path-conversion-trailing-slash.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0036-Pass-environment-variables-with-empty-values.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0037-Handle-8-bit-characters-under-LOCALE-C.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0038-Mention-the-extremely-useful-small_printf-function.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0039-Add-a-helpful-debug-message-for-posix-to-windows-con.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0040-Stop-assuming-that-there-are-no-spaces-in-POSIX-styl.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0041-Avoid-unnecessary-recursion-in-find_path_start_and_t.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0042-Leave-arguments-starting-with-a-tilde-or-quote-alone.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0043-Leave-Git-s-name-and-message-arguments-alone-please.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0044-Leave-paths-containing-any-special-characters-alone.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0045-Leave-paths-containing-alone.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0046-Skip-posix-to-windows-conversion-when-is-seen.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0047-Also-leave-Git-s-rev-.-name-syntax-alone.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0048-Arguments-starting-with-are-no-paths.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0049-Prevent-scp-style-arguments-from-being-mangled.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0050-Fixed-path-converting-with-non-ascii-char.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0051-path-conversion-Introduce-ability-to-switch-off-conv.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0052-Allow-overriding-the-home-directory-via-the-HOME-var.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0053-Respect-db_home-setting-even-for-the-SYSTEM-account.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0054-Respect-the-db_home-env-setting-under-more-circumsta.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0055-Allow-native-symlinks-to-non-existing-targets-in-nat.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0056-Make-paths-WCS-MBS-conversion-explicit.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0057-Use-MB_CUR_MAX-6-by-default.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0058-Change-the-default-base-address-for-x86_64.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0059-Avoid-sharing-cygheaps-across-Cygwin-versions.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0060-dumper-avoid-linker-problem-when-libbfd-depends-on-l.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0061-Cygwin-console-Fix-hangup-of-less-on-quit-after-the-.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0062-amend-Avoid-sharing-cygheaps-across-Cygwin-versions.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0063-uname-report-msys2-runtime-commit-hash-too.patch
+}
+
+build() {
+  [[ -d "${srcdir}"/build-${CHOST} ]] && rm -rf "${srcdir}"/build-${CHOST}
+  mkdir -p "${srcdir}"/build-${CHOST} && cd "${srcdir}"/build-${CHOST}
+
+  # Gives more verbose compile output when debugging.
+  local -a extra_config
+  if check_option "debug" "y"; then
+    export CCWRAP_VERBOSE=1
+    OPTIM="-O0"
+    extra_config+=(--enable-debugging)
+  else
+    OPTIM="-O2"
+  fi
+
+  CFLAGS="$OPTIM -pipe -ggdb -Wno-error=deprecated -Wno-error=stringop-truncation -Wno-error=missing-attributes -Wno-error=maybe-uninitialized" #-Wno-error=class-memaccess
+  CXXFLAGS="$OPTIM -pipe -ggdb -Wno-error=deprecated -Wno-error=stringop-truncation -Wno-error=missing-attributes -Wno-error=maybe-uninitialized" #-Wno-error=class-memaccess
+
+  (cd "${srcdir}/msys2-runtime/winsup" && ./autogen.sh)
+
+  "${srcdir}"/msys2-runtime/configure \
+    --with-msys2-runtime-commit="$(cat "${srcdir}/msys2-runtime.commit")" \
+    --prefix=/usr \
+    --build=${CHOST} \
+    --sysconfdir=/etc \
+    "${extra_config[@]}"
+  LC_ALL=C make
+
+  if test -n "$SIGNTOOL"
+  then
+    eval "$SIGNTOOL" \
+      ${PWD}/${CHOST}/winsup/cygwin/msys0.dll \
+      ${PWD}/${CHOST}/winsup/utils/*.exe ${PWD}/${CHOST}/winsup/utils/mingw/*.exe
+  fi
+
+  LC_ALL=C make -j1 DESTDIR="${srcdir}"/dest install
+
+  #pushd ${CHOST}/winsup/cygwin > /dev/null
+  #LANG=C make libmsys2_s.a
+  #cp libmsys2_s.a "${srcdir}"/dest/usr/${CHOST}/lib/
+  #popd > /dev/null
+
+  rm -rf "${srcdir}"/dest/etc
+}
+
+package_msys2-runtime-3.3() {
+  pkgdesc="Posix emulation engine for Windows"
+  groups=('base')
+  options=('!strip')
+  provides=("msys2-runtime=${pkgver}")
+  conflicts=('catgets' 'libcatgets' 'msys2-runtime')
+  replaces=('catgets' 'libcatgets')
+  #install=msys2-runtime.install
+
+  mkdir -p "${pkgdir}"/usr
+  cp -rf "${srcdir}"/dest/usr/bin "${pkgdir}"/usr/
+  rm -f "${pkgdir}"/usr/bin/msys-2.0.dbg
+  rm -f "${pkgdir}"/usr/bin/cyglsa-config
+  rm -f "${pkgdir}"/usr/bin/cyglsa.dll
+  rm -f "${pkgdir}"/usr/bin/cyglsa64.dll
+  rm -f "${pkgdir}"/usr/bin/cygserver-config
+  cp -rf "${srcdir}"/dest/usr/libexec "${pkgdir}"/usr/
+  cp -rf "${srcdir}"/dest/usr/share "${pkgdir}"/usr/
+}
+
+package_msys2-runtime-3.3-devel() {
+  pkgdesc="MSYS2 headers and libraries"
+  groups=('msys2-devel')
+  depends=("msys2-runtime=${pkgver}")
+  provides=("msys2-runtime-devel=${pkgver}")
+  options=('staticlibs' '!strip')
+  conflicts=('libcatgets-devel' 'msys2-runtime-devel')
+  replaces=('libcatgets-devel')
+
+  mkdir -p "${pkgdir}"/usr/bin
+  cp -f "${srcdir}"/dest/usr/bin/msys-2.0.dbg "${pkgdir}"/usr/bin/
+  cp -rLf "${srcdir}"/dest/usr/${CHOST}/include "${pkgdir}"/usr/
+  rm -f "${pkgdir}"/usr/include/iconv.h
+  rm -f "${pkgdir}"/usr/include/unctrl.h
+  # provided by libtirpc
+  rm -fr "${pkgdir}"/usr/include/rpc/
+
+  cp -rLf "${srcdir}"/dest/usr/${CHOST}/lib "${pkgdir}"/usr/
+}
+
+# return 0
+# To hack on this:
+# cd /c/repo-MSYS2/msys2-runtime/
+# pushd src/build-i686-pc-msys
+# LANG=C make && make -j1 DESTDIR=/c/repo-MSYS2/msys2-runtime/src/dest install
+# popd
+# makepkg -sRLf
+# pacman -U msys2-runtime*.xz
+
+# Quicker:
+# open cmd.exe
+# set "PATH=C:\\msys32\\usr\\bin;%PATH%"
+# E:
+# pushd E:\m2\repo-MSYS2\msys2-runtime\src\build-i686-pc-msys\i686-pc-msys\winsup\cygwin
+# C:/msys32/usr/bin/bash -c "LANG=C && make"
+# copy /y new-msys-2.0.dll C:\msys32\usr\bin\msys-2.0.dll
+# popd
+# C:
+# C:/msys32/usr/bin/strace ls / > C:/strace.txt 2>&1
+#
