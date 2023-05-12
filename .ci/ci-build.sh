@@ -34,6 +34,11 @@ execute 'Approving recipe quality' check_recipe_quality
 
 message 'Building packages'
 for package in "${packages[@]}"; do
+    test msys2-runtime-3.3 != "${package}" || {
+        echo "Skipping ${package}: we only need to build this for i686" >&2
+        continue
+    }
+
     echo "::group::[build] ${package}"
     execute 'Fetch keys' "$DIR/fetch-validpgpkeys.sh"
     execute 'Building binary' makepkg --noconfirm --noprogressbar --nocheck --syncdeps --rmdeps --cleanbuild
