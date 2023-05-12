@@ -298,6 +298,8 @@ package_msys2-runtime-3.3() {
   replaces=('catgets' 'libcatgets')
   #install=msys2-runtime.install
 
+  test i686-pc-msys != "$CHOST" || replaces+=('msys2-runtime')
+
   mkdir -p "${pkgdir}"/usr
   cp -rf "${srcdir}"/dest/usr/bin "${pkgdir}"/usr/
   rm -f "${pkgdir}"/usr/bin/msys-2.0.dbg
@@ -317,6 +319,8 @@ package_msys2-runtime-3.3-devel() {
   options=('staticlibs' '!strip')
   conflicts=('libcatgets-devel' 'msys2-runtime-devel')
   replaces=('libcatgets-devel')
+
+  test i686-pc-msys != "$CHOST" || replaces+=('msys2-runtime-devel')
 
   mkdir -p "${pkgdir}"/usr/bin
   cp -f "${srcdir}"/dest/usr/bin/msys-2.0.dbg "${pkgdir}"/usr/bin/
