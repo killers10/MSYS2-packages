@@ -1,4 +1,4 @@
-From c312f3d3c6238e9835adc83a300d162d73a23ce2 Mon Sep 17 00:00:00 2001
+From 9780f9c13b1d168793c75dea8445d8b9e942e78a Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Wed, 18 Feb 2015 11:07:17 +0000
 Subject: [PATCH 43/N] Leave Git's :name and :/message arguments alone, please
@@ -9,7 +9,7 @@ Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
  1 file changed, 6 insertions(+)
 
 diff --git a/winsup/cygwin/msys2_path_conv.cc b/winsup/cygwin/msys2_path_conv.cc
-index fd11888..c0133f1 100644
+index 1fdee64..f112fa4 100644
 --- a/winsup/cygwin/msys2_path_conv.cc
 +++ b/winsup/cygwin/msys2_path_conv.cc
 @@ -348,6 +348,12 @@ skip_p2w:

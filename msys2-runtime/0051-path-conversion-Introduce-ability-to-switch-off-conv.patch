@@ -1,4 +1,4 @@
-From f874ac108a7b35b1f2ddb07e1d31fc718281818d Mon Sep 17 00:00:00 2001
+From 09e6db754e0db5a05d0c58d474e0ed7bff69ca18 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?=EB=A7=88=EB=88=84=EC=97=98?= <nalla@hamal.uberspace.de>
 Date: Wed, 17 Jun 2015 09:30:41 +0200
 Subject: [PATCH 51/N] path-conversion: Introduce ability to switch off
@@ -21,7 +21,7 @@ Signed-off-by: 마누엘 <nalla@hamal.uberspace.de>
  1 file changed, 8 insertions(+)
 
 diff --git a/winsup/cygwin/msys2_path_conv.cc b/winsup/cygwin/msys2_path_conv.cc
-index 2c06439..61a4cb4 100644
+index d346ff3..9ebff07 100644
 --- a/winsup/cygwin/msys2_path_conv.cc
 +++ b/winsup/cygwin/msys2_path_conv.cc
 @@ -348,6 +348,14 @@ skip_p2w:

@@ -1,4 +1,4 @@
-From 99c3c01445c15cd5680d2d0f97215af6d95c75bb Mon Sep 17 00:00:00 2001
+From 42b0ac9c9814a24a0c368d7fef5b63f98aece6b2 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Fri, 18 Dec 2015 20:19:57 +0100
 Subject: [PATCH 56/N] Make paths' WCS->MBS conversion explicit
@@ -143,26 +143,26 @@ uinfo.cc (cygheap_pwdgrp::get_gecos):
 
 Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
 ---
- winsup/cygwin/dcrt0.cc              |  4 ++--
- winsup/cygwin/dtable.cc             |  2 +-
- winsup/cygwin/environ.cc            |  8 ++++----
- winsup/cygwin/external.cc           |  2 +-
- winsup/cygwin/fhandler_disk_file.cc |  4 ++--
- winsup/cygwin/fhandler_netdrive.cc  |  6 +++---
- winsup/cygwin/fhandler_process.cc   | 11 ++++++-----
- winsup/cygwin/fhandler_procsys.cc   | 11 ++++++-----
- winsup/cygwin/mount.cc              |  8 ++++----
- winsup/cygwin/nlsfuncs.cc           |  2 +-
- winsup/cygwin/path.cc               | 29 +++++++++++++++--------------
- winsup/cygwin/uinfo.cc              | 20 ++++++++++----------
- winsup/cygwin/wchar.h               | 16 ++++++++--------
+ winsup/cygwin/dcrt0.cc               |  4 ++--
+ winsup/cygwin/dtable.cc              |  2 +-
+ winsup/cygwin/environ.cc             |  8 ++++----
+ winsup/cygwin/external.cc            |  2 +-
+ winsup/cygwin/fhandler/disk_file.cc  |  4 ++--
+ winsup/cygwin/fhandler/netdrive.cc   |  6 +++---
+ winsup/cygwin/fhandler/process.cc    | 11 ++++++-----
+ winsup/cygwin/fhandler/procsys.cc    | 11 ++++++-----
+ winsup/cygwin/local_includes/wchar.h | 16 +++++++--------
+ winsup/cygwin/mount.cc               |  8 ++++----
+ winsup/cygwin/nlsfuncs.cc            |  2 +-
+ winsup/cygwin/path.cc                | 29 ++++++++++++++--------------
+ winsup/cygwin/uinfo.cc               | 20 +++++++++----------
  13 files changed, 63 insertions(+), 60 deletions(-)
 
 diff --git a/winsup/cygwin/dcrt0.cc b/winsup/cygwin/dcrt0.cc
-index 4dc8be8..e32f02b 100644
+index 300b31c..1675a9b 100644
 --- a/winsup/cygwin/dcrt0.cc
 +++ b/winsup/cygwin/dcrt0.cc
-@@ -957,9 +957,9 @@ dll_crt0_1 (void *)
+@@ -908,9 +908,9 @@ dll_crt0_1 (void *)
    if (!__argc)
      {
        PWCHAR wline = GetCommandLineW ();
@@ -175,10 +175,10 @@ index 4dc8be8..e32f02b 100644
        /* Scan the command line and build argv.  Expand wildcards if not
  	 called from another cygwin process. */
 diff --git a/winsup/cygwin/dtable.cc b/winsup/cygwin/dtable.cc
-index bad7bd1..f5f7007 100644
+index d5a659c..f90465d 100644
 --- a/winsup/cygwin/dtable.cc
 +++ b/winsup/cygwin/dtable.cc
-@@ -1011,7 +1011,7 @@ handle_to_fn (HANDLE h, char *posix_fn)
+@@ -1017,7 +1017,7 @@ handle_to_fn (HANDLE h, char *posix_fn)
        if (wcsncasecmp (w32, DEVICE_PREFIX, DEVICE_PREFIX_LEN) != 0
  	  || !QueryDosDeviceW (NULL, fnbuf, sizeof (fnbuf) / sizeof (WCHAR)))
  	{
@@ -188,10 +188,10 @@ index bad7bd1..f5f7007 100644
  	}
  
 diff --git a/winsup/cygwin/environ.cc b/winsup/cygwin/environ.cc
-index 5afac8d..398b170 100644
+index 0899aa0..c1eed58 100644
 --- a/winsup/cygwin/environ.cc
 +++ b/winsup/cygwin/environ.cc
-@@ -929,7 +929,7 @@ win32env_to_cygenv (PWCHAR rawenv, bool posify)
+@@ -917,7 +917,7 @@ win32env_to_cygenv (PWCHAR rawenv, bool posify)
       eventually want to use them).  */
    for (i = 0, w = rawenv; *w != L'\0'; w = wcschr (w, L'\0') + 1, i++)
      {
@@ -200,7 +200,7 @@ index 5afac8d..398b170 100644
        if (i >= envc)
          envp = (char **) realloc (envp, (4 + (envc += 100)) * sizeof (char *));
        envp[i] = newp;
-@@ -989,7 +989,7 @@ getwinenveq (const char *name, size_t namelen, int x)
+@@ -977,7 +977,7 @@ getwinenveq (const char *name, size_t namelen, int x)
    int totlen = GetEnvironmentVariableW (name0, valbuf, 32768);
    if (totlen > 0)
      {
@@ -209,7 +209,7 @@ index 5afac8d..398b170 100644
        if (x == HEAP_1_STR)
  	totlen += namelen;
        else
-@@ -997,7 +997,7 @@ getwinenveq (const char *name, size_t namelen, int x)
+@@ -985,7 +985,7 @@ getwinenveq (const char *name, size_t namelen, int x)
        char *p = (char *) cmalloc_abort ((cygheap_types) x, totlen);
        if (namelen)
  	strcpy (p, name);
@@ -218,7 +218,7 @@ index 5afac8d..398b170 100644
        debug_printf ("using value from GetEnvironmentVariable for '%W'", name0);
        return p;
      }
-@@ -1155,7 +1155,7 @@ build_env (const char * const *envp, PWCHAR &envblock, int &envc,
+@@ -1143,7 +1143,7 @@ build_env (const char * const *envp, PWCHAR &envblock, int &envc,
  	  for (winnum = 0, var = cwinenv;
  	       *var;
  	       ++winnum, var = wcschr (var, L'\0') + 1)
@@ -228,7 +228,7 @@ index 5afac8d..398b170 100644
        DestroyEnvironmentBlock (cwinenv);
        /* Eliminate variables which are already available in envp, as well as
 diff --git a/winsup/cygwin/external.cc b/winsup/cygwin/external.cc
-index 6adf620..0aaf0ba 100644
+index bb1c8a1..51d7a64 100644
 --- a/winsup/cygwin/external.cc
 +++ b/winsup/cygwin/external.cc
 @@ -92,7 +92,7 @@ fillout_pinfo (pid_t pid, int winpid)
@@ -240,11 +240,11 @@ index 6adf620..0aaf0ba 100644
  	  ep.strace_mask = 0;
  	  ep.version = EXTERNAL_PINFO_VERSION;
  
-diff --git a/winsup/cygwin/fhandler_disk_file.cc b/winsup/cygwin/fhandler_disk_file.cc
-index 33d8858..3db52b4 100644
---- a/winsup/cygwin/fhandler_disk_file.cc
-+++ b/winsup/cygwin/fhandler_disk_file.cc
-@@ -2136,7 +2136,7 @@ fhandler_disk_file::readdir_helper (DIR *dir, dirent *de, DWORD w32_err,
+diff --git a/winsup/cygwin/fhandler/disk_file.cc b/winsup/cygwin/fhandler/disk_file.cc
+index 8528f7f..470e9d4 100644
+--- a/winsup/cygwin/fhandler/disk_file.cc
++++ b/winsup/cygwin/fhandler/disk_file.cc
+@@ -2134,7 +2134,7 @@ fhandler_disk_file::readdir_helper (DIR *dir, dirent *de, DWORD w32_err,
  	  char *p = stpcpy (file, pc.get_posix ());
  	  if (p[-1] != '/')
  	    *p++ = '/';
@@ -253,7 +253,7 @@ index 33d8858..3db52b4 100644
  			fname->Buffer, fname->Length / sizeof (WCHAR));
  	  path_conv fpath (file, PC_SYM_NOFOLLOW);
  	  if (fpath.issymlink ())
-@@ -2157,7 +2157,7 @@ fhandler_disk_file::readdir_helper (DIR *dir, dirent *de, DWORD w32_err,
+@@ -2155,7 +2155,7 @@ fhandler_disk_file::readdir_helper (DIR *dir, dirent *de, DWORD w32_err,
  	}
      }
  
@@ -262,11 +262,11 @@ index 33d8858..3db52b4 100644
  		fname->Length / sizeof (WCHAR));
  
    /* Don't try to optimize relative to dir->__d_position.  On several
-diff --git a/winsup/cygwin/fhandler_netdrive.cc b/winsup/cygwin/fhandler_netdrive.cc
-index b924b18..1e2b56f 100644
---- a/winsup/cygwin/fhandler_netdrive.cc
-+++ b/winsup/cygwin/fhandler_netdrive.cc
-@@ -250,15 +250,15 @@ fhandler_netdrive::readdir (DIR *dir, dirent *de)
+diff --git a/winsup/cygwin/fhandler/netdrive.cc b/winsup/cygwin/fhandler/netdrive.cc
+index 58ab881..0b71d4b 100644
+--- a/winsup/cygwin/fhandler/netdrive.cc
++++ b/winsup/cygwin/fhandler/netdrive.cc
+@@ -283,15 +283,15 @@ fhandler_netdrive::readdir (DIR *dir, dirent *de)
  	  tp.u_get (&ds);
  	  RtlInitUnicodeString (&ss, bs);
  	  RtlDowncaseUnicodeString (&ds, &ss, FALSE);
@@ -285,10 +285,10 @@ index b924b18..1e2b56f 100644
  	  de->d_ino = readdir_get_ino (rpath, false);
  	  /* We can't trust remote inode numbers of only 32 bit.  That means,
  	     remote NT4 NTFS, as well as shares of Samba version < 3.0. */
-diff --git a/winsup/cygwin/fhandler_process.cc b/winsup/cygwin/fhandler_process.cc
-index b5bc0e4..c4625a3 100644
---- a/winsup/cygwin/fhandler_process.cc
-+++ b/winsup/cygwin/fhandler_process.cc
+diff --git a/winsup/cygwin/fhandler/process.cc b/winsup/cygwin/fhandler/process.cc
+index b0aef2e..eab9673 100644
+--- a/winsup/cygwin/fhandler/process.cc
++++ b/winsup/cygwin/fhandler/process.cc
 @@ -574,10 +574,10 @@ static off_t
  format_process_winexename (void *data, char *&destbuf)
  {
@@ -302,16 +302,16 @@ index b5bc0e4..c4625a3 100644
    return len;
  }
  
-@@ -1052,7 +1052,7 @@ peb_teb_rinse_repeat:
+@@ -1048,7 +1048,7 @@ peb_teb_rinse_repeat:
  		      drive_maps.fixup_if_match (msi->SectionFileName.Buffer);
  		  if (mount_table->conv_to_posix_path (dosname,
  						       posix_modname, 0))
 -		    sys_wcstombs (posix_modname, NT_MAX_PATH, dosname);
 +		    sys_wcstombs_path (posix_modname, NT_MAX_PATH, dosname);
- 		  stat64 (posix_modname, &st);
+ 		  stat (posix_modname, &st);
  		}
  	      else if (!threads.fill_if_match (cur.abase, mb.Type,
-@@ -1098,7 +1098,7 @@ format_process_stat (void *data, char *&destbuf)
+@@ -1103,7 +1103,7 @@ format_process_stat (void *data, char *&destbuf)
    else
      {
        PWCHAR last_slash = wcsrchr (p->progname, L'\\');
@@ -320,8 +320,8 @@ index b5bc0e4..c4625a3 100644
  		    last_slash ? last_slash + 1 : p->progname);
        int len = strlen (cmd);
        if (len > 4)
-@@ -1201,7 +1201,8 @@ format_process_status (void *data, char *&destbuf)
-   size_t vmsize = 0, vmrss = 0, vmdata = 0, vmlib = 0, vmtext = 0, vmshare = 0;
+@@ -1210,7 +1210,8 @@ format_process_status (void *data, char *&destbuf)
+   bool fetch_siginfo = false;
  
    PWCHAR last_slash = wcsrchr (p->progname, L'\\');
 -  sys_wcstombs (cmd, NAME_MAX + 1, last_slash ? last_slash + 1 : p->progname);
@@ -330,10 +330,10 @@ index b5bc0e4..c4625a3 100644
    int len = strlen (cmd);
    if (len > 4)
      {
-diff --git a/winsup/cygwin/fhandler_procsys.cc b/winsup/cygwin/fhandler_procsys.cc
-index 02741d0..b88ca31 100644
---- a/winsup/cygwin/fhandler_procsys.cc
-+++ b/winsup/cygwin/fhandler_procsys.cc
+diff --git a/winsup/cygwin/fhandler/procsys.cc b/winsup/cygwin/fhandler/procsys.cc
+index 4fa0048..2f957be 100644
+--- a/winsup/cygwin/fhandler/procsys.cc
++++ b/winsup/cygwin/fhandler/procsys.cc
 @@ -236,10 +236,11 @@ fhandler_procsys::fill_filebuf ()
    NtClose (h);
    if (!NT_SUCCESS (status))
@@ -360,11 +360,53 @@ index 02741d0..b88ca31 100644
  	  de->d_ino = hash_path_name (get_ino (), de->d_name);
  	  if (RtlEqualUnicodeString (&dbi->ObjectTypeName, &ro_u_natdir, FALSE))
  	    de->d_type = DT_DIR;
+diff --git a/winsup/cygwin/local_includes/wchar.h b/winsup/cygwin/local_includes/wchar.h
+index b2ddd45..f349daa 100644
+--- a/winsup/cygwin/local_includes/wchar.h
++++ b/winsup/cygwin/local_includes/wchar.h
+@@ -51,29 +51,29 @@ extern size_t _sys_wcstombs_alloc (char **dst_p, int type, const wchar_t *src,
+ 				   size_t nwc, bool is_path);
+ 
+ static inline size_t
+-sys_wcstombs (char *dst, size_t len, const wchar_t * src,
+-	      size_t nwc = (size_t) -1)
++sys_wcstombs_path (char *dst, size_t len, const wchar_t * src,
++		   size_t nwc = (size_t) -1)
+ {
+   return _sys_wcstombs (dst, len, src, nwc, true);
+ }
+ 
+ static inline size_t
+-sys_wcstombs_no_path (char *dst, size_t len, const wchar_t * src,
+-		      size_t nwc = (size_t) -1)
++sys_wcstombs (char *dst, size_t len, const wchar_t * src,
++	      size_t nwc = (size_t) -1)
+ {
+   return _sys_wcstombs (dst, len, src, nwc, false);
+ }
+ 
+ static inline size_t
+-sys_wcstombs_alloc (char **dst_p, int type, const wchar_t *src,
+-		    size_t nwc = (size_t) -1)
++sys_wcstombs_alloc_path (char **dst_p, int type, const wchar_t *src,
++			 size_t nwc = (size_t) -1)
+ {
+   return _sys_wcstombs_alloc (dst_p, type, src, nwc, true);
+ }
+ 
+ static inline size_t
+-sys_wcstombs_alloc_no_path (char **dst_p, int type, const wchar_t *src,
+-			    size_t nwc = (size_t) -1)
++sys_wcstombs_alloc (char **dst_p, int type, const wchar_t *src,
++		    size_t nwc = (size_t) -1)
+ {
+   return _sys_wcstombs_alloc (dst_p, type, src, nwc, false);
+ }
 diff --git a/winsup/cygwin/mount.cc b/winsup/cygwin/mount.cc
-index 22d7b31..2336949 100644
+index 37152fb..998094e 100644
 --- a/winsup/cygwin/mount.cc
 +++ b/winsup/cygwin/mount.cc
-@@ -441,7 +441,7 @@ fs_info::update (PUNICODE_STRING upath, HANDLE in_vol)
+@@ -463,7 +463,7 @@ fs_info::update (PUNICODE_STRING upath, HANDLE in_vol)
      {
        /* The filesystem name is only used in fillout_mntent and only if
  	 the filesystem isn't one of the well-known filesystems anyway. */
@@ -373,7 +415,7 @@ index 22d7b31..2336949 100644
  		    ffai_buf.ffai.FileSystemNameLength / sizeof (WCHAR));
        strlwr (fsn);
      }
-@@ -468,7 +468,7 @@ mount_info::create_root_entry (const PWCHAR root)
+@@ -490,7 +490,7 @@ mount_info::create_root_entry (const PWCHAR root)
   /* Create a default root dir derived from the location of the Cygwin DLL.
      The entry is immutable, unless the "override" option is given in /etc/fstab. */
    char native_root[PATH_MAX];
@@ -382,7 +424,7 @@ index 22d7b31..2336949 100644
    assert (*native_root != '\0');
    if (add_item (native_root, "/",
  		MOUNT_SYSTEM | MOUNT_IMMUTABLE | MOUNT_AUTOMATIC | MOUNT_NOACL)
-@@ -846,7 +846,7 @@ mount_info::conv_to_posix_path (PWCHAR src_path, char *posix_path,
+@@ -877,7 +877,7 @@ mount_info::conv_to_posix_path (PWCHAR src_path, char *posix_path,
      }
    tmp_pathbuf tp;
    char *buf = tp.c_get ();
@@ -391,7 +433,7 @@ index 22d7b31..2336949 100644
    int ret = conv_to_posix_path (buf, posix_path, ccp_flags);
    if (changed)
      src_path[0] = L'C';
-@@ -1177,7 +1177,7 @@ mount_info::from_fstab_line (char *line, bool user)
+@@ -1211,7 +1211,7 @@ mount_info::from_fstab_line (char *line, bool user)
  	{
  	  tmp_pathbuf tp;
  	  char *mb_tmp = tp.c_get ();
@@ -401,10 +443,10 @@ index 22d7b31..2336949 100644
  	  mount_flags |= MOUNT_USER_TEMP;
  	  int res = mount_table->add_item (mb_tmp, posix_path, mount_flags);
 diff --git a/winsup/cygwin/nlsfuncs.cc b/winsup/cygwin/nlsfuncs.cc
-index a518d2b..6cf2739 100644
+index ddd85be..f34e0b2 100644
 --- a/winsup/cygwin/nlsfuncs.cc
 +++ b/winsup/cygwin/nlsfuncs.cc
-@@ -1606,7 +1606,7 @@ internal_setlocale ()
+@@ -1596,7 +1596,7 @@ internal_setlocale ()
    if (w_path)
      {
        char *c_path = tp.c_get ();
@@ -414,7 +456,7 @@ index a518d2b..6cf2739 100644
      }
  }
 diff --git a/winsup/cygwin/path.cc b/winsup/cygwin/path.cc
-index 9a3ad7a..2e71602 100644
+index c0b85c0..1b9eff6 100644
 --- a/winsup/cygwin/path.cc
 +++ b/winsup/cygwin/path.cc
 @@ -621,7 +621,8 @@ path_conv::check (const UNICODE_STRING *src, unsigned opt,
@@ -465,7 +507,7 @@ index 9a3ad7a..2e71602 100644
  			  spath, pffei->EaValueLength);
        path_flags |= PATH_SYMLINK;
      }
-@@ -4115,7 +4116,7 @@ cygwin_conv_path (cygwin_conv_path_t what, const void *from, void *to,
+@@ -4119,7 +4120,7 @@ cygwin_conv_path (cygwin_conv_path_t what, const void *from, void *to,
  	      }
  	    PUNICODE_STRING up = p.get_nt_native_path ();
  	    buf = tp.c_get ();
@@ -474,7 +516,7 @@ index 9a3ad7a..2e71602 100644
  			  up->Buffer, up->Length / sizeof (WCHAR));
  	    /* Convert native path to standard DOS path. */
  	    if (!strncmp (buf, "\\??\\", 4))
-@@ -4128,11 +4129,11 @@ cygwin_conv_path (cygwin_conv_path_t what, const void *from, void *to,
+@@ -4132,11 +4133,11 @@ cygwin_conv_path (cygwin_conv_path_t what, const void *from, void *to,
  	      {
  		/* Device name points to somewhere else in the NT namespace.
  		   Use GLOBALROOT prefix to convert to Win32 path. */
@@ -488,7 +530,7 @@ index 9a3ad7a..2e71602 100644
  			      up->Buffer, up->Length / sizeof (WCHAR));
  	      }
  	    lsiz = strlen (buf) + 1;
-@@ -4506,8 +4507,8 @@ cygwin_conv_path_list (cygwin_conv_path_t what, const void *from, void *to,
+@@ -4446,8 +4447,8 @@ cygwin_conv_path_list (cygwin_conv_path_t what, const void *from, void *to,
    switch (what & CCP_CONVTYPE_MASK)
      {
      case CCP_WIN_W_TO_POSIX:
@@ -499,7 +541,7 @@ index 9a3ad7a..2e71602 100644
  	return -1;
        what = (what & ~CCP_CONVTYPE_MASK) | CCP_WIN_A_TO_POSIX;
        from = (const void *) winp;
-@@ -5476,9 +5477,9 @@ cwdstuff::get_error_desc () const
+@@ -5311,9 +5312,9 @@ cwdstuff::get_error_desc () const
  void
  cwdstuff::reset_posix (wchar_t *w_cwd)
  {
@@ -511,7 +553,7 @@ index 9a3ad7a..2e71602 100644
  }
  
  char *
-@@ -5503,7 +5504,7 @@ cwdstuff::get (char *buf, int need_posix, int with_chroot, unsigned ulen)
+@@ -5338,7 +5339,7 @@ cwdstuff::get (char *buf, int need_posix, int with_chroot, unsigned ulen)
    if (!need_posix)
      {
        tocopy = tp.c_get ();
@@ -521,10 +563,10 @@ index 9a3ad7a..2e71602 100644
      }
    else
 diff --git a/winsup/cygwin/uinfo.cc b/winsup/cygwin/uinfo.cc
-index 5736ffb..1b5e925 100644
+index 9bbcf1c..d842b80 100644
 --- a/winsup/cygwin/uinfo.cc
 +++ b/winsup/cygwin/uinfo.cc
-@@ -416,12 +416,12 @@ cygheap_user::ontherange (homebodies what, struct passwd *pw)
+@@ -385,12 +385,12 @@ cygheap_user::ontherange (homebodies what, struct passwd *pw)
  	    {
  	      if (ui->usri3_home_dir_drive && *ui->usri3_home_dir_drive)
  		{
@@ -539,7 +581,7 @@ index 5736ffb..1b5e925 100644
  			      ui->usri3_home_dir);
  	    }
  	  if (ui)
-@@ -431,7 +431,7 @@ cygheap_user::ontherange (homebodies what, struct passwd *pw)
+@@ -400,7 +400,7 @@ cygheap_user::ontherange (homebodies what, struct passwd *pw)
        if (!homepath_env_buf[0]
  	  && get_user_profile_directory (get_windows_id (win_id),
  					 profile, MAX_PATH))
@@ -548,7 +590,7 @@ index 5736ffb..1b5e925 100644
        /* Last fallback: Cygwin root dir. */
        if (!homepath_env_buf[0])
  	cygwin_conv_path (CCP_POSIX_TO_WIN_A | CCP_ABSOLUTE,
-@@ -978,7 +978,7 @@ fetch_from_path (cyg_ldap *pldap, PUSER_INFO_3 ui, cygpsid &sid, PCWSTR str,
+@@ -917,7 +917,7 @@ fetch_from_path (cyg_ldap *pldap, PUSER_INFO_3 ui, cygpsid &sid, PCWSTR str,
  	}
      }
    *w = L'\0';
@@ -557,7 +599,7 @@ index 5736ffb..1b5e925 100644
    return ret;
  }
  
-@@ -1004,7 +1004,7 @@ cygheap_pwdgrp::get_home (cyg_ldap *pldap, cygpsid &sid, PCWSTR dom,
+@@ -943,7 +943,7 @@ cygheap_pwdgrp::get_home (cyg_ldap *pldap, cygpsid &sid, PCWSTR dom,
  	    {
  	      val = pldap->get_string_attribute (L"cygwinHome");
  	      if (val && *val)
@@ -566,7 +608,7 @@ index 5736ffb..1b5e925 100644
  	    }
  	  break;
  	case NSS_SCHEME_UNIX:
-@@ -1012,7 +1012,7 @@ cygheap_pwdgrp::get_home (cyg_ldap *pldap, cygpsid &sid, PCWSTR dom,
+@@ -951,7 +951,7 @@ cygheap_pwdgrp::get_home (cyg_ldap *pldap, cygpsid &sid, PCWSTR dom,
  	    {
  	      val = pldap->get_string_attribute (L"unixHomeDirectory");
  	      if (val && *val)
@@ -575,7 +617,7 @@ index 5736ffb..1b5e925 100644
  	    }
  	  break;
  	case NSS_SCHEME_DESC:
-@@ -1037,7 +1037,7 @@ cygheap_pwdgrp::get_home (cyg_ldap *pldap, cygpsid &sid, PCWSTR dom,
+@@ -976,7 +976,7 @@ cygheap_pwdgrp::get_home (cyg_ldap *pldap, cygpsid &sid, PCWSTR dom,
  		    home = (char *)
  			   cygwin_create_path (CCP_WIN_W_TO_POSIX, val);
  		  else
@@ -584,7 +626,7 @@ index 5736ffb..1b5e925 100644
  		}
  	    }
  	  break;
-@@ -1098,7 +1098,7 @@ cygheap_pwdgrp::get_shell (cyg_ldap *pldap, cygpsid &sid, PCWSTR dom,
+@@ -1037,7 +1037,7 @@ cygheap_pwdgrp::get_shell (cyg_ldap *pldap, cygpsid &sid, PCWSTR dom,
  	    {
  	      val = pldap->get_string_attribute (L"cygwinShell");
  	      if (val && *val)
@@ -593,7 +635,7 @@ index 5736ffb..1b5e925 100644
  	    }
  	  break;
  	case NSS_SCHEME_UNIX:
-@@ -1106,7 +1106,7 @@ cygheap_pwdgrp::get_shell (cyg_ldap *pldap, cygpsid &sid, PCWSTR dom,
+@@ -1045,7 +1045,7 @@ cygheap_pwdgrp::get_shell (cyg_ldap *pldap, cygpsid &sid, PCWSTR dom,
  	    {
  	      val = pldap->get_string_attribute (L"loginShell");
  	      if (val && *val)
@@ -602,7 +644,7 @@ index 5736ffb..1b5e925 100644
  	    }
  	  break;
  	case NSS_SCHEME_DESC:
-@@ -1131,7 +1131,7 @@ cygheap_pwdgrp::get_shell (cyg_ldap *pldap, cygpsid &sid, PCWSTR dom,
+@@ -1070,7 +1070,7 @@ cygheap_pwdgrp::get_shell (cyg_ldap *pldap, cygpsid &sid, PCWSTR dom,
  		    shell = (char *)
  			    cygwin_create_path (CCP_WIN_W_TO_POSIX, val);
  		  else
@@ -611,45 +653,3 @@ index 5736ffb..1b5e925 100644
  		}
  	    }
  	  break;
-diff --git a/winsup/cygwin/wchar.h b/winsup/cygwin/wchar.h
-index 4291905..d7c927d 100644
---- a/winsup/cygwin/wchar.h
-+++ b/winsup/cygwin/wchar.h
-@@ -51,29 +51,29 @@ extern size_t _sys_wcstombs_alloc (char **dst_p, int type, const wchar_t *src,
- 				   size_t nwc, bool is_path);
- 
- static inline size_t
--sys_wcstombs (char *dst, size_t len, const wchar_t * src,
--	      size_t nwc = (size_t) -1)
-+sys_wcstombs_path (char *dst, size_t len, const wchar_t * src,
-+		   size_t nwc = (size_t) -1)
- {
-   return _sys_wcstombs (dst, len, src, nwc, true);
- }
- 
- static inline size_t
--sys_wcstombs_no_path (char *dst, size_t len, const wchar_t * src,
--		      size_t nwc = (size_t) -1)
-+sys_wcstombs (char *dst, size_t len, const wchar_t * src,
-+	      size_t nwc = (size_t) -1)
- {
-   return _sys_wcstombs (dst, len, src, nwc, false);
- }
- 
- static inline size_t
--sys_wcstombs_alloc (char **dst_p, int type, const wchar_t *src,
--		    size_t nwc = (size_t) -1)
-+sys_wcstombs_alloc_path (char **dst_p, int type, const wchar_t *src,
-+			 size_t nwc = (size_t) -1)
- {
-   return _sys_wcstombs_alloc (dst_p, type, src, nwc, true);
- }
- 
- static inline size_t
--sys_wcstombs_alloc_no_path (char **dst_p, int type, const wchar_t *src,
--			    size_t nwc = (size_t) -1)
-+sys_wcstombs_alloc (char **dst_p, int type, const wchar_t *src,
-+		    size_t nwc = (size_t) -1)
- {
-   return _sys_wcstombs_alloc (dst_p, type, src, nwc, false);
- }

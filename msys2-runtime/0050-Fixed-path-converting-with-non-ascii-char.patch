@@ -1,4 +1,4 @@
-From 92a0032d1af69a7df0e5868a42e2900c1e695838 Mon Sep 17 00:00:00 2001
+From e01713d8ba5cca21575c064ae965fbc7ca875239 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?=EB=A7=88=EB=88=84=EC=97=98?= <nalla@hamal.uberspace.de>
 Date: Mon, 9 Mar 2015 16:24:43 +0100
 Subject: [PATCH 50/N] Fixed path converting with non ascii char.
@@ -17,7 +17,7 @@ Signed-off-by: 마누엘 <nalla@hamal.uberspace.de>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/winsup/cygwin/msys2_path_conv.cc b/winsup/cygwin/msys2_path_conv.cc
-index 7b1312a..2c06439 100644
+index 8f5cdf6..d346ff3 100644
 --- a/winsup/cygwin/msys2_path_conv.cc
 +++ b/winsup/cygwin/msys2_path_conv.cc
 @@ -390,7 +390,7 @@ skip_p2w:

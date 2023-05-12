@@ -1,4 +1,4 @@
-From 90d8aad19b1b6f473ad4d3410a3c6055e800242e Mon Sep 17 00:00:00 2001
+From 2078dff9396ed504fd2d37196a88f5f3048608b3 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Fri, 25 Sep 2015 17:15:41 +0200
 Subject: [PATCH 53/N] Respect `db_home` setting even for the SYSTEM account
@@ -15,10 +15,10 @@ Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
  1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/winsup/cygwin/uinfo.cc b/winsup/cygwin/uinfo.cc
-index 76afd82..a727d11 100644
+index f569858..17437b2 100644
 --- a/winsup/cygwin/uinfo.cc
 +++ b/winsup/cygwin/uinfo.cc
-@@ -2307,7 +2307,11 @@ pwdgrp::fetch_account_from_windows (fetch_user_arg_t &arg, cyg_ldap *pldap)
+@@ -2232,7 +2232,11 @@ pwdgrp::fetch_account_from_windows (fetch_user_arg_t &arg, cyg_ldap *pldap)
  	 it to a well-known group here. */
        if (acc_type == SidTypeUser
  	  && (sid_sub_auth_count (sid) <= 3 || sid_id_auth (sid) == 11))
