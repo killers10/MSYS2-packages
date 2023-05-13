@@ -1,4 +1,4 @@
-From 707f9b218a434294d9290d7bc361d3fb89d31542 Mon Sep 17 00:00:00 2001
+From f27f65ed26cc07880fd7a8f730d98785533f895e Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Sun, 15 Feb 2015 11:45:48 +0000
 Subject: [PATCH 42/N] Leave arguments starting with a tilde or quote alone
@@ -12,7 +12,7 @@ Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
  1 file changed, 7 insertions(+)
 
 diff --git a/winsup/cygwin/msys2_path_conv.cc b/winsup/cygwin/msys2_path_conv.cc
-index c1be799..fd11888 100644
+index 2bdf0ae..1fdee64 100644
 --- a/winsup/cygwin/msys2_path_conv.cc
 +++ b/winsup/cygwin/msys2_path_conv.cc
 @@ -341,6 +341,13 @@ path_type find_path_start_and_type(const char** src, int recurse, const char* en

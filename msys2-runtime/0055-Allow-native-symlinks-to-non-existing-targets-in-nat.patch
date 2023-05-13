@@ -1,4 +1,4 @@
-From 07e3f3f107685554e6e4ab223aee4d500ae4d85a Mon Sep 17 00:00:00 2001
+From 0a1c226ca1bb1b3262ca8551fbc53dcfaa2bbc7d Mon Sep 17 00:00:00 2001
 From: Karsten Blees <blees@dcon.de>
 Date: Wed, 20 May 2015 16:32:52 +0200
 Subject: [PATCH 55/N] Allow native symlinks to non-existing targets in
@@ -30,7 +30,7 @@ Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
  1 file changed, 33 insertions(+), 9 deletions(-)
 
 diff --git a/winsup/cygwin/path.cc b/winsup/cygwin/path.cc
-index 9a3ad7a..9ccf984 100644
+index c0b85c0..8d7e752 100644
 --- a/winsup/cygwin/path.cc
 +++ b/winsup/cygwin/path.cc
 @@ -1865,7 +1865,7 @@ symlink_native (const char *oldpath, path_conv &win32_newpath)
