@@ -1,0 +1,62 @@
+From 0e357e24075b2e8b66c9772bf56d3db6203f88fa Mon Sep 17 00:00:00 2001
+From: Johannes Schindelin <johannes.schindelin@gmx.de>
+Date: Tue, 16 May 2023 12:43:51 +0200
+Subject: [PATCH 61/N] Revert "Cygwin: pipe: Restore blocking mode for cygwin
+ process at startup."
+
+When Git for Windows upgraded its MSYS2 runtime from v3.3.* to v3.4.* at
+long last, the t3701-add-interactive test of Git's test suite started to
+hang consistently, timing out.
+
+The culprit is a `git add -p` call that wants to read from a diff
+filter. This diff filter is `cat.exe`, i.e. nothing special, but that
+diff filter gets input that is larger than the pipe buffer, and
+therefore must not block. Yet that is exactly what it does.
+
+This was a regression that introduced by upgrading from MSYS2 runtime
+v3.3.*. After a tedious, multi-day bisection session, the commit
+introducing that regression was identified as 90788821b7 (Cygwin: pipe:
+Restore blocking mode for cygwin process at startup., 2021-11-17), which
+we hereby revert.
+
+So what bug does this reversion reintroduce?
+
+The commit seems to have been in response to
+https://inbox.sourceware.org/cygwin/CAEv6GOB8PXHgHoz7hdJy6Bia2GWEmUDnTd252gTGinz2vuv=hA@mail.gmail.com/
+which reported a bug when a C# program writes 0-byte content to a Cygwin
+pipe. (Irony of ironies, this report originated from Git's realm, over
+at https://github.com/git-ecosystem/git-credential-manager/issues/509.)
+
+The analysis revealed, back in December '21, that a `CYGWIN=pipe_byte`
+would work around the bug, too, but that did not fix the regression in
+Git's test suite.
+
+That leaves us with the somewhat unsatisfying conclusion that we _might_
+reintroduce a regression when Git Credential Manager tries to talk to an
+_MSYS_ `git.exe`. But since we do not need that in Git for Windows, and
+since we need to have CI builds that do not time out after 6h causing
+failures, it is better to revert that commit, and in the hopefully
+unlikely event that this causes _other_ problems in Git for Windows'
+ecosystem, we will simply have to revisit this issue in more depth.
+
+This fixes https://github.com/git-for-windows/git/issues/4422.
+
+Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
+---
+ winsup/cygwin/dtable.cc | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/winsup/cygwin/dtable.cc b/winsup/cygwin/dtable.cc
+index f90465d..ce1bbbe 100644
+--- a/winsup/cygwin/dtable.cc
++++ b/winsup/cygwin/dtable.cc
+@@ -410,9 +410,6 @@ dtable::init_std_file_from_handle (int fd, HANDLE handle)
+ 	{
+ 	  fhandler_pipe *fhp = (fhandler_pipe *) fh;
+ 	  fhp->set_pipe_buf_size ();
+-	  /* Set read pipe always to nonblocking */
+-	  fhp->set_pipe_non_blocking (fhp->get_device () == FH_PIPER ?
+-				      true : fhp->is_nonblocking ());
+ 	}
+ 
+       if (!fh->open_setup (openflags))
