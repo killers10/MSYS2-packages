@@ -57,11 +57,9 @@ git add $patches msys2-runtime.commit ||
 die "Could not stage new patch set"
 
 in_sources="$(echo "$patches" | sed "{s/^/        /;:1;N;s/\\n/\\\\n        /;b1}")"
-in_prepare="$(echo "$patches" |
-	sed "{s|^|  git am --committer-date-is-author-date --ignore-space-change \"\${srcdir}\"/|;:1;N;
-	 s|\\n|\\\\n  git am --committer-date-is-author-date --ignore-space-change \"\${srcdir}\"/|;b1}")"
+in_prepare="$(echo "$patches" | sed -n '{:1;s|^|  |;H;${x;s/\n/ \\\\\\n/g;p;q};n;b1}')"
 sed -i -e "/^        0.*\.patch$/{:1;N;/[^)]$/b1;s|.*|$in_sources)|}" \
-	-e "/^  git am.*\.patch$/{:2;N;/[^}]$/b2;s|.*|$in_prepare\\n\\}|}" \
+	-e "/^ *apply_git_am_with_msg .*\\\\$/{s/.*/  apply_git_am_with_msg \\\\/p;:2;N;/[^}]$/b2;s|.*|$in_prepare\\n\\}|}" \
 	PKGBUILD ||
 die "Could not update the patch set in PKGBUILD"
 
