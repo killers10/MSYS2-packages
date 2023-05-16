@@ -270,8 +270,8 @@ build() {
     OPTIM="-O2"
   fi
 
-  CFLAGS="$OPTIM -pipe -ggdb -Wno-error=deprecated -Wno-error=stringop-truncation -Wno-error=missing-attributes -Wno-error=maybe-uninitialized" #-Wno-error=class-memaccess
-  CXXFLAGS="$OPTIM -pipe -ggdb -Wno-error=deprecated -Wno-error=stringop-truncation -Wno-error=missing-attributes -Wno-error=maybe-uninitialized" #-Wno-error=class-memaccess
+  CFLAGS="$OPTIM -pipe -g0 -Wno-error=deprecated -Wno-error=stringop-truncation -Wno-error=missing-attributes -Wno-error=maybe-uninitialized" #-Wno-error=class-memaccess
+  CXXFLAGS="$OPTIM -pipe -g0 -Wno-error=deprecated -Wno-error=stringop-truncation -Wno-error=missing-attributes -Wno-error=maybe-uninitialized" #-Wno-error=class-memaccess
 
   # otherwise it asks git which appends "-dirty" because of our uncommited patches
   CFLAGS+=" -DCYGPORT_RELEASE_INFO=${pkgver}"
@@ -306,6 +306,7 @@ build() {
 package_msys2-runtime() {
   pkgdesc="Posix emulation engine for Windows"
   groups=('base')
+  options=('!strip')
   conflicts=('catgets' 'libcatgets' 'msys2-runtime-3.4')
   replaces=('catgets' 'libcatgets' 'msys2-runtime-3.4')
 
