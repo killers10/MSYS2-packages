@@ -4,7 +4,7 @@
 pkgbase=msys2-runtime
 pkgname=('msys2-runtime' 'msys2-runtime-devel')
 pkgver=3.4.6
-pkgrel=3
+pkgrel=4
 pkgdesc="Cygwin POSIX emulation engine"
 arch=('x86_64')
 url="https://www.cygwin.com/"
@@ -87,9 +87,10 @@ source=('msys2-runtime'::git+https://github.com/cygwin/cygwin#tag=cygwin-${pkgve
         0058-Change-the-default-base-address-for-x86_64.patch
         0059-Avoid-sharing-cygheaps-across-Cygwin-versions.patch
         0060-uname-report-msys2-runtime-commit-hash-too.patch
-        0061-Revert-Cygwin-pipe-Restore-blocking-mode-for-cygwin-.patch)
+        0061-Revert-Cygwin-pipe-Restore-blocking-mode-for-cygwin-.patch
+        0062-Adjust-CWD-magic-to-accommodate-for-the-latest-Windo.patch)
 sha256sums=('SKIP'
-            '0dd8039cc7b85e5a97038090d7a602f4accc617644588f5efb93a36e349d8242'
+            '22891f258407465adc4afa4a2e08b9bcd2cc25f48363185298bb006e61290cb9'
             'e061d933f7ec1a6ba5a8c56cbdb9e796e3df266409893afba33d9f4f5365f000'
             '52f3b36d3e420374b75af3502afb971279b70828a88fe05870fe35ccab90e2f0'
             'd1526bdea50b470fbbf5a6d5d5d7814a1bed7940d380e140153c290ead320979'
@@ -150,7 +151,8 @@ sha256sums=('SKIP'
             '6e6c217266559b46cd41e60b6cbe8f87a6166c7ea51d8c07241974c504c9ec15'
             '7512fc55bbb0bc6c111ce05aa90269eb4423de8092a063be4009404967b1c6bd'
             '77f4b172f0e3aee99e1c2da966efffa2e5440ef91e8374a53c488923baac1751'
-            'c82378cdce57d224069bb3a84db2c4582449ab61f487b41cf5bef70219d5fddb')
+            'c82378cdce57d224069bb3a84db2c4582449ab61f487b41cf5bef70219d5fddb'
+            'b5052a5bd526e633b5dfbde1eeb1049e558e577fd21661c6f1176863d759aac4')
 
 # Helper macros to help make tasks easier #
 apply_patch_with_msg() {
@@ -256,7 +258,8 @@ prepare() {
   0058-Change-the-default-base-address-for-x86_64.patch \
   0059-Avoid-sharing-cygheaps-across-Cygwin-versions.patch \
   0060-uname-report-msys2-runtime-commit-hash-too.patch \
-  0061-Revert-Cygwin-pipe-Restore-blocking-mode-for-cygwin-.patch
+  0061-Revert-Cygwin-pipe-Restore-blocking-mode-for-cygwin-.patch \
+  0062-Adjust-CWD-magic-to-accommodate-for-the-latest-Windo.patch
 }
 
 build() {
