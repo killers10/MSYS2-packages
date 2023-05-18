@@ -4,7 +4,7 @@
 pkgbase=msys2-runtime-3.3
 pkgname=('msys2-runtime-3.3' 'msys2-runtime-3.3-devel')
 pkgver=3.3.6
-pkgrel=2
+pkgrel=3
 pkgdesc="Cygwin POSIX emulation engine"
 arch=('i686')
 url="https://www.cygwin.com/"
@@ -88,9 +88,10 @@ source=('msys2-runtime'::git+https://github.com/cygwin/cygwin#tag=cygwin-${pkgve
         0060-dumper-avoid-linker-problem-when-libbfd-depends-on-l.patch
         0061-Cygwin-console-Fix-hangup-of-less-on-quit-after-the-.patch
         0062-amend-Avoid-sharing-cygheaps-across-Cygwin-versions.patch
-        0063-uname-report-msys2-runtime-commit-hash-too.patch)
+        0063-uname-report-msys2-runtime-commit-hash-too.patch
+        0064-Adjust-CWD-magic-to-accommodate-for-the-latest-Windo.patch)
 sha256sums=('SKIP'
-            'aff4697966936746e34f3e99132df62a4b4df7d9a424d29c309262324d129930'
+            '1ad97b50f630c61c4bb156c9dafbe0a9828aea319895d52999930ff7b1281d82'
             'c375315e58181ee5589b7966101aa095de3f864a579c3c3f0f0683595d4e428d'
             '01ea2b131cf5a3b27fdbc458019eac14e45a36782ce3ce33e62328eefcd2d02e'
             '475ddea4d86605ab097f98ec764951a9d647ea3100dea0e1620f57044ea4a114'
@@ -153,7 +154,8 @@ sha256sums=('SKIP'
             '6abfae0da52df37dcbde6eca92d66e5abd8a4e5460efc36fd7ce593fd9c9bad3'
             '433685c3c366f0aa077d1230f027ed9314e7f0b1e91d4e98e6bfbaa92ed18f89'
             '4b55c8fd81bdf4c552433e79fe24db7e1289ed3b99cd9c4d1272f1336b1a8b4b'
-            '7865ca781926f104a15fd659432b6b72462f54125c351122195b2314c6c74cf3')
+            '7865ca781926f104a15fd659432b6b72462f54125c351122195b2314c6c74cf3'
+            '33910ecf65e419f7e7214bc489131fb040987a7fbaf8ff66b255de7b9b1ea0f9')
 
 # Helper macro to help make tasks easier #
 del_file_exists() {
@@ -243,6 +245,7 @@ prepare() {
   git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0061-Cygwin-console-Fix-hangup-of-less-on-quit-after-the-.patch
   git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0062-amend-Avoid-sharing-cygheaps-across-Cygwin-versions.patch
   git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0063-uname-report-msys2-runtime-commit-hash-too.patch
+  git am --committer-date-is-author-date --ignore-space-change "${srcdir}"/0064-Adjust-CWD-magic-to-accommodate-for-the-latest-Windo.patch
 }
 
 build() {
