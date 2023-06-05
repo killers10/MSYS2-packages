@@ -1,46 +1,57 @@
 # Maintainer: Alexey Pavlov <alexpux@gmail.com>
 
-pkgname=('openssl' 'libopenssl' 'openssl-devel')
-_ver=1.1.1u
-# use a pacman compatible version scheme
-pkgver=${_ver/[a-z]/.${_ver//[0-9.]/}}
+pkgname=('openssl' 'libopenssl' 'openssl-devel' 'openssl-docs')
+pkgver=3.1.1
 pkgrel=1
 pkgdesc='The Open Source toolkit for Secure Sockets Layer and Transport Layer Security'
 arch=('i686' 'x86_64')
 url='https://www.openssl.org'
-license=('custom:BSD')
-depends=('zlib')
-makedepends=('gcc' 'tar' 'perl' 'zlib-devel' 'diffutils' 'nasm')
-options=('!makeflags' 'staticlibs')
-noextract=(${pkgname}-${_ver}.tar.gz)
-source=("https://www.openssl.org/source/${pkgname}-${_ver}.tar.gz"{,.asc}
+license=('spdx:Apache-2.0')
+makedepends=('gcc' 'tar' 'perl' 'diffutils' 'nasm')
+noextract=(${pkgname}-${pkgver}.tar.gz)
+source=("https://www.openssl.org/source/${pkgname}-${pkgver}.tar.gz"{,.asc}
         '0001-Use-usr-ssl-as-ca-dir-instead-of-.-demoCA.patch'
         '0002-Support-MSYS2.patch'
         '0003-tls13secretstest-work-around-multiple-definition-of.patch'
-        '0004-Override-engines-directory.patch')
-sha256sums=('e2f8d84b523eecd06c7be7626830370300fbcc15386bf5142d72758f6963ebc6'
+        '0004-Override-engines-directory.patch'
+        '0005-skip-dllmain-detach.patch'
+        '0006-file_eof-work-around-EOF-sometimes-not-being-detecte.patch')
+sha256sums=('b3aa61334233b852b63ddb048df181177c2c659eb9d4376008118f9c08d07674'
             'SKIP'
-            '35f5508bc3e651bb2ef1bf9f4e052f531aeaefbbdeff95b9746fff71137fff31'
-            '0f6d46bb1025edd71d518e48fc640f88521b715bcfce2fd2c2a0266dfff4efd6'
-            'a83dcfeec646724f081f8ff89beccee83c962758aa74d724f263138aa21b2438'
-            '79765cc10799691ae47880556255287c64b8c1f26ea3907ad2e0add97bc9f1fc')
-validpgpkeys=('8657ABB260F056B1E5190839D9C4D26D0E604491'
-              '7953AC1FBC3DC8B3B292393ED5E9E43F7DF9EE8C'
-              'DC7032662AF885E2F47F243F527466A21CA79E6D'
-              'A21FAB74B0088AA361152586B8EF1A6BA9DA2D5C')
+            '7ff3213d8d085238695f076d254f16d15b16a9baca1f9393c1bed0057006da2c'
+            '2d4fa535ebc3f6be66b249e1e45c218ddc41e4e70b38d8fa6d4f877724bc5a71'
+            '409abd6a2647bb5b4ffab1f20c4ee8d5b41af4dbfe410aa2950b929ff3317541'
+            '856e5e78e821e920afe2f2eed88ab8d9a6bcc06ecd64d78d4445276e73377812'
+            '79b56c97da803493eb9bbc04dc67ddf3662a8486efb9ec7b15e668b8c0fa4e0f'
+            'dd018f5d395388473f7fa0f1623708b9359aebaa8ee1e1c7a495e553333e3970')
+# https://www.openssl.org/community/otc.html
+validpgpkeys=(
+  '8657ABB260F056B1E5190839D9C4D26D0E604491' # Matt Caswell <matt@openssl.org>
+  '7953AC1FBC3DC8B3B292393ED5E9E43F7DF9EE8C' # Richard Levitte <richard@levitte.org>
+  'A21FAB74B0088AA361152586B8EF1A6BA9DA2D5C' # Tomáš Mráz <tm@t8m.info>
+  'B7C1C14360F353A36862E4D5231C84CDDCC69C45' # Paul Dale <pauli@openssl.org>
+)
 
 prepare() {
-  [[ -d ${srcdir}/${pkgname}-${_ver} ]] || tar -xzvf ${srcdir}/${pkgname}-${_ver}.tar.gz -C ${srcdir}
-  cd ${srcdir}/${pkgname}-${_ver}
+  [[ -d ${srcdir}/${pkgname}-${pkgver} ]] || tar -xzvf ${srcdir}/${pkgname}-${pkgver}.tar.gz -C ${srcdir}
+  cd ${srcdir}/${pkgname}-${pkgver}
 
   patch -p1 -i ${srcdir}/0001-Use-usr-ssl-as-ca-dir-instead-of-.-demoCA.patch
   patch -p1 -i ${srcdir}/0002-Support-MSYS2.patch
   patch -p1 -i ${srcdir}/0003-tls13secretstest-work-around-multiple-definition-of.patch
   patch -p1 -i ${srcdir}/0004-Override-engines-directory.patch
+
+  # For example "meson test" crashes without this, see
+  # https://github.com/msys2/MSYS2-packages/issues/3013#issuecomment-1362734102
+  # https://cygwin.com/pipermail/cygwin/2011-March/194454.html
+  # (but this was never patched in cygwin from what I see)
+  patch -p1 -i ${srcdir}/0005-skip-dllmain-detach.patch
+  # make 90-test_store succeed
+  patch -p1 -i ${srcdir}/0006-file_eof-work-around-EOF-sometimes-not-being-detecte.patch
 }
 
 build() {
-  cd ${srcdir}/${pkgname}-${_ver}
+  cd ${srcdir}/${pkgname}-${pkgver}
 
   if [ "${CARCH}" == 'x86_64' ]; then
     openssltarget='Msys-x86_64'
@@ -53,10 +64,7 @@ build() {
     --openssldir=/usr/ssl \
     --libdir=lib \
     shared \
-    zlib \
-    no-idea \
-    no-rc5 \
-    ${openssltarget}
+    "${openssltarget}"
 
   make depend
   make all
@@ -64,42 +72,54 @@ build() {
 }
 
 check() {
-  cd ${srcdir}/${pkgname}-${_ver}
+  cd ${srcdir}/${pkgname}-${pkgver}
 
   # the test would write test data into /usr/ssl, which we do not want
   patch -R -p1 -i ${srcdir}/0001-Use-usr-ssl-as-ca-dir-instead-of-.-demoCA.patch
-  make test
+  make HARNESS_JOBS="$(nproc)" test
   patch -p1 -i ${srcdir}/0001-Use-usr-ssl-as-ca-dir-instead-of-.-demoCA.patch
+  # re-run make to re-generate CA.pl from the patched .in file.
+  make apps/CA.pl
 }
 
 package_openssl() {
-  depends=('libopenssl' 'zlib')
+  depends=('libopenssl')
   optdepends=('ca-certificates' 'perl')
 
   mkdir -p ${pkgdir}/usr/bin
   cp -f ${srcdir}/dest/usr/bin/*.exe ${pkgdir}/usr/bin/
   cp -f ${srcdir}/dest/usr/bin/c_rehash ${pkgdir}/usr/bin/
-  cp -rf ${srcdir}/dest/usr/share ${pkgdir}/usr/
+  mkdir -p ${pkgdir}/usr/share/man
+  cp -rf ${srcdir}/dest/usr/share/man/man1 ${pkgdir}/usr/share/man
+  cp -rf ${srcdir}/dest/usr/share/man/man5 ${pkgdir}/usr/share/man
   cp -rf ${srcdir}/dest/usr/ssl ${pkgdir}/usr/
-  install -D -m644 ${srcdir}/${pkgname}-${_ver}/LICENSE ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE
+}
+
+package_openssl-docs() {
+  mkdir -p ${pkgdir}/usr/share/man
+  cp -rf ${srcdir}/dest/usr/share/man/man3 ${pkgdir}/usr/share/man
+  cp -rf ${srcdir}/dest/usr/share/man/man7 ${pkgdir}/usr/share/man
+  cp -rf ${srcdir}/dest/usr/share/doc ${pkgdir}/usr/share
 }
 
 package_libopenssl() {
-  depends=('zlib')
+  depends=()
   groups=('libraries')
 
   mkdir -p ${pkgdir}/usr/bin
   cp -f ${srcdir}/dest/usr/bin/*.dll ${pkgdir}/usr/bin/
 
   mkdir -p ${pkgdir}/usr/lib/openssl
-  cp -rf ${srcdir}/dest/usr/lib/openssl/engines-1.1 ${pkgdir}/usr/lib/openssl/
-  chmod -R 755 ${pkgdir}/usr/lib/openssl/engines-1.1
+  cp -rf ${srcdir}/dest/usr/lib/openssl/engines-3 ${pkgdir}/usr/lib/openssl/
+  chmod -R 755 ${pkgdir}/usr/lib/openssl/engines-3
+
+  install -D -m644 ${srcdir}/openssl-${pkgver}/LICENSE.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt
 }
 
 package_openssl-devel() {
   pkgdesc="Openssl headers and libraries"
   groups=('development')
-  depends=("libopenssl=${pkgver}" 'zlib-devel')
+  depends=("libopenssl=${pkgver}")
 
   mkdir -p ${pkgdir}/usr/lib
   cp -rf ${srcdir}/dest/usr/include ${pkgdir}/usr/

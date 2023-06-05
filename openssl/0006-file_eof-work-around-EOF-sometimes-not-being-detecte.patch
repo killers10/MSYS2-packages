@@ -1,0 +1,77 @@
+From 8d25f00f6df6854746a2cd5607c5b5b2a2e2d052 Mon Sep 17 00:00:00 2001
+From: Johannes Schindelin <johannes.schindelin@gmx.de>
+Date: Wed, 21 Jun 2023 20:53:06 +0200
+Subject: [PATCH] file_eof: work around EOF sometimes not being detected
+
+It seems that MSYS2's `feof()` functions returns 0 under certain
+circumstances even if there are no more bytes to be read in the file.
+
+One symptom is that the `loader_attic` test cases in `90-test_store.t`
+fail like this:
+
+	Engine "loader_attic" set.
+	100000000A000000:error:0308010C:digital envelope routines:inner_evp_generic_fetch:unsupported:crypto/evp/evp_fetch.c:341:Global default library context, Algorithm (PBKDF1 : 0), Properties (<null>)
+	# Total found: 0
+	../../../util/wrap.pl ../../../apps/openssl.exe storeutl -engine loader_attic -noout -passin 'pass:password' /usr/src/MSYS2-packages/openssl/src/openssl-3.1.1/test-runs/test_store/store_35505/rsa-key-md5-des-sha1.p12 => 1
+	not ok 322
+	===(    2362;614   9/12   413/1144  4/7  322/416 )======================--------
+	Engine "loader_attic" set.
+	100000000A000000:error:0308010C:digital envelope routines:inner_evp_generic_fetch:unsupported:crypto/evp/evp_fetch.c:341:Global default library context, Algorithm (PBKDF1 : 0), Properties (<null>)
+	# Total found: 0
+	../../../util/wrap.pl ../../../apps/openssl.exe storeutl -engine loader_attic -noout -passin 'pass:password' rsa-key-aes256-cbc-md5-des-sha256.p12 => 1
+	not ok 325
+	===(    2366;615   9/12   414/1144  4/7  325/416 )======================--------
+	#   Failed test at test/recipes/90-test_store.t line 210.
+	Engine "loader_attic" set.
+	100000000A000000:error:0308010C:digital envelope routines:inner_evp_generic_fetch:unsupported:crypto/evp/evp_fetch.c:341:Global default library context, Algorithm (PBKDF1 : 0), Properties (<null>)
+	# Total found: 0
+	../../../util/wrap.pl ../../../apps/openssl.exe storeutl -engine loader_attic -noout -passin 'pass:password' /usr/src/MSYS2-packages/openssl/src/openssl-3.1.1/test-runs/test_store/store_35505/rsa-key-aes256-cbc-md5-des-sha256.p12 => 1
+	not ok 326
+	80-test_ssl_old.t .................. ok                                 --------
+	===(    2508;647   9/12   463/1144  415/416 )===========================
+	90-test_store.t .................... Dubious, test returned 6 (wstat 1536, 0x600)
+	Failed 6/416 subtests
+		(less 198 skipped subtests: 212 okay)
+	15-test_ecparam.t .................. ok
+	15-test_genec.t .................... ok
+
+	Test Summary Report
+	-------------------
+	90-test_store.t                  (Wstat: 1536 (exited 6) Tests: 416 Failed: 6)
+	  Failed tests:  247-248, 321-322, 325-326
+	  Non-zero exit status: 6
+	Files=251, Tests=3193, 1082 wallclock secs (45.66 usr 143.09 sys + 1390.76 cusr 2414.85 csys = 3994.36 CPU)
+	Result: FAIL
+
+Let's work around that by comparing the current file position to the
+file size, if possible, and if they're equal pretend that `feof()`
+returned 1.
+
+Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
+---
+ crypto/bio/bss_file.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/crypto/bio/bss_file.c b/crypto/bio/bss_file.c
+index 5b10b22..ccd1a84 100644
+--- a/crypto/bio/bss_file.c
++++ b/crypto/bio/bss_file.c
+@@ -194,8 +194,14 @@ static long file_ctrl(BIO *b, int cmd, long num, void *ptr)
+     case BIO_CTRL_EOF:
+         if (b->flags & BIO_FLAGS_UPLINK_INTERNAL)
+             ret = (long)UP_feof(fp);
+-        else
++        else {
+             ret = (long)feof(fp);
++	    if (!ret) {
++                struct stat st;
++                if (!fstat(fileno(fp), &st) && st.st_size == ftell(fp))
++                    ret = 1;
++	    }
++	}
+         break;
+     case BIO_C_FILE_TELL:
+     case BIO_CTRL_INFO:
+-- 
+2.41.0
+
