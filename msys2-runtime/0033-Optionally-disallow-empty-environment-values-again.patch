@@ -1,4 +1,4 @@
-From de7153655559d9979fe98200bc6342350181522e Mon Sep 17 00:00:00 2001
+From 0a4800c49269af7104c5c42ce0660010985de5cd Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Tue, 6 Sep 2022 10:40:58 +0200
 Subject: [PATCH 33/N] Optionally disallow empty environment values again

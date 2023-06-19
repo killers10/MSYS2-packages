@@ -1,7 +1,7 @@
-From 53c11c566b3a7534adaacaadee8c545d0738d33a Mon Sep 17 00:00:00 2001
+From 0c861608140fff7b70f07b0dd44a1fa323e5f482 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Mon, 30 Jan 2023 23:22:22 +0100
-Subject: [PATCH 59/N] Avoid sharing cygheaps across Cygwin versions
+Subject: [PATCH 58/N] Avoid sharing cygheaps across Cygwin versions
 
 It frequently leads to problems when trying, say, to call from Git for
 Windows' Bash into Cygwin's or MSYS2's, merely because sharing that data
@@ -47,7 +47,7 @@ Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
  4 files changed, 33 insertions(+), 2 deletions(-)
 
 diff --git a/winsup/configure.ac b/winsup/configure.ac
-index 86f168a..58af4d3 100644
+index f387b81..fb4b1e8 100644
 --- a/winsup/configure.ac
 +++ b/winsup/configure.ac
 @@ -57,6 +57,34 @@ AC_CHECK_TOOL(RANLIB, ranlib, ranlib)
@@ -100,7 +100,7 @@ index ec782dc..038ae5a 100644
  AM_CXXFLAGS=$(cxxflags_common) $(COMMON_CFLAGS) -fno-threadsafe-statics
  
 diff --git a/winsup/cygwin/dcrt0.cc b/winsup/cygwin/dcrt0.cc
-index 1675a9b..a577832 100644
+index 300b31c..2b43328 100644
 --- a/winsup/cygwin/dcrt0.cc
 +++ b/winsup/cygwin/dcrt0.cc
 @@ -530,7 +530,7 @@ get_cygwin_startup_info ()

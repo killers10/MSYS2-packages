@@ -1,7 +1,7 @@
-From 385136b23c6f4a3bb2ea0ae92c50ddfe6db23d50 Mon Sep 17 00:00:00 2001
+From 2078f6b88f4281593bec330b64918467f7fbd81a Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Wed, 18 Feb 2015 10:45:01 +0000
-Subject: [PATCH 39/N] Stop assuming that there are no spaces in POSIX-style
+Subject: [PATCH 38/N] Stop assuming that there are no spaces in POSIX-style
  paths
 
 Git's test suite most prominently sports a POSIX path with a space in

@@ -3,8 +3,8 @@
 
 pkgbase=msys2-runtime
 pkgname=('msys2-runtime' 'msys2-runtime-devel')
-pkgver=3.4.6
-pkgrel=4
+pkgver=3.4.7
+pkgrel=1
 pkgdesc="Cygwin POSIX emulation engine"
 arch=('x86_64')
 url="https://www.cygwin.com/"
@@ -64,95 +64,91 @@ source=('msys2-runtime'::git+https://github.com/cygwin/cygwin#tag=cygwin-${pkgve
         0035-When-converting-to-a-Unix-path-avoid-double-trailing.patch
         0036-msys2_path_conv-pass-PC_NOFULL-to-path_conv.patch
         0037-Revert-Cygwin-Enable-dynamicbase-on-the-Cygwin-DLL-b.patch
-        0038-dumper-avoid-linker-problem-when-libbfd-depends-on-l.patch
-        0039-Stop-assuming-that-there-are-no-spaces-in-POSIX-styl.patch
-        0040-Handle-8-bit-characters-under-LOCALE-C.patch
-        0041-Mention-the-extremely-useful-small_printf-function.patch
-        0042-Leave-arguments-starting-with-a-tilde-or-quote-alone.patch
-        0043-Leave-Git-s-name-and-message-arguments-alone-please.patch
-        0044-Leave-paths-containing-any-special-characters-alone.patch
-        0045-Leave-paths-containing-alone.patch
-        0046-Skip-posix-to-windows-conversion-when-is-seen.patch
-        0047-Also-leave-Git-s-rev-.-name-syntax-alone.patch
-        0048-Arguments-starting-with-are-no-paths.patch
-        0049-Prevent-scp-style-arguments-from-being-mangled.patch
-        0050-Fixed-path-converting-with-non-ascii-char.patch
-        0051-path-conversion-Introduce-ability-to-switch-off-conv.patch
-        0052-Allow-overriding-the-home-directory-via-the-HOME-var.patch
-        0053-Respect-db_home-setting-even-for-the-SYSTEM-account.patch
-        0054-Respect-the-db_home-env-setting-under-more-circumsta.patch
-        0055-Allow-native-symlinks-to-non-existing-targets-in-nat.patch
-        0056-Make-paths-WCS-MBS-conversion-explicit.patch
-        0057-Use-MB_CUR_MAX-6-by-default.patch
-        0058-Change-the-default-base-address-for-x86_64.patch
-        0059-Avoid-sharing-cygheaps-across-Cygwin-versions.patch
-        0060-uname-report-msys2-runtime-commit-hash-too.patch
-        0061-Revert-Cygwin-pipe-Restore-blocking-mode-for-cygwin-.patch
-        0062-Adjust-CWD-magic-to-accommodate-for-the-latest-Windo.patch)
+        0038-Stop-assuming-that-there-are-no-spaces-in-POSIX-styl.patch
+        0039-Handle-8-bit-characters-under-LOCALE-C.patch
+        0040-Mention-the-extremely-useful-small_printf-function.patch
+        0041-Leave-arguments-starting-with-a-tilde-or-quote-alone.patch
+        0042-Leave-Git-s-name-and-message-arguments-alone-please.patch
+        0043-Leave-paths-containing-any-special-characters-alone.patch
+        0044-Leave-paths-containing-alone.patch
+        0045-Skip-posix-to-windows-conversion-when-is-seen.patch
+        0046-Also-leave-Git-s-rev-.-name-syntax-alone.patch
+        0047-Arguments-starting-with-are-no-paths.patch
+        0048-Prevent-scp-style-arguments-from-being-mangled.patch
+        0049-Fixed-path-converting-with-non-ascii-char.patch
+        0050-path-conversion-Introduce-ability-to-switch-off-conv.patch
+        0051-Allow-overriding-the-home-directory-via-the-HOME-var.patch
+        0052-Respect-db_home-setting-even-for-the-SYSTEM-account.patch
+        0053-Respect-the-db_home-env-setting-under-more-circumsta.patch
+        0054-Allow-native-symlinks-to-non-existing-targets-in-nat.patch
+        0055-Make-paths-WCS-MBS-conversion-explicit.patch
+        0056-Use-MB_CUR_MAX-6-by-default.patch
+        0057-Change-the-default-base-address-for-x86_64.patch
+        0058-Avoid-sharing-cygheaps-across-Cygwin-versions.patch
+        0059-uname-report-msys2-runtime-commit-hash-too.patch
+        0060-Revert-Cygwin-pipe-Restore-blocking-mode-for-cygwin-.patch)
 sha256sums=('SKIP'
-            '22891f258407465adc4afa4a2e08b9bcd2cc25f48363185298bb006e61290cb9'
-            'e061d933f7ec1a6ba5a8c56cbdb9e796e3df266409893afba33d9f4f5365f000'
-            '52f3b36d3e420374b75af3502afb971279b70828a88fe05870fe35ccab90e2f0'
-            'd1526bdea50b470fbbf5a6d5d5d7814a1bed7940d380e140153c290ead320979'
-            'e8daf8e0db5d461ab8123ceabc3c7bb68745bb3ea423662c1143c04f7c15bf9f'
-            'f09fc1f524b0030217840b3ee0052b1a0dfdefb28f853a892e0a945493a77675'
-            'b3f2cc6e8ae2844328d45f1dcb52726727136bb5f333d91d546c9ee191521f46'
-            '7b8947971fafec540d0cbb87334c4908c0ab22d857163f39f3306598f7710fd1'
-            '857ca18800f6001f147375339396ed7fffca234a2ebcff5f3ab40ed70d003a14'
-            '168d9b93d8c65892d4e5a87e0c71756c529bb94b94f4d65d67cc6622e1a23b13'
-            '5ff8300f3085e2441059afc44ce4b15068cc34f2e1f09c31520ffdd372201165'
-            '7d8e0c9cb242311fb6a6357c79d05302a073c6466391503fdb89f1551958978f'
-            '771c3440a2567b16bade9d2970d7aab3aa8ab4b39f59da532b338642b06bfb46'
-            'a43a5f9f99aac2e86ee6059f21d00d032ac80c58ee93918faf859e383b70e362'
-            '09643102d1c24cac95c88d8a6e8f6c5d252d81856c4aef79baa7952d7a676d2f'
-            'fbb923ce97db0c64471190dfa5d6a3930a363b5b55df2f44fae3ce98ce2a7243'
-            '8b8713c82ad5de58256b883f694d1a224dde0d30a52eeb22f7a2783c000935c6'
-            'aca7ae31c6c77f825d5259ca7c47df83580cbbc4dff10532c6446d7e4bab1d4a'
-            'c8a0b212ee8613c5637a6cf3c30b0b0bd2ff49368226cbacaf540b0746bd6b9d'
-            '3505c35fa45eeca6a18a336c54275ba43bb265b5a96443c99a93038e8747e541'
-            '5dbde5d4f364faaf8db2e41f8443bd4b57ebef2b9e306ea48ced3128c83180e4'
-            'e4869bdb6179637f323114ea208d816e2c56563a803428c7fadf1015e90252a1'
-            'a4558b81aab181cfad0c581d48b269e265ecd5f0dc106e0962e9c3e34408fa4f'
-            'fc01b33d011e04a6b8f1b9c0d08aaeac9376ed0b442033afe631b42201658877'
-            'dd5d5d15f7cadf12c8473b69e5819e5521be915525f2852ab5e1e0a5b3add8fa'
-            '51d946cef11b6242f79e21301bc98ca609a54a7dad1ed978751958c4f1949c81'
-            '45f81ef15a35e6902c07bea120daca7de5380b010abaface7fbdd2957debb63e'
-            'd2ffdcb224ac8a03644b562370007ebafdca149d200f620dd1012ff64df138ec'
-            '3879d7895a79c230b544a6803677c54e7d170601af20b21e39366abdd2b979d9'
-            'e596cca83c3693f88a792450cebd98c91aa5acceb5dbc123d7dc8953b77b4253'
-            '1e8e97b3fb7e44225b41da7a23f2d0ceb15c4284bf58c62b650f01b4c088df92'
-            '236755453a0538687c3cde6d90db4b8605bc11d8df6274a7ffd0a7fcb77a6434'
-            '56df2a514a2c4d179ad4d5a26e752793b729de1d73d4cfd89a4b16bbe4191bb9'
-            '239145da9a1b1e5a8203b4aab7b6bbd8100c90e976c6340fd8239432ce7eae1d'
-            '381232e5d08ef918df245036a956c0cb2cf764d1ff3033bcd4f8b3e66e256a16'
-            '70b2ede5a2c01b68efb25d3907257a10fad1134a98f6d746f3f907e4c2a3df0c'
-            '1965d4f68d3469812fea98f8ff33618a1340b5a4da808228c4e3c4a606e70a49'
-            '0e5eb6c16e10adcf85c86478614dcaace23ea4a85d6b5dab404b8973c0abd7c7'
-            'a6364d50b4afdd27e54708f6475588d9146885e0d27c3fe2cbfcb0710958f2df'
-            '82692ce01d0ff92b265cbb6803cdcfb1d6613587d0b73521776156da3e4be411'
-            '2b62c321cdf673fb38fdcf442eaf7cdd3783ceb3d7100f53d5ec7dbe7516bc27'
-            'ecadc424bee57a0a3de275cea1682814d9d4e80cbdb0877fff7a2a76598a0d15'
-            '52af1951ae0fb9d9eb3ea457d0fae15e9dd6f164c7a1633f79107d0b579e4565'
-            'fd79bc01256bd0f5ab7c6660f78f110efb18d71ef34b17c45a9bf13dede42541'
-            'c2399b0378ca01fa741a8187afb306855b4e35623a0e996bbfba7915a7394fd7'
-            '150d89cb11ee8ff0167d06ac84a2e25ce8939341f2b8031fcfccf34a0e1f7124'
-            'f5ce9d9bd4e8312e58abf3708bd8f200270881334fce9106e42330fee5e36edc'
-            'a1ffa33c930b9a0b505c5e1004d8b5e973029129195d8b5f2c4ebd7659525963'
-            '2400a19059ff932db89c1475876ad2d59a1f423d497f4e4a65b45de00fa43b48'
-            '144c29a963a93ae20a3fde79b4c96824f122d11617534551a6b3efb25cad14d9'
-            'a7960077c3d47ec76f94e0f38d775f92d5777385a1320121c3fcc014a0caabbe'
-            'c52518df7fe713a5bb0745cb7a308f4891f998ba9f5c4d492e43075a25bf7514'
-            '4c51563273a30f1ca57a6d10fc34da985af75de6fd8dfd432ef3321fd762469c'
-            'b81376d2f8a1f29b750efcc2dc9ef4d531c91f6ec1394fde7b3e67fa3d1a2ab3'
-            '23c75cf56469b76a366bfcdcffd22ed83b045ff66dfe930df3cfd65d2872b5b7'
-            'aa125ce529b357f5f928679ad23467d63ecc2f4484c11b25ca0d58db42726a18'
-            '6956726bd69e0bab034442c5191b3da402cefadfbf4a101993341f508e812935'
-            '0dd0b9dc3d24e6556c5f6c758a3157405ae2a75b3760fab92acc3b183151bb50'
-            '6e6c217266559b46cd41e60b6cbe8f87a6166c7ea51d8c07241974c504c9ec15'
-            '7512fc55bbb0bc6c111ce05aa90269eb4423de8092a063be4009404967b1c6bd'
-            '77f4b172f0e3aee99e1c2da966efffa2e5440ef91e8374a53c488923baac1751'
-            'c82378cdce57d224069bb3a84db2c4582449ab61f487b41cf5bef70219d5fddb'
-            'b5052a5bd526e633b5dfbde1eeb1049e558e577fd21661c6f1176863d759aac4')
+            'eeb2edd7d3695e4a5b149a99e4bdd48de115ea48a3def1bbbec60a431f13263d'
+            'c092f44f33e526c93282de5f1b12628665b38d607c2e7628d8437634ce9d133f'
+            'a19b83098b577f64b7df42197ada140b58601f0acb20feba304f4dcdce8563c7'
+            '8c71c0477544aec58d4c213c59e273f6faf94fd8691248276af2f77ffec1b481'
+            'fa5a2ee77adf6cc8b5ee81bc11167398692d13a75bd8bdf0b0cba9c008993511'
+            '926c774aefc9d8ea6f6636a4598fe9231be984f1d8a2f09b55c7b7d2946d2f55'
+            '542e64ffdc55b072bed8f7d1694887b0a181fe84192abf3a901ff1a4ad5b1752'
+            '290e61c5179da84b89c9b70f7d923ad86c953a5151eccd385af13b2d1156d972'
+            '37170be2f5b33df9bcafd4d0695329502e3431dde3c46f624aa5b77fb355daf9'
+            '47d7e54e0bc4d80fb9e1503ffb53491cb4ce14330d556144c4f55f5237e8da5a'
+            'ec0af91632f95dd29a4fe4d1afe305674c771ec961028471f9fca856d318e04f'
+            '2ae67271e5b665f206c6893208ef1a61d644d8cd383046df486650d7d7431ad1'
+            'd398703e502195a3bd83dd2f091617c33169f3580744577ed2355246dcdd780e'
+            '699d6177a730db9be8e7248e4ca4a549e23b5283fc8c3da6c9be90bc69dbe6c9'
+            '2a2abd73f7e74a2989a550a92768afe05bd84d847cbe818e60be59d8c13f411c'
+            '30d2883597f8ac303a91a4f1186bcf95acdf41c0e54c07a011e91e3ff0abe9b5'
+            '367d83303ebdc4a75e0488e6a50a90851a74a15dbeacd9aad07d2ec638ae5cc3'
+            '48ce209efb557058a12daedd81dbe1511c43e24e00a92a16175b7c7e975a4aa8'
+            '6bd65ec59d9c22df2d8cd5c1d82139296ac075ce8d6fe498543d8b3da776e707'
+            '3b19e1f8913dbbd1833e35335de26b04bf48ea1de41d5a050a660a888b79a43b'
+            '64b71b31274a2084b486158fa4cb9db985a211d546adb090ab7135618540d393'
+            '92736470f5d75da1054a253ee830e6567705f15ddf9d38f0565616fa4455fa77'
+            '892ed7b94670f23ae3e3268b4ea8d3f6d9589e11086efa11faa6a6cf1caade37'
+            '8db2dd13e0729c7b15c4b9a85e2cc2ef1a164a864ac3b8ef84e4d62805870308'
+            '89559ba6c6a23efe80488002b3447cc90e1ad8519c7949af4372c8fb0e61b269'
+            'a7ff1f03aa39addc44270ce2ed0f1a085f3c807dc12b520f68df572f7b8d77b9'
+            '0497442a0a30becddc14597a2a57e4b428ea765ae99e1c9bb949eea6c01d0fce'
+            '342766f97fde03afd0630c29f386559fdc827822dd87d1ecfecd2858e538df10'
+            '9ece8af6ee86b04018fc4557479928766bffd50c2fd96052dc0cfc71445be0fe'
+            '0d9478225cd6f38ad36f86b3c3d52d76c10c20f82cfd006cfd9938c7beb8c718'
+            '606f3905b454a490535b0f70b8d1623f55168cff6d28604b788f255c2d70e1f1'
+            'f44db73b621a115ea9cb5bf4eaf1afc45c910e70c0534670fc7c81475d396c87'
+            '69a251b56ff2d16127450ee16aff43d025d5ea80a57d910baedd15239ef4c92b'
+            'ffa048a45e698052e890c62ee3c4128070b7d1013dcee8e127404d9247fe7ff3'
+            'f0ef04bee4d6bb41d815e60ae14bf0801e886c01fd3e1fef01cdc755fdf88eef'
+            'c1bb2a92ee6f96be1467042a3d2203cd4bd196388a12331c952f5112e2771f2e'
+            'aeaa2b4a0a05da5f1a6acf2ed87c00e514a4a96a7850096e9e14ed31b57b7737'
+            'abc27017d8c750f971a96df5d00f494bbfffe46258b5635ffc2118b9524c897c'
+            'a2f11abdc21acc7c0c98f048ea5cb99d33c6a0f232f920f5765bac6a3d86295b'
+            '09d5e3e4cb100649b9db0bb8669bd3594644541cec215bb83aee8810b911248c'
+            '9e0a3aab4f2c223a3b48d429ebde02b2b948d43dff9beec9b179ecde8164a5e3'
+            'c324a53f37f44c992f56cc21983df0db1d5b71800007daa3d3adc4dc3497f9e5'
+            'd1b8aacabaa17b25b1fa54103dd154b041c608f210c4416d4ad0c0d3546dcee5'
+            '5009812263ab218fc2bbfca706646bf16b7e37f93c7d7524fe6aea55b0260692'
+            'f5dcd40e3ac66eb8ac173870e75c58329ddc4ad43b95bfe075fe8f174497d346'
+            '9b14e9e1de3bf78b3994d96d26922e874b25720895da7a6d8740250770e8c12e'
+            'f4127347c171aef370425ea8d8fbc0730d808a6f799735f29538f3923575cadf'
+            '3f6857f3f5afaea4657dbb7a43f3edb7cc12ed55e2b2a027fb4cbd411469d30b'
+            '13b54fe2c59ac21357a0523a0d8c0435f5f46feade44b0558ce7b1432ef8263c'
+            'baf4ecd09be0b81628c5b502924413ff26fa44ca1a2c31870d7b8118813bf13b'
+            'aa75101933a4a6c7c39d9c5bc4ca6dc7a3d553f78bceb309ca15704f25e70604'
+            '461f9c2450eb7296583155c802818000b07c04f1f1e2d38b29774928d3859e06'
+            '4bc9bfadc019a1ac3ab57cb4fef9b47f61ae519e882faa4812d78e57b32d85c0'
+            'cb661522ca67e27a45983534b9f87e24dd2595e937a475c3a1f9e570e0f24e2c'
+            '3067f00729bcd86c6a984e8bb1846b13e5f078f98b00e10345ba630f3c1350bc'
+            '09dd3eaba5e89fca7c3dee851e7732e2530b14f8a036e409bd8e46bda8c07ed1'
+            '0eb051afba4cc9ac637941d2011dbbf8e9f66c2f26f2d73eb6ac4584b6f0f965'
+            '8f2a61c291fc8e0b864892f13f24454d52733ac949b56cd8d62bf7cfc1aea957'
+            '0557eba646e49091dbcc5c24600544be57d053d2e979219062c6cf8e988de6ec'
+            'b1cc58ff353fa74bca23359c62687a19cf9067b16c123ecfe016496a7d276b4b'
+            '1f9a2cfd1ad42e3b101028d10555a8fe4782ba2b0df931d8e23784d2c76df6ad')
 
 # Helper macros to help make tasks easier #
 apply_patch_with_msg() {
@@ -235,31 +231,29 @@ prepare() {
   0035-When-converting-to-a-Unix-path-avoid-double-trailing.patch \
   0036-msys2_path_conv-pass-PC_NOFULL-to-path_conv.patch \
   0037-Revert-Cygwin-Enable-dynamicbase-on-the-Cygwin-DLL-b.patch \
-  0038-dumper-avoid-linker-problem-when-libbfd-depends-on-l.patch \
-  0039-Stop-assuming-that-there-are-no-spaces-in-POSIX-styl.patch \
-  0040-Handle-8-bit-characters-under-LOCALE-C.patch \
-  0041-Mention-the-extremely-useful-small_printf-function.patch \
-  0042-Leave-arguments-starting-with-a-tilde-or-quote-alone.patch \
-  0043-Leave-Git-s-name-and-message-arguments-alone-please.patch \
-  0044-Leave-paths-containing-any-special-characters-alone.patch \
-  0045-Leave-paths-containing-alone.patch \
-  0046-Skip-posix-to-windows-conversion-when-is-seen.patch \
-  0047-Also-leave-Git-s-rev-.-name-syntax-alone.patch \
-  0048-Arguments-starting-with-are-no-paths.patch \
-  0049-Prevent-scp-style-arguments-from-being-mangled.patch \
-  0050-Fixed-path-converting-with-non-ascii-char.patch \
-  0051-path-conversion-Introduce-ability-to-switch-off-conv.patch \
-  0052-Allow-overriding-the-home-directory-via-the-HOME-var.patch \
-  0053-Respect-db_home-setting-even-for-the-SYSTEM-account.patch \
-  0054-Respect-the-db_home-env-setting-under-more-circumsta.patch \
-  0055-Allow-native-symlinks-to-non-existing-targets-in-nat.patch \
-  0056-Make-paths-WCS-MBS-conversion-explicit.patch \
-  0057-Use-MB_CUR_MAX-6-by-default.patch \
-  0058-Change-the-default-base-address-for-x86_64.patch \
-  0059-Avoid-sharing-cygheaps-across-Cygwin-versions.patch \
-  0060-uname-report-msys2-runtime-commit-hash-too.patch \
-  0061-Revert-Cygwin-pipe-Restore-blocking-mode-for-cygwin-.patch \
-  0062-Adjust-CWD-magic-to-accommodate-for-the-latest-Windo.patch
+  0038-Stop-assuming-that-there-are-no-spaces-in-POSIX-styl.patch \
+  0039-Handle-8-bit-characters-under-LOCALE-C.patch \
+  0040-Mention-the-extremely-useful-small_printf-function.patch \
+  0041-Leave-arguments-starting-with-a-tilde-or-quote-alone.patch \
+  0042-Leave-Git-s-name-and-message-arguments-alone-please.patch \
+  0043-Leave-paths-containing-any-special-characters-alone.patch \
+  0044-Leave-paths-containing-alone.patch \
+  0045-Skip-posix-to-windows-conversion-when-is-seen.patch \
+  0046-Also-leave-Git-s-rev-.-name-syntax-alone.patch \
+  0047-Arguments-starting-with-are-no-paths.patch \
+  0048-Prevent-scp-style-arguments-from-being-mangled.patch \
+  0049-Fixed-path-converting-with-non-ascii-char.patch \
+  0050-path-conversion-Introduce-ability-to-switch-off-conv.patch \
+  0051-Allow-overriding-the-home-directory-via-the-HOME-var.patch \
+  0052-Respect-db_home-setting-even-for-the-SYSTEM-account.patch \
+  0053-Respect-the-db_home-env-setting-under-more-circumsta.patch \
+  0054-Allow-native-symlinks-to-non-existing-targets-in-nat.patch \
+  0055-Make-paths-WCS-MBS-conversion-explicit.patch \
+  0056-Use-MB_CUR_MAX-6-by-default.patch \
+  0057-Change-the-default-base-address-for-x86_64.patch \
+  0058-Avoid-sharing-cygheaps-across-Cygwin-versions.patch \
+  0059-uname-report-msys2-runtime-commit-hash-too.patch \
+  0060-Revert-Cygwin-pipe-Restore-blocking-mode-for-cygwin-.patch
 }
 
 build() {

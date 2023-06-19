@@ -1,7 +1,7 @@
-From de4ab2e1c6647449ff71fa015627e99e59b68dd0 Mon Sep 17 00:00:00 2001
+From 5929cd074e1983b646641994584d870de0688e7c Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Fri, 20 Feb 2015 13:56:22 +0000
-Subject: [PATCH 40/N] Handle 8-bit characters under LOCALE=C
+Subject: [PATCH 39/N] Handle 8-bit characters under LOCALE=C
 
 Even when the character set is specified as ASCII, we should handle data
 outside the 7-bit range gracefully by simply copying it, even if it is

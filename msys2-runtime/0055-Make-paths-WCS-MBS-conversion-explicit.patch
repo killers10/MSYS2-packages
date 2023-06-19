@@ -1,7 +1,7 @@
-From 42b0ac9c9814a24a0c368d7fef5b63f98aece6b2 Mon Sep 17 00:00:00 2001
+From 370429742f162556287203767d05f5f9fba59d95 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Fri, 18 Dec 2015 20:19:57 +0100
-Subject: [PATCH 56/N] Make paths' WCS->MBS conversion explicit
+Subject: [PATCH 55/N] Make paths' WCS->MBS conversion explicit
 
 	* dcrt0.cc (dll_crt0_1), dtable.cc (handle_to_fn), environ.cc
 	(environ_init, getwinenveq, build_env), external.cc
@@ -175,10 +175,10 @@ index 300b31c..1675a9b 100644
        /* Scan the command line and build argv.  Expand wildcards if not
  	 called from another cygwin process. */
 diff --git a/winsup/cygwin/dtable.cc b/winsup/cygwin/dtable.cc
-index d5a659c..f90465d 100644
+index 2185a84..2540308 100644
 --- a/winsup/cygwin/dtable.cc
 +++ b/winsup/cygwin/dtable.cc
-@@ -1017,7 +1017,7 @@ handle_to_fn (HANDLE h, char *posix_fn)
+@@ -1022,7 +1022,7 @@ handle_to_fn (HANDLE h, char *posix_fn)
        if (wcsncasecmp (w32, DEVICE_PREFIX, DEVICE_PREFIX_LEN) != 0
  	  || !QueryDosDeviceW (NULL, fnbuf, sizeof (fnbuf) / sizeof (WCHAR)))
  	{
@@ -456,7 +456,7 @@ index ddd85be..f34e0b2 100644
      }
  }
 diff --git a/winsup/cygwin/path.cc b/winsup/cygwin/path.cc
-index c0b85c0..1b9eff6 100644
+index d534732..1638a4f 100644
 --- a/winsup/cygwin/path.cc
 +++ b/winsup/cygwin/path.cc
 @@ -621,7 +621,8 @@ path_conv::check (const UNICODE_STRING *src, unsigned opt,
@@ -541,7 +541,7 @@ index c0b85c0..1b9eff6 100644
  	return -1;
        what = (what & ~CCP_CONVTYPE_MASK) | CCP_WIN_A_TO_POSIX;
        from = (const void *) winp;
-@@ -5311,9 +5312,9 @@ cwdstuff::get_error_desc () const
+@@ -5325,9 +5326,9 @@ cwdstuff::get_error_desc () const
  void
  cwdstuff::reset_posix (wchar_t *w_cwd)
  {
@@ -553,7 +553,7 @@ index c0b85c0..1b9eff6 100644
  }
  
  char *
-@@ -5338,7 +5339,7 @@ cwdstuff::get (char *buf, int need_posix, int with_chroot, unsigned ulen)
+@@ -5352,7 +5353,7 @@ cwdstuff::get (char *buf, int need_posix, int with_chroot, unsigned ulen)
    if (!need_posix)
      {
        tocopy = tp.c_get ();

@@ -1,7 +1,7 @@
-From 81570ce3a1d0de2e43f5474577863a6e4f1e540d Mon Sep 17 00:00:00 2001
+From 2d48392b4152f2e5b8436b9f862dc6e3b49df49a Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Mon, 27 Apr 2015 11:58:08 +0200
-Subject: [PATCH 52/N] Allow overriding the home directory via the HOME
+Subject: [PATCH 51/N] Allow overriding the home directory via the HOME
  variable
 
 In Git for Windows, it is a well-established technique to use the

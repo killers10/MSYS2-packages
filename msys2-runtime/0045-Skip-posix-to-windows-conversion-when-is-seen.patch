@@ -1,11 +1,9 @@
-From 07b11c91bd43cdeb3ca9d965ba9d916fec5b64af Mon Sep 17 00:00:00 2001
+From bf69c7dc3abb17428dc678257db2fb931c07ff90 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Wed, 18 Feb 2015 11:07:17 +0000
-Subject: [PATCH 48/N] Arguments starting with '@@' are no paths
+Subject: [PATCH 45/N] Skip posix-to-windows conversion when '::' is seen
 
-... so let's skip posix-to-windows conversion on such parameters.
-
-This fixes Git's t1508-at-combinations.sh.
+The substring '::' most likely denotes an IPv6 address, not a path.
 
 Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
 ---
@@ -13,18 +11,18 @@ Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
  1 file changed, 5 insertions(+)
 
 diff --git a/winsup/cygwin/msys2_path_conv.cc b/winsup/cygwin/msys2_path_conv.cc
-index e65b9ed..e2af04c 100644
+index 924ac0e..d1ca5dd 100644
 --- a/winsup/cygwin/msys2_path_conv.cc
 +++ b/winsup/cygwin/msys2_path_conv.cc
-@@ -381,6 +381,11 @@ skip_p2w:
-                     goto skip_p2w;
-             }
+@@ -368,6 +368,11 @@ skip_p2w:
+             if (it + 1 < end && it[1] == '~')
+                 goto skip_p2w;
              break;
-+        case '@':
-+            // Paths do not contain '@@'
-+            if (it + 1 < end && it[1] == '@')
++        case ':':
++            // Avoid mangling IPv6 addresses
++            if (it + 1 < end && it[1] == ':')
 +                goto skip_p2w;
-+        }
++            break;
          ++it;
      }
      it = *src;
