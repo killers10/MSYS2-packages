@@ -1,7 +1,7 @@
-From 2078dff9396ed504fd2d37196a88f5f3048608b3 Mon Sep 17 00:00:00 2001
+From c064185bd28775131b94dfa88e1b675d28206950 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Fri, 25 Sep 2015 17:15:41 +0200
-Subject: [PATCH 53/N] Respect `db_home` setting even for the SYSTEM account
+Subject: [PATCH 52/N] Respect `db_home` setting even for the SYSTEM account
 
 We should not blindly set the home directory of the SYSTEM account to
 /home/SYSTEM, especially not when that value disagrees with what is

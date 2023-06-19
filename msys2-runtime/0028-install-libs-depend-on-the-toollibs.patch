@@ -1,4 +1,4 @@
-From 63c36144eaf060e0ba5f15199ee6ffa49f19e153 Mon Sep 17 00:00:00 2001
+From 5b68740a7b8b362a96a7e320774d18f31f0e52fc Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Mon, 8 Nov 2021 16:22:57 +0100
 Subject: [PATCH 28/N] install-libs: depend on the "toollibs"

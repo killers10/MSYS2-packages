@@ -1,7 +1,7 @@
-From 9780f9c13b1d168793c75dea8445d8b9e942e78a Mon Sep 17 00:00:00 2001
+From b634c462fc1c1f90b1563a7e619d1e7b9425f012 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Wed, 18 Feb 2015 11:07:17 +0000
-Subject: [PATCH 43/N] Leave Git's :name and :/message arguments alone, please
+Subject: [PATCH 42/N] Leave Git's :name and :/message arguments alone, please
 
 Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
 ---

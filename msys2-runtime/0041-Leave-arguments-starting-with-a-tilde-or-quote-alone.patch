@@ -1,7 +1,7 @@
-From f27f65ed26cc07880fd7a8f730d98785533f895e Mon Sep 17 00:00:00 2001
+From c02f0cda9961da894689a9c70fb1851893ea2829 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Sun, 15 Feb 2015 11:45:48 +0000
-Subject: [PATCH 42/N] Leave arguments starting with a tilde or quote alone
+Subject: [PATCH 41/N] Leave arguments starting with a tilde or quote alone
 
 It is not a good idea to expand, say, ~/.gitconfig partially: replacing
 it by ~C:\msys64\.gitconfig is most likely the wrong thing to do!

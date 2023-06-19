@@ -1,7 +1,7 @@
-From 5824c7a9b050225a30aebce80976dbe6bb417de6 Mon Sep 17 00:00:00 2001
+From 28817d96dcdb0d81ad52d8fa41dcb9d84f6cc747 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Wed, 18 Feb 2015 11:07:17 +0000
-Subject: [PATCH 45/N] Leave paths containing '/~' alone
+Subject: [PATCH 44/N] Leave paths containing '/~' alone
 
 We do not perform tilde expansion in the MSys2 runtime; let's leave
 those paths intact for programs that want to expand such paths

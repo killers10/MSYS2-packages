@@ -1,7 +1,7 @@
-From 552263b0ba37f2ec2106a6a77b8aba8d13b4598d Mon Sep 17 00:00:00 2001
+From a7935c5df5e2ee600bbe5590ddf2a6e54da6ec43 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Thu, 21 Nov 2019 14:21:01 +0100
-Subject: [PATCH 57/N] Use MB_CUR_MAX == 6 by default
+Subject: [PATCH 56/N] Use MB_CUR_MAX == 6 by default
 
 Internally, Cygwin already uses __utf8_mbtowc(), even if it still claims
 to use the "ASCII" charset.

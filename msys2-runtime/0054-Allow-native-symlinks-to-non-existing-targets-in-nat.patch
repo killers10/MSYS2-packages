@@ -1,7 +1,7 @@
-From 0a1c226ca1bb1b3262ca8551fbc53dcfaa2bbc7d Mon Sep 17 00:00:00 2001
+From 7272586f582b27bf5a4e79c5c1cda25aa987fa40 Mon Sep 17 00:00:00 2001
 From: Karsten Blees <blees@dcon.de>
 Date: Wed, 20 May 2015 16:32:52 +0200
-Subject: [PATCH 55/N] Allow native symlinks to non-existing targets in
+Subject: [PATCH 54/N] Allow native symlinks to non-existing targets in
  'nativestrict' mode
 
 Windows native symlinks must match the type of their target (file or
@@ -30,7 +30,7 @@ Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
  1 file changed, 33 insertions(+), 9 deletions(-)
 
 diff --git a/winsup/cygwin/path.cc b/winsup/cygwin/path.cc
-index c0b85c0..8d7e752 100644
+index d534732..1b14d06 100644
 --- a/winsup/cygwin/path.cc
 +++ b/winsup/cygwin/path.cc
 @@ -1865,7 +1865,7 @@ symlink_native (const char *oldpath, path_conv &win32_newpath)

@@ -1,7 +1,7 @@
-From ca20b5d7f326795eb35960b1bd6af622a2d2d897 Mon Sep 17 00:00:00 2001
+From 1d9a89814e879c678601c659de90a0d9ea6d0320 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Tue, 21 Feb 2023 16:36:36 +0100
-Subject: [PATCH 60/N] uname: report msys2-runtime commit hash, too
+Subject: [PATCH 59/N] uname: report msys2-runtime commit hash, too
 
 Having just Cygwin's version in the output of `uname` is not helpful as
 both MSYS2 as well as Git for Windows release intermediate versions of
@@ -17,7 +17,7 @@ Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
  4 files changed, 25 insertions(+), 7 deletions(-)
 
 diff --git a/winsup/configure.ac b/winsup/configure.ac
-index 58af4d3..e0f472f 100644
+index fb4b1e8..b299ab3 100644
 --- a/winsup/configure.ac
 +++ b/winsup/configure.ac
 @@ -65,24 +65,30 @@ AC_ARG_WITH([msys2-runtime-commit],

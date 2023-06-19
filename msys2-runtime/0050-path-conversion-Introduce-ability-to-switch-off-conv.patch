@@ -1,7 +1,7 @@
-From 09e6db754e0db5a05d0c58d474e0ed7bff69ca18 Mon Sep 17 00:00:00 2001
+From 945e273da3b1e5f4dccd06f82f0dbc5a1065bab4 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?=EB=A7=88=EB=88=84=EC=97=98?= <nalla@hamal.uberspace.de>
 Date: Wed, 17 Jun 2015 09:30:41 +0200
-Subject: [PATCH 51/N] path-conversion: Introduce ability to switch off
+Subject: [PATCH 50/N] path-conversion: Introduce ability to switch off
  conversion.
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8

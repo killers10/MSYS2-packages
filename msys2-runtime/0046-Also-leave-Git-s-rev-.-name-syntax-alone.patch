@@ -1,7 +1,7 @@
-From 1c5c1da42da8839b5317870e18f78d37dae526fd Mon Sep 17 00:00:00 2001
+From 37040d549433efd0e1c374cb6be5cca392ac5351 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Wed, 18 Feb 2015 11:07:17 +0000
-Subject: [PATCH 47/N] Also leave Git's <rev>:./<name> syntax alone
+Subject: [PATCH 46/N] Also leave Git's <rev>:./<name> syntax alone
 
 This fixes Git's t1506-rev-parse-diagnosis.sh
 

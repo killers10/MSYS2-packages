@@ -1,4 +1,4 @@
-From 84cccf8ae308a21852c7c3420a2763f905422c4a Mon Sep 17 00:00:00 2001
+From 0ec2f450dcf3323efcd05d5405ccb13703acf4b5 Mon Sep 17 00:00:00 2001
 From: Christoph Reiter <reiter.christoph@gmail.com>
 Date: Sun, 20 Nov 2022 13:57:36 +0100
 Subject: [PATCH 36/N] msys2_path_conv: pass PC_NOFULL to path_conv
