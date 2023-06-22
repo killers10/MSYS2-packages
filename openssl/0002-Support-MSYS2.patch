@@ -113,25 +113,6 @@ index 17e194f..bc242f2 100644
  
       # Shared AIX support is special. We put libcrypto[64].so.ver into
       # libcrypto.a and use libcrypto_a.a as static one.
-diff --git a/Configure b/Configure
-index 4569952..55f5b74 100755
---- a/Configure
-+++ b/Configure
-@@ -1330,6 +1330,14 @@ $target{cxxflags}//=$target{cflags} if $target{CXX};
- $target{exe_extension}=".exe" if ($config{target} eq "DJGPP");
- $target{exe_extension}=".pm"  if ($config{target} =~ /vos/);
- 
-+
-+($target{shared_extension_simple}=$target{shared_extension})
-+    =~ s|\.\$\(SHLIB_VERSION_NUMBER\)||
-+    unless defined($target{shared_extension_simple});
-+$target{dso_extension}//=$target{shared_extension_simple};
-+($target{shared_import_extension}=$target{shared_extension_simple}.".a")
-+    if ($config{target} =~ /^(?:Cygwin|Msys|mingw)/);
-+
- # Fill %config with values from %user, and in case those are undefined or
- # empty, use values from %target (acting as a default).
- foreach (keys %user) {
 diff --git a/apps/build.info b/apps/build.info
 index 020d129..0069a55 100644
 --- a/apps/build.info

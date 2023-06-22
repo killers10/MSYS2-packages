@@ -2,7 +2,7 @@
 
 pkgname=('openssl' 'libopenssl' 'openssl-devel' 'openssl-docs')
 pkgver=3.1.1
-pkgrel=1
+pkgrel=2
 pkgdesc='The Open Source toolkit for Secure Sockets Layer and Transport Layer Security'
 arch=('i686' 'x86_64')
 url='https://www.openssl.org'
@@ -17,7 +17,7 @@ source=("https://www.openssl.org/source/${pkgname}-${pkgver}.tar.gz"{,.asc}
 sha256sums=('b3aa61334233b852b63ddb048df181177c2c659eb9d4376008118f9c08d07674'
             'SKIP'
             '7ff3213d8d085238695f076d254f16d15b16a9baca1f9393c1bed0057006da2c'
-            '2d4fa535ebc3f6be66b249e1e45c218ddc41e4e70b38d8fa6d4f877724bc5a71'
+            '5e7aa9452b81a13f2c4c7425c5b5a6fcceab53d7f66cd0fc3fed190fd39e09c1'
             '856e5e78e821e920afe2f2eed88ab8d9a6bcc06ecd64d78d4445276e73377812'
             '79b56c97da803493eb9bbc04dc67ddf3662a8486efb9ec7b15e668b8c0fa4e0f')
 # https://www.openssl.org/community/otc.html
