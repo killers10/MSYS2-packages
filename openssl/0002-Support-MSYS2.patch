@@ -1,62 +1,39 @@
-From 712929d6fb267c5ec8a2c28a613933b9939b0be8 Mon Sep 17 00:00:00 2001
-From: Johannes Schindelin <johannes.schindelin@gmx.de>
-Date: Wed, 21 Nov 2018 13:55:56 +0100
-Subject: [PATCH 2/3] Support MSYS2
-
-This is an almost mechanical "copy/edit Cygwin support" patch.
----
- Configurations/10-main.conf       | 51 +++++++++++++++++++++++++++++++
- Configurations/shared-info.pl     |  4 +++
- Configurations/unix-Makefile.tmpl |  2 +-
- Configure                         |  4 +--
- apps/build.info                   |  2 +-
- build.info                        |  5 ++-
- config                            |  5 +++
- crypto/build.info                 |  2 +-
- tools/c_rehash.in                 |  1 +
- util/process_docs.pl              |  1 +
- 10 files changed, 71 insertions(+), 6 deletions(-)
-
 diff --git a/Configurations/10-main.conf b/Configurations/10-main.conf
-index df1cc00..8be6944 100644
+index e8084ab..6af9f99 100644
 --- a/Configurations/10-main.conf
 +++ b/Configurations/10-main.conf
-@@ -1505,6 +1505,57 @@ my %targets = (
+@@ -1690,6 +1690,53 @@ my %targets = (
  	inherit_from     => [ "Cygwin-x86" ]
      },
  
 +#### MSYS
-+    "Msys-x86" => {
-+        inherit_from     => [ "BASE_unix", asm("x86_asm") ],
-+        CC               => "gcc",
-+        CFLAGS           => picker(default => "-Wall",
-+                                   debug   => "-g -O0",
-+                                   release => "-O3 -fomit-frame-pointer"),
-+        lib_cppflags     => "-DTERMIOS -DL_ENDIAN",
-+        sys_id           => "CYGWIN",
-+        bn_ops           => "BN_LLONG",
-+        thread_scheme    => "pthread",
-+        perlasm_scheme   => "coff",
-+        dso_scheme       => "dlfcn",
-+        shared_target    => "msys-shared",
-+        shared_cppflags  => "-D_WINDLL",
-+        shared_extension => ".dll",
-+    },
-+    "Msys-x86_64" => {
-+        inherit_from     => [ "BASE_unix", asm("x86_64_asm") ],
++    "Msys-common" => {
++        inherit_from     => [ "BASE_unix" ],
++        template         => 1,
++
 +        CC               => "gcc",
 +        CFLAGS           => picker(default => "-Wall",
 +                                   debug   => "-g -O0",
 +                                   release => "-O3"),
 +        lib_cppflags     => "-DTERMIOS -DL_ENDIAN",
-+        sys_id           => "CYGWIN",
-+        bn_ops           => "SIXTY_FOUR_BIT_LONG",
++        sys_id           => "MSYS",
 +        thread_scheme    => "pthread",
-+        perlasm_scheme   => "mingw64",
 +        dso_scheme       => "dlfcn",
 +        shared_target    => "msys-shared",
 +        shared_cppflags  => "-D_WINDLL",
-+        shared_extension => ".dll",
++
++        perl_platform    => 'Msys',
++    },
++    "Msys-x86" => {
++        inherit_from     => [ "Msys-common" ],
++        CFLAGS           => add(picker(release => "-O3 -fomit-frame-pointer")),
++        bn_ops           => "BN_LLONG",
++        perlasm_scheme   => "coff"
++    },
++    "Msys-x86_64" => {
++        inherit_from     => [ "Msys-common" ],
++        bn_ops           => "SIXTY_FOUR_BIT_LONG",
++        perlasm_scheme   => "mingw64"
 +    },
 +    # Backward compatibility for those using this target
 +    "Msys" => {
@@ -79,11 +56,40 @@ index df1cc00..8be6944 100644
  ##### MacOS X (a.k.a. Darwin) setup
      "darwin-common" => {
          inherit_from     => [ "BASE_unix" ],
+diff --git a/Configurations/platform/Msys.pm b/Configurations/platform/Msys.pm
+new file mode 100644
+index 0000000..33c845d
+--- /dev/null
++++ b/Configurations/platform/Msys.pm
+@@ -0,0 +1,23 @@
++package platform::Msys;
++
++use strict;
++use warnings;
++use Carp;
++
++use vars qw(@ISA);
++
++require platform::mingw;
++@ISA = qw(platform::mingw);
++
++# Assume someone set @INC right before loading this module
++use configdata;
++
++sub sharedname {
++    my $class = shift;
++    my $lib = platform::mingw->sharedname(@_);
++    $lib =~ s|^lib|msys-| if defined $lib;
++    return $lib;
++}
++
++1;
++
 diff --git a/Configurations/shared-info.pl b/Configurations/shared-info.pl
-index 47eddd6..34f0f3b 100644
+index edd16f4..531067b 100644
 --- a/Configurations/shared-info.pl
 +++ b/Configurations/shared-info.pl
-@@ -50,6 +50,10 @@ my %shared_info;
+@@ -49,6 +49,10 @@ my %shared_info;
          shared_ldflag         => '-shared -Wl,--enable-auto-image-base',
          shared_impflag        => '-Wl,--out-implib=',
      },
@@ -95,113 +101,80 @@ index 47eddd6..34f0f3b 100644
          return {
              %{$shared_info{'cygwin-shared'}},
 diff --git a/Configurations/unix-Makefile.tmpl b/Configurations/unix-Makefile.tmpl
-index 3a24d55..0159fc9 100644
+index 17e194f..bc242f2 100644
 --- a/Configurations/unix-Makefile.tmpl
 +++ b/Configurations/unix-Makefile.tmpl
-@@ -34,7 +34,7 @@
-      $mingw_installroot = $ENV{$mingw_installroot} // $mingw_installdflt;
-      $mingw_commonroot = $ENV{$mingw_commonroot} // $mingw_commondflt;
+@@ -8,7 +8,7 @@
+      our $makedep_scheme = $config{makedep_scheme};
+      our $makedepcmd = platform->makedepcmd();
  
 -     sub windowsdll { $config{target} =~ /^(?:Cygwin|mingw)/ }
 +     sub windowsdll { $config{target} =~ /^(?:Cygwin|Msys|mingw)/ }
  
       # Shared AIX support is special. We put libcrypto[64].so.ver into
       # libcrypto.a and use libcrypto_a.a as static one.
-diff --git a/Configure b/Configure
-index 2e9efaa..b35e10d 100755
---- a/Configure
-+++ b/Configure
-@@ -1128,7 +1128,7 @@ $target{CXXFLAGS}//=$target{CFLAGS} if $target{CXX};
- $target{cxxflags}//=$target{cflags} if $target{CXX};
- $target{exe_extension}="";
- $target{exe_extension}=".exe" if ($config{target} eq "DJGPP"
--                                  || $config{target} =~ /^(?:Cygwin|mingw)/);
-+                                  || $config{target} =~ /^(?:Cygwin|Msys|mingw)/);
- $target{exe_extension}=".pm"  if ($config{target} =~ /vos/);
- 
- ($target{shared_extension_simple}=$target{shared_extension})
-@@ -1136,7 +1136,7 @@ $target{exe_extension}=".pm"  if ($config{target} =~ /vos/);
-     unless defined($target{shared_extension_simple});
- $target{dso_extension}//=$target{shared_extension_simple};
- ($target{shared_import_extension}=$target{shared_extension_simple}.".a")
--    if ($config{target} =~ /^(?:Cygwin|mingw)/);
-+    if ($config{target} =~ /^(?:Cygwin|Msys|mingw)/);
- 
- # Fill %config with values from %user, and in case those are undefined or
- # empty, use values from %target (acting as a default).
 diff --git a/apps/build.info b/apps/build.info
-index 0153736..dcc7ab5 100644
+index 020d129..0069a55 100644
 --- a/apps/build.info
 +++ b/apps/build.info
-@@ -63,7 +63,7 @@ IF[{- !$disabled{apps} -}]
-     DEPEND[rsautl.o]=progs.h
-     DEPEND[genrsa.o]=progs.h
-   ENDIF
--  IF[{- $config{target} =~ /^(?:Cygwin|mingw|VC-)/ -}]
-+  IF[{- $config{target} =~ /^(?:Cygwin|Msys|mingw|VC-)/ -}]
+@@ -76,7 +76,7 @@ IF[{- !$disabled{apps} -}]
+   # always depend on a changed configuration.
+   DEPEND[progs.c]=../configdata.pm
+ 
+-  IF[{- $config{target} =~ /^(?:Cygwin|mingw|VC-|BC-)/ -}]
++  IF[{- $config{target} =~ /^(?:Cygwin|Msys|mingw|VC-|BC-)/ -}]
      GENERATE[openssl.rc]=../util/mkrc.pl openssl
      SOURCE[openssl]=openssl.rc
    ENDIF
 diff --git a/build.info b/build.info
-index 05c9bdd..3fc8ce2 100644
+index 5a84216..3ce486e 100644
 --- a/build.info
 +++ b/build.info
-@@ -71,7 +71,7 @@ ELSIF[{- $config{target} =~ /^vms/ -}]
-   SHARED_SOURCE[libssl]=libssl.opt
+@@ -82,7 +82,7 @@ IF[{- defined $target{shared_defflag} -}]
+   DEPEND[libcrypto.ld libssl.ld]=configdata.pm util/perl/OpenSSL/Ordinals.pm
  ENDIF
  
--IF[{- $config{target} =~ /^(?:Cygwin|mingw|VC-)/ -}]
-+IF[{- $config{target} =~ /^(?:Cygwin|Msys|mingw|VC-)/ -}]
+-IF[{- $config{target} =~ /^(?:Cygwin|mingw|VC-|BC-)/ -}]
++IF[{- $config{target} =~ /^(?:Cygwin|Msys|mingw|VC-|BC-)/ -}]
    GENERATE[libcrypto.rc]=util/mkrc.pl libcrypto
    GENERATE[libssl.rc]=util/mkrc.pl libssl
- 
-@@ -82,6 +82,9 @@ ENDIF
- IF[{- $config{target} =~ /^Cygwin/ -}]
-  SHARED_NAME[libcrypto]=cygcrypto-{- $sover_filename -}
-  SHARED_NAME[libssl]=cygssl-{- $sover_filename -}
-+ELSIF[{- $config{target} =~ /^Msys/ -}]
-+ SHARED_NAME[libcrypto]=msys-crypto-{- $sover_filename -}
-+ SHARED_NAME[libssl]=msys-ssl-{- $sover_filename -}
- ELSIF[{- $config{target} =~ /^mingw/ -}]
-  SHARED_NAME[libcrypto]=libcrypto-{- $sover_filename -}{- $config{target} eq "mingw64" ? "-x64" : "" -}
-  SHARED_NAME[libssl]=libssl-{- $sover_filename -}{- $config{target} eq "mingw64" ? "-x64" : "" -}
-diff --git a/config b/config
-index f28828d..ec1a3f6 100755
---- a/config
-+++ b/config
-@@ -331,6 +331,10 @@ case "${SYSTEM}:${RELEASE}:${VERSION}:${MACHINE}" in
- 	echo "${MACHINE}-pc-cygwin"; exit 0
- 	;;
- 
-+    MSYS*)
-+	echo "${MACHINE}-pc-msys"; exit 0
-+	;;
-+
-     vxworks*)
-        echo "${MACHINE}-whatever-vxworks"; exit 0;
-        ;;
-@@ -812,6 +816,7 @@ case "$GUESSOS" in
-   # these are all covered by the catchall below
-   i[3456]86-*-cygwin) OUT="Cygwin-x86" ;;
-   *-*-cygwin) OUT="Cygwin-${MACHINE}" ;;
-+  *-*-msys) OUT="Msys-${MACHINE}" ;;
-   x86-*-android|i?86-*-android) OUT="android-x86" ;;
-   armv[7-9]*-*-android)
-       OUT="android-armeabi"
+   DEPEND[libcrypto.rc libssl.rc]=configdata.pm
 diff --git a/crypto/build.info b/crypto/build.info
-index 2c619c6..a196bcc 100644
+index b67658c..3ab9a89 100644
 --- a/crypto/build.info
 +++ b/crypto/build.info
-@@ -34,6 +34,6 @@ INCLUDE[armv4cpuid.o]=.
- GENERATE[s390xcpuid.S]=s390xcpuid.pl $(PERLASM_SCHEME)
- INCLUDE[s390xcpuid.o]=.
+@@ -140,6 +140,6 @@ GENERATE[riscv64cpuid.s]=riscv64cpuid.pl
+ GENERATE[riscv32cpuid.s]=riscv32cpuid.pl
  
--IF[{- $config{target} =~ /^(?:Cygwin|mingw|VC-)/ -}]
-+IF[{- $config{target} =~ /^(?:Cygwin|Msys|mingw|VC-)/ -}]
+ GENERATE[loongarch64cpuid.s]=loongarch64cpuid.pl
+-IF[{- $config{target} =~ /^(?:Cygwin|mingw|VC-|BC-)/ -}]
++IF[{- $config{target} =~ /^(?:Cygwin|Msys|mingw|VC-|BC-)/ -}]
    SHARED_SOURCE[../libcrypto]=dllmain.c
  ENDIF
+diff --git a/providers/build.info b/providers/build.info
+index 3b211bb..e420b0f 100644
+--- a/providers/build.info
++++ b/providers/build.info
+@@ -120,7 +120,7 @@ IF[{- !$disabled{fips} -}]
+   DEPEND[fipsmodule.cnf]=$FIPSGOAL
+ 
+   # Add VERSIONINFO resource for windows
+-  IF[{- $config{target} =~ /^(?:Cygwin|mingw|VC-|BC-)/ -}]
++  IF[{- $config{target} =~ /^(?:Cygwin|Msys|mingw|VC-|BC-)/ -}]
+     GENERATE[fips.rc]=../util/mkrc.pl fips
+     SOURCE[$FIPSGOAL]=fips.rc
+   ENDIF
+@@ -154,7 +154,7 @@ IF[{- !$disabled{legacy} -}]
+     ENDIF
+ 
+     # Add VERSIONINFO resource for windows
+-    IF[{- $config{target} =~ /^(?:Cygwin|mingw|VC-|BC-)/ -}]
++    IF[{- $config{target} =~ /^(?:Cygwin|Msys|mingw|VC-|BC-)/ -}]
+       GENERATE[legacy.rc]=../util/mkrc.pl legacy
+       SOURCE[$LEGACYGOAL]=legacy.rc
+     ENDIF
 diff --git a/tools/c_rehash.in b/tools/c_rehash.in
-index 421fd89..640db8c 100644
+index 4dd1b44..8fe3d80 100644
 --- a/tools/c_rehash.in
 +++ b/tools/c_rehash.in
 @@ -21,6 +21,7 @@ my $x509hash = "-subject_hash";
@@ -212,18 +185,15 @@ index 421fd89..640db8c 100644
  my $removelinks = 1;
  
  ##  Parse flags.
-diff --git a/util/process_docs.pl b/util/process_docs.pl
-index 30b149e..0f97ce1 100755
---- a/util/process_docs.pl
-+++ b/util/process_docs.pl
-@@ -79,6 +79,7 @@ if ($options{debug}) {
- }
+diff --git a/util/perl/OpenSSL/config.pm b/util/perl/OpenSSL/config.pm
+index 6350e1e..3718ebc 100755
+--- a/util/perl/OpenSSL/config.pm
++++ b/util/perl/OpenSSL/config.pm
+@@ -163,6 +163,7 @@ my $guess_patterns = [
+     [ 'MINGW64.*?:.*?:.*?:x86_64',  '${MACHINE}-whatever-mingw64' ],
+     [ 'MINGW.*',                    '${MACHINE}-whatever-mingw' ],
+     [ 'CYGWIN.*',                   '${MACHINE}-pc-cygwin' ],
++    [ 'MSYS.*',                     '${MACHINE}-pc-msys' ],
+     [ 'vxworks.*',                  '${MACHINE}-whatever-vxworks' ],
  
- my $symlink_exists = eval { symlink("",""); 1 };
-+if ($^O eq "msys") { $symlink_exists=0 };
- 
- foreach my $section (sort @{$options{section}}) {
-     my $subdir = "man$section";
--- 
-2.26.0
-
+     # The MACHINE part of the array POSIX::uname() returns on VMS isn't
