@@ -192,7 +192,8 @@ prepare() {
   fi
   del_file_exists winsup/cygwin/msys2_path_conv.cc \
     winsup/cygwin/msys2_path_conv.h \
-    winsup/cygwin/include/cygwin/exit_process.h
+    winsup/cygwin/include/cygwin/exit_process.h \
+    winsup/utils/mingw/getprocaddr.c
   apply_git_am_with_msg \
  \
   0001-Add-MSYS2-triplet.patch \
