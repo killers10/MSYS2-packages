@@ -179,6 +179,13 @@ del_file_exists() {
 
 prepare() {
   cd "${srcdir}"/msys2-runtime
+  alt=.git/objects/info/alternates
+  if grep '^/' $alt
+  then
+    echo "Fixing absolute paths"
+    xargs -n 1 -r -a $alt -d '\n' realpath --relative-to=.git/objects >$alt.new
+    mv -f $alt.new $alt
+  fi
   if test true != "$(git config core.symlinks)"
   then
     git config core.symlinks true &&
@@ -191,7 +198,9 @@ prepare() {
     /usr/bin/git reset --hard
   fi
   del_file_exists winsup/cygwin/msys2_path_conv.cc \
-    winsup/cygwin/msys2_path_conv.h
+    winsup/cygwin/msys2_path_conv.h \
+    winsup/cygwin/include/cygwin/exit_process.h \
+    winsup/utils/mingw/getprocaddr.c
   apply_git_am_with_msg \
  \
   0001-Add-MSYS2-triplet.patch \
