@@ -179,6 +179,13 @@ del_file_exists() {
 
 prepare() {
   cd "${srcdir}"/msys2-runtime
+  alt=.git/objects/info/alternates
+  if grep '^/' $alt
+  then
+    echo "Fixing absolute paths"
+    xargs -n 1 -r -a $alt -d '\n' realpath --relative-to=.git/objects >$alt.new
+    mv -f $alt.new $alt
+  fi
   if test true != "$(git config core.symlinks)"
   then
     git config core.symlinks true &&
