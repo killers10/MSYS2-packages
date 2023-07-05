@@ -1,0 +1,35 @@
+From 0faeaafc21be102323c414c58e831bcfee8d5bd2 Mon Sep 17 00:00:00 2001
+From: Johannes Schindelin <johannes.schindelin@gmx.de>
+Date: Mon, 3 Jul 2023 11:11:04 +0200
+Subject: [PATCH 61/N] fixup! uname: report msys2-runtime commit hash, too
+
+When updating to Cygwin v3.4.7, I missed these two new places where I
+should also have added code to report the commit hash.
+
+Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
+---
+ winsup/cygwin/uname.cc | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/winsup/cygwin/uname.cc b/winsup/cygwin/uname.cc
+index 86ad36b..a978363 100644
+--- a/winsup/cygwin/uname.cc
++++ b/winsup/cygwin/uname.cc
+@@ -76,13 +76,13 @@ uname_x (struct utsname *name)
+ #pragma GCC diagnostic push
+ #pragma GCC diagnostic ignored "-Wformat-truncation="
+ #ifdef CYGPORT_RELEASE_INFO
+-      snprintf (name->release, _UTSNAME_LENGTH, "%s.%s",
+-		__XSTRING (CYGPORT_RELEASE_INFO), name->machine);
++      snprintf (name->release, _UTSNAME_LENGTH, "%s-%s.%s",
++		__XSTRING (CYGPORT_RELEASE_INFO), MSYS2_RUNTIME_COMMIT_SHORT, name->machine);
+ #else
+       extern const char *uname_dev_version;
+       if (uname_dev_version && uname_dev_version[0])
+-	snprintf (name->release, _UTSNAME_LENGTH, "%s.%s",
+-		  uname_dev_version, name->machine);
++	snprintf (name->release, _UTSNAME_LENGTH, "%s-%s.%s",
++		  uname_dev_version, MSYS2_RUNTIME_COMMIT_SHORT, name->machine);
+       else
+ 	__small_sprintf (name->release, "%d.%d.%d-%s-api-%d.%s",
+ 			 cygwin_version.dll_major / 1000,
