@@ -4,7 +4,7 @@
 pkgbase=msys2-runtime
 pkgname=('msys2-runtime' 'msys2-runtime-devel')
 pkgver=3.4.7
-pkgrel=1
+pkgrel=2
 pkgdesc="Cygwin POSIX emulation engine"
 arch=('x86_64')
 url="https://www.cygwin.com/"
@@ -86,9 +86,11 @@ source=('msys2-runtime'::git+https://github.com/cygwin/cygwin#tag=cygwin-${pkgve
         0057-Change-the-default-base-address-for-x86_64.patch
         0058-Avoid-sharing-cygheaps-across-Cygwin-versions.patch
         0059-uname-report-msys2-runtime-commit-hash-too.patch
-        0060-Revert-Cygwin-pipe-Restore-blocking-mode-for-cygwin-.patch)
+        0060-Revert-Cygwin-pipe-Restore-blocking-mode-for-cygwin-.patch
+        0061-fixup-uname-report-msys2-runtime-commit-hash-too.patch
+        0062-fchmodat-fstatat-fix-regression-with-empty-pathname.patch)
 sha256sums=('SKIP'
-            'eeb2edd7d3695e4a5b149a99e4bdd48de115ea48a3def1bbbec60a431f13263d'
+            '21e4c6cd8959a964f0c2a39831a9ce569e8695818578ea5d393b8efefeae0c85'
             'c092f44f33e526c93282de5f1b12628665b38d607c2e7628d8437634ce9d133f'
             'a19b83098b577f64b7df42197ada140b58601f0acb20feba304f4dcdce8563c7'
             '8c71c0477544aec58d4c213c59e273f6faf94fd8691248276af2f77ffec1b481'
@@ -148,7 +150,9 @@ sha256sums=('SKIP'
             '8f2a61c291fc8e0b864892f13f24454d52733ac949b56cd8d62bf7cfc1aea957'
             '0557eba646e49091dbcc5c24600544be57d053d2e979219062c6cf8e988de6ec'
             'b1cc58ff353fa74bca23359c62687a19cf9067b16c123ecfe016496a7d276b4b'
-            '1f9a2cfd1ad42e3b101028d10555a8fe4782ba2b0df931d8e23784d2c76df6ad')
+            '1f9a2cfd1ad42e3b101028d10555a8fe4782ba2b0df931d8e23784d2c76df6ad'
+            'abc44c284023fd58aa94ce4c3fdbcde7f690fd3dbfd05b7dca05c70a14f07ef6'
+            '257a8347537ace85c1491fb48ea51a65b83dca4bb99b7a7ab2146afb828538ef')
 
 # Helper macros to help make tasks easier #
 apply_patch_with_msg() {
@@ -262,7 +266,9 @@ prepare() {
   0057-Change-the-default-base-address-for-x86_64.patch \
   0058-Avoid-sharing-cygheaps-across-Cygwin-versions.patch \
   0059-uname-report-msys2-runtime-commit-hash-too.patch \
-  0060-Revert-Cygwin-pipe-Restore-blocking-mode-for-cygwin-.patch
+  0060-Revert-Cygwin-pipe-Restore-blocking-mode-for-cygwin-.patch \
+  0061-fixup-uname-report-msys2-runtime-commit-hash-too.patch \
+  0062-fchmodat-fstatat-fix-regression-with-empty-pathname.patch
 }
 
 build() {

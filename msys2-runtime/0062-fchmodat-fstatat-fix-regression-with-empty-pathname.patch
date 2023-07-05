@@ -1,0 +1,49 @@
+From aa056f20456fd67672d3cdac8d8b9414a38a30be Mon Sep 17 00:00:00 2001
+From: Johannes Schindelin <johannes.schindelin@gmx.de>
+Date: Tue, 27 Jun 2023 22:14:31 +0200
+Subject: [PATCH 62/N] fchmodat/fstatat: fix regression with empty `pathname`
+
+In 4b8222983f (Cygwin: fix errno values set by readlinkat, 2023-04-18)
+the code of `readlinkat()` was adjusted to align the `errno` with Linux'
+behavior.
+
+To accommodate for that, the `gen_full_path_at()` function was modified,
+and the caller was adjusted to expect either `ENOENT` or `ENOTDIR` in
+the case of an empty `pathname`, not just `ENOENT`.
+
+However, `readlinkat()` is not the only caller of that helper function.
+
+And while most other callers simply propagate the `errno` produced by
+`gen_full_path_at()`, two other callers also want to special-case empty
+`pathnames` much like `readlinkat()`: `fchmodat()` and `fstatat()`.
+
+Therefore, these two callers need to be changed to expect `ENOTDIR` in
+case of an empty `pathname`, too.
+
+Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
+---
+ winsup/cygwin/syscalls.cc | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/winsup/cygwin/syscalls.cc b/winsup/cygwin/syscalls.cc
+index cd1826c..7a744f3 100644
+--- a/winsup/cygwin/syscalls.cc
++++ b/winsup/cygwin/syscalls.cc
+@@ -4580,7 +4580,7 @@ fchownat (int dirfd, const char *pathname, uid_t uid, gid_t gid, int flags)
+       int res = gen_full_path_at (path, dirfd, pathname);
+       if (res)
+ 	{
+-	  if (!(errno == ENOENT && (flags & AT_EMPTY_PATH)))
++	  if (!((errno == ENOENT || errno == ENOTDIR) && (flags & AT_EMPTY_PATH)))
+ 	    __leave;
+ 	  /* pathname is an empty string.  Operate on dirfd. */
+ 	  if (dirfd == AT_FDCWD)
+@@ -4625,7 +4625,7 @@ fstatat (int dirfd, const char *__restrict pathname, struct stat *__restrict st,
+       int res = gen_full_path_at (path, dirfd, pathname);
+       if (res)
+ 	{
+-	  if (!(errno == ENOENT && (flags & AT_EMPTY_PATH)))
++	  if (!((errno == ENOENT || errno == ENOTDIR) && (flags & AT_EMPTY_PATH)))
+ 	    __leave;
+ 	  /* pathname is an empty string.  Operate on dirfd. */
+ 	  if (dirfd == AT_FDCWD)
