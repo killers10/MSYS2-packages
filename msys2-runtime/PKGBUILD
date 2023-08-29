@@ -4,7 +4,7 @@
 pkgbase=msys2-runtime
 pkgname=('msys2-runtime' 'msys2-runtime-devel')
 pkgver=3.4.7
-pkgrel=2
+pkgrel=3
 pkgdesc="Cygwin POSIX emulation engine"
 arch=('x86_64')
 url="https://www.cygwin.com/"
@@ -88,9 +88,10 @@ source=('msys2-runtime'::git+https://github.com/cygwin/cygwin#tag=cygwin-${pkgve
         0059-uname-report-msys2-runtime-commit-hash-too.patch
         0060-Revert-Cygwin-pipe-Restore-blocking-mode-for-cygwin-.patch
         0061-fixup-uname-report-msys2-runtime-commit-hash-too.patch
-        0062-fchmodat-fstatat-fix-regression-with-empty-pathname.patch)
+        0062-fchmodat-fstatat-fix-regression-with-empty-pathname.patch
+        0063-msys2-runtime-restore-fast-path-for-current-user-pri.patch)
 sha256sums=('SKIP'
-            '21e4c6cd8959a964f0c2a39831a9ce569e8695818578ea5d393b8efefeae0c85'
+            '7b8477f768f5e07d89ff513c812a755d5db06e50ed65f598363e15f3d554d117'
             'c092f44f33e526c93282de5f1b12628665b38d607c2e7628d8437634ce9d133f'
             'a19b83098b577f64b7df42197ada140b58601f0acb20feba304f4dcdce8563c7'
             '8c71c0477544aec58d4c213c59e273f6faf94fd8691248276af2f77ffec1b481'
@@ -152,7 +153,8 @@ sha256sums=('SKIP'
             'b1cc58ff353fa74bca23359c62687a19cf9067b16c123ecfe016496a7d276b4b'
             '1f9a2cfd1ad42e3b101028d10555a8fe4782ba2b0df931d8e23784d2c76df6ad'
             'abc44c284023fd58aa94ce4c3fdbcde7f690fd3dbfd05b7dca05c70a14f07ef6'
-            '257a8347537ace85c1491fb48ea51a65b83dca4bb99b7a7ab2146afb828538ef')
+            '257a8347537ace85c1491fb48ea51a65b83dca4bb99b7a7ab2146afb828538ef'
+            '6f1fc4f57622a984704d2df652d647fc960cb9c83f53422a69c97b0fac4deab5')
 
 # Helper macros to help make tasks easier #
 apply_patch_with_msg() {
@@ -268,7 +270,8 @@ prepare() {
   0059-uname-report-msys2-runtime-commit-hash-too.patch \
   0060-Revert-Cygwin-pipe-Restore-blocking-mode-for-cygwin-.patch \
   0061-fixup-uname-report-msys2-runtime-commit-hash-too.patch \
-  0062-fchmodat-fstatat-fix-regression-with-empty-pathname.patch
+  0062-fchmodat-fstatat-fix-regression-with-empty-pathname.patch \
+  0063-msys2-runtime-restore-fast-path-for-current-user-pri.patch
 }
 
 build() {
