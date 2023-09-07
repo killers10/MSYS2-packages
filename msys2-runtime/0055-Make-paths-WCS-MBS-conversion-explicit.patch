@@ -1,4 +1,4 @@
-From 370429742f162556287203767d05f5f9fba59d95 Mon Sep 17 00:00:00 2001
+From 0362055c9f96048d3bac6fb87cd72caaa8b70819 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Fri, 18 Dec 2015 20:19:57 +0100
 Subject: [PATCH 55/N] Make paths' WCS->MBS conversion explicit
@@ -159,7 +159,7 @@ Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
  13 files changed, 63 insertions(+), 60 deletions(-)
 
 diff --git a/winsup/cygwin/dcrt0.cc b/winsup/cygwin/dcrt0.cc
-index 300b31c..1675a9b 100644
+index d7a1b1a..41e62ff 100644
 --- a/winsup/cygwin/dcrt0.cc
 +++ b/winsup/cygwin/dcrt0.cc
 @@ -908,9 +908,9 @@ dll_crt0_1 (void *)
