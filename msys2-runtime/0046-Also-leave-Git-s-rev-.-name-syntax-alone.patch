@@ -1,4 +1,4 @@
-From 37040d549433efd0e1c374cb6be5cca392ac5351 Mon Sep 17 00:00:00 2001
+From d8a47ae9416b8fdac0705c459b79dc872635b586 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Wed, 18 Feb 2015 11:07:17 +0000
 Subject: [PATCH 46/N] Also leave Git's <rev>:./<name> syntax alone

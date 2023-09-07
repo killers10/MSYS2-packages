@@ -1,4 +1,4 @@
-From 945e273da3b1e5f4dccd06f82f0dbc5a1065bab4 Mon Sep 17 00:00:00 2001
+From 49602d166c7ec4093009b93b87f6906b0a13797f Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?=EB=A7=88=EB=88=84=EC=97=98?= <nalla@hamal.uberspace.de>
 Date: Wed, 17 Jun 2015 09:30:41 +0200
 Subject: [PATCH 50/N] path-conversion: Introduce ability to switch off

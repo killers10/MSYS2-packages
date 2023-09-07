@@ -1,4 +1,4 @@
-From 76393d2d70fc56300971722d3e2eed3b29403235 Mon Sep 17 00:00:00 2001
+From e03e3745678892ef2d2060be4ba7b17f5b08c88c Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Sun, 22 Feb 2015 18:33:48 +0100
 Subject: [PATCH 43/N] Leave paths containing any special characters alone

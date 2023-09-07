@@ -1,7 +1,7 @@
-From eb7ffd4130fc5ddb655e0eb8e5375052cd96d69b Mon Sep 17 00:00:00 2001
+From a9a875c6538edd993bdb098befd398fd0d0aece8 Mon Sep 17 00:00:00 2001
 From: Richard Glidden <rglidden@brocksolutions.com>
 Date: Thu, 24 Aug 2023 13:36:10 -0400
-Subject: [PATCH 63/N] msys2-runtime: restore fast path for current user
+Subject: [PATCH 61/N] msys2-runtime: restore fast path for current user
  primary group
 
 Commit a5bcfe616c7e removed an optimization that fetches the
@@ -117,7 +117,7 @@ index a25f39f..fefd984 100644
  		      if ((val = cldap->get_account_name ()))
  			wcscpy (name, val);
 diff --git a/winsup/doc/ntsec.xml b/winsup/doc/ntsec.xml
-index c6871ec..c95207e 100644
+index c6871ec..d61b585 100644
 --- a/winsup/doc/ntsec.xml
 +++ b/winsup/doc/ntsec.xml
 @@ -930,7 +930,16 @@ The two lines starting with the keywords <literal>passwd:</literal> and
@@ -127,7 +127,7 @@ index c6871ec..c95207e 100644
 -for local accounts, Active Directory for domain account.  Examples:
 +for local accounts, Active Directory for domain account.  For the current
 +user, the default group is obtained from the current user token to avoid
-+additional lookups to the group database. <literal>db-accuarte</literal> 
++additional lookups to the group database. <literal>db-accurate</literal>
 +is only valid on <literal>group:</literal> line, and performs the same 
 +lookups as the <literal>db</literal> option, but disables using the
 +current user token to retrieve the default group as this optimization

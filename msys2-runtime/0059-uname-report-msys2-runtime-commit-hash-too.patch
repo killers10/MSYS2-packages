@@ -1,4 +1,4 @@
-From 1d9a89814e879c678601c659de90a0d9ea6d0320 Mon Sep 17 00:00:00 2001
+From dbd0a16e278b3db7a10ca934767594ba0c75b86d Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Tue, 21 Feb 2023 16:36:36 +0100
 Subject: [PATCH 59/N] uname: report msys2-runtime commit hash, too
@@ -13,11 +13,11 @@ Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
  winsup/configure.ac             | 10 ++++++++--
  winsup/cygwin/Makefile.am       |  6 ++++--
  winsup/cygwin/scripts/mkvers.sh |  8 ++++++++
- winsup/cygwin/uname.cc          |  8 +++++---
- 4 files changed, 25 insertions(+), 7 deletions(-)
+ winsup/cygwin/uname.cc          | 16 +++++++++-------
+ 4 files changed, 29 insertions(+), 11 deletions(-)
 
 diff --git a/winsup/configure.ac b/winsup/configure.ac
-index fb4b1e8..b299ab3 100644
+index 368a1db..bacff0b 100644
 --- a/winsup/configure.ac
 +++ b/winsup/configure.ac
 @@ -65,24 +65,30 @@ AC_ARG_WITH([msys2-runtime-commit],
@@ -111,12 +111,24 @@ index 98826f8..60586ad 100755
  echo "Version $cygwin_ver"
  set -$- $builddate
 diff --git a/winsup/cygwin/uname.cc b/winsup/cygwin/uname.cc
-index a4ac0e3..86ad36b 100644
+index a4ac0e3..a978363 100644
 --- a/winsup/cygwin/uname.cc
 +++ b/winsup/cygwin/uname.cc
-@@ -84,10 +84,11 @@ uname_x (struct utsname *name)
- 	snprintf (name->release, _UTSNAME_LENGTH, "%s.%s",
- 		  uname_dev_version, name->machine);
+@@ -76,18 +76,19 @@ uname_x (struct utsname *name)
+ #pragma GCC diagnostic push
+ #pragma GCC diagnostic ignored "-Wformat-truncation="
+ #ifdef CYGPORT_RELEASE_INFO
+-      snprintf (name->release, _UTSNAME_LENGTH, "%s.%s",
+-		__XSTRING (CYGPORT_RELEASE_INFO), name->machine);
++      snprintf (name->release, _UTSNAME_LENGTH, "%s-%s.%s",
++		__XSTRING (CYGPORT_RELEASE_INFO), MSYS2_RUNTIME_COMMIT_SHORT, name->machine);
+ #else
+       extern const char *uname_dev_version;
+       if (uname_dev_version && uname_dev_version[0])
+-	snprintf (name->release, _UTSNAME_LENGTH, "%s.%s",
+-		  uname_dev_version, name->machine);
++	snprintf (name->release, _UTSNAME_LENGTH, "%s-%s.%s",
++		  uname_dev_version, MSYS2_RUNTIME_COMMIT_SHORT, name->machine);
        else
 -	__small_sprintf (name->release, "%d.%d.%d-api-%d.%s",
 +	__small_sprintf (name->release, "%d.%d.%d-%s-api-%d.%s",
