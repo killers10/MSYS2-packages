@@ -294,6 +294,12 @@ build() {
   # otherwise it asks git which appends "-dirty" because of our uncommited patches
   CFLAGS+=" -DCYGPORT_RELEASE_INFO=${pkgver}"
 
+  # XXX: cygwin still uses gcc v11 so we get new warnings with v13,
+  # resulting in errors. We can't selectively disable warnigns since our
+  # cross compiler is also too old and doesn't understand the new
+  # warning flags, so we need to disable all errors for now.
+  export CXXFLAGS="-Wno-error -Wno-narrowing"
+
   (cd "${srcdir}/msys2-runtime/winsup" && ./autogen.sh)
 
   "${srcdir}"/msys2-runtime/configure \
