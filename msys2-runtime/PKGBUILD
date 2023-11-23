@@ -154,7 +154,7 @@ sha256sums=('SKIP'
             'a697e81d8abd85fc10e5764afc551e775e99e8b49880c665474c102e005329ed'
             '4985310df62a892d938dbd3d6b7a358d1b82bbf6e3a7a0e90fee84ea6dd9e5a4'
             '58d6e4c32368af4e31de245d7ee59c0a52f25b6d9407ef23d7483aed24a9aeb5'
-            '358b8a993127b9e45ba2468b34e2ef24b7ca9309fe76dfb37e873858c214a202')
+            '866be726a53211bc55b4ca2e831dea62c9a5897bcc9844c99b21367f28577968')
 
 # Helper macros to help make tasks easier #
 apply_patch_with_msg() {
