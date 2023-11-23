@@ -4,7 +4,7 @@
 pkgbase=msys2-runtime
 pkgname=('msys2-runtime' 'msys2-runtime-devel')
 pkgver=3.4.9
-pkgrel=1
+pkgrel=2
 pkgdesc="Cygwin POSIX emulation engine"
 arch=('x86_64')
 url="https://www.cygwin.com/"
@@ -87,9 +87,11 @@ source=('msys2-runtime'::git+https://github.com/cygwin/cygwin#tag=cygwin-${pkgve
         0058-Avoid-sharing-cygheaps-across-Cygwin-versions.patch
         0059-uname-report-msys2-runtime-commit-hash-too.patch
         0060-Revert-Cygwin-pipe-Restore-blocking-mode-for-cygwin-.patch
-        0061-msys2-runtime-restore-fast-path-for-current-user-pri.patch)
+        0061-msys2-runtime-restore-fast-path-for-current-user-pri.patch
+        0062-fixup-Add-functionality-for-converting-UNIX-paths-in.patch
+        0063-fixup-Add-functionality-for-converting-UNIX-paths-in.patch)
 sha256sums=('SKIP'
-            'daeaa55468ef315aa8796bb8ff416ce2e50d3f94ac34fd507ff4306460066142'
+            'f1049252bc3891471b535672a2ef5eb1af794ac4bb0fedbc65852e6d98186932'
             '021fd67841a12ef09dd72d08e3ed4a1ccc58d38dc475bdf79ecff3a90c7d6197'
             '6b6187c8e9343cf2875fe8d622762892bfb2d8087f1e510882928ec63584e4bc'
             '0b8933eb38b42aed816bdded768ed92047e220157085778a0dbf23278d8355d9'
@@ -150,7 +152,9 @@ sha256sums=('SKIP'
             '0c94d7eb14cb56efa4a9b41cb7f99bb7d625942e8d61c4692d98f0c70c4d370f'
             'bd6bdc7c022ac9cf7235548c152fed3b303fe69acf5a50e0e237c23a31d6c974'
             'a697e81d8abd85fc10e5764afc551e775e99e8b49880c665474c102e005329ed'
-            '4985310df62a892d938dbd3d6b7a358d1b82bbf6e3a7a0e90fee84ea6dd9e5a4')
+            '4985310df62a892d938dbd3d6b7a358d1b82bbf6e3a7a0e90fee84ea6dd9e5a4'
+            '58d6e4c32368af4e31de245d7ee59c0a52f25b6d9407ef23d7483aed24a9aeb5'
+            '358b8a993127b9e45ba2468b34e2ef24b7ca9309fe76dfb37e873858c214a202')
 
 # Helper macros to help make tasks easier #
 apply_patch_with_msg() {
@@ -265,7 +269,9 @@ prepare() {
   0058-Avoid-sharing-cygheaps-across-Cygwin-versions.patch \
   0059-uname-report-msys2-runtime-commit-hash-too.patch \
   0060-Revert-Cygwin-pipe-Restore-blocking-mode-for-cygwin-.patch \
-  0061-msys2-runtime-restore-fast-path-for-current-user-pri.patch
+  0061-msys2-runtime-restore-fast-path-for-current-user-pri.patch \
+  0062-fixup-Add-functionality-for-converting-UNIX-paths-in.patch \
+  0063-fixup-Add-functionality-for-converting-UNIX-paths-in.patch
 }
 
 build() {
