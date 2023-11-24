@@ -197,3 +197,29 @@ index 6350e1e..3718ebc 100755
      [ 'vxworks.*',                  '${MACHINE}-whatever-vxworks' ],
  
      # The MACHINE part of the array POSIX::uname() returns on VMS isn't
+diff --git a/crypto/bio/bss_dgram.c b/crypto/bio/bss_dgram.c
+index e8084ab..6af9f99 100644
+--- a/crypto/bio/bss_dgram.c
++++ b/crypto/bio/bss_dgram.c
+@@ -1169,7 +1169,7 @@
+         cmsg->cmsg_type  = IP_PKTINFO;
+ 
+         info = (struct in_pktinfo *)BIO_CMSG_DATA(cmsg);
+-#   if !defined(OPENSSL_SYS_WINDOWS) && !defined(OPENSSL_SYS_CYGWIN)
++#   if !defined(OPENSSL_SYS_WINDOWS) && !defined(OPENSSL_SYS_CYGWIN) && !defined(OPENSSL_SYS_MSYS)
+         info->ipi_spec_dst      = local->s_in.sin_addr;
+ #   endif
+         info->ipi_addr.s_addr   = 0;
+diff --git a/include/openssl/e_os2.h b/include/openssl/e_os2.h
+index e8084ab..6af9f99 100644
+--- a/include/openssl/e_os2.h
++++ b/include/openssl/e_os2.h
+@@ -1169,7 +1169,7 @@
+ #  undef OPENSSL_SYS_UNIX
+ #  define OPENSSL_SYS_WIN32_UWIN
+ # else
+-#  if defined(__CYGWIN__) || defined(OPENSSL_SYS_CYGWIN)
++#  if defined(__CYGWIN__) || defined(OPENSSL_SYS_CYGWIN) || defined(OPENSSL_SYS_MSYS)
+ #   define OPENSSL_SYS_WIN32_CYGWIN
+ #  else
+ #   if defined(_WIN32) || defined(OPENSSL_SYS_WIN32)
