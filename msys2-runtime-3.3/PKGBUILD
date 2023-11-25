@@ -264,6 +264,10 @@ build() {
 
   CFLAGS="$OPTIM -pipe -ggdb -Wno-error=deprecated -Wno-error=stringop-truncation -Wno-error=missing-attributes -Wno-error=maybe-uninitialized" #-Wno-error=class-memaccess
   CXXFLAGS="$OPTIM -pipe -ggdb -Wno-error=deprecated -Wno-error=stringop-truncation -Wno-error=missing-attributes -Wno-error=maybe-uninitialized" #-Wno-error=class-memaccess
+  if test 12 -le "$(g++ --version | sed -n '1s/.* \([0-9]*\).*/\1/p')"
+  then
+    CXXFLAGS="$CXXFLAGS -Warray-bounds=0 -Wno-error=overloaded-virtual -Wno-error=narrowing"
+  fi
 
   (cd "${srcdir}/msys2-runtime/winsup" && ./autogen.sh)
 
