@@ -1,0 +1,30 @@
+From 7c12bf29458c87fc9e1766c8e2a7af2b572bf25c Mon Sep 17 00:00:00 2001
+From: Kai Pastor <dg0yt@darc.de>
+Date: Tue, 21 Nov 2023 09:24:03 +0100
+Subject: [PATCH 68/N] fixup! Add functionality for converting UNIX paths in
+ arguments and environment variables to Windows form for native Win32
+ applications.
+
+Don't memchr behind end, it+1
+---
+ winsup/cygwin/msys2_path_conv.cc | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/winsup/cygwin/msys2_path_conv.cc b/winsup/cygwin/msys2_path_conv.cc
+index 61a4cb4..45e1d9b 100644
+--- a/winsup/cygwin/msys2_path_conv.cc
++++ b/winsup/cygwin/msys2_path_conv.cc
+@@ -406,6 +406,13 @@ skip_p2w:
+ 
+     path_type result = NONE;
+ 
++    if (it + 1 == end) {
++        switch (*it) {
++        case '/':   return ROOTED_PATH ;
++        default:    return SIMPLE_WINDOWS_PATH;
++        }
++    }
++
+     if (isalpha(*it) && *(it + 1) == ':') {
+         if (*(it + 2) == '\\') {
+             return SIMPLE_WINDOWS_PATH;
