@@ -23,7 +23,7 @@ source_url=$(sed -ne 's/^source=\([^:]\+::\)\?["'\'']\?\([^"'\''#?=&,;[:space:]]
 git -C src/msys2-runtime fetch --no-tags "$source_url" "$base_tag:$base_tag"
 
 merging_rebase_start="$(git -C src/msys2-runtime \
-    rev-parse --verify --quiet msys2-gfw-3.3-branch^{/Start.the.merging.rebase})"
+    rev-parse --verify --quiet HEAD^{/Start.the.merging.rebase})"
 
 git -c core.abbrev=7 \
 	-c diff.renames=true \
