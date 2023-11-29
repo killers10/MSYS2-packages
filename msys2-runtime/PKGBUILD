@@ -3,8 +3,8 @@
 
 pkgbase=msys2-runtime
 pkgname=('msys2-runtime' 'msys2-runtime-devel')
-pkgver=3.4.9
-pkgrel=2
+pkgver=3.4.10
+pkgrel=1
 pkgdesc="Cygwin POSIX emulation engine"
 arch=('x86_64')
 url="https://www.cygwin.com/"
@@ -87,74 +87,70 @@ source=('msys2-runtime'::git+https://github.com/cygwin/cygwin#tag=cygwin-${pkgve
         0058-Avoid-sharing-cygheaps-across-Cygwin-versions.patch
         0059-uname-report-msys2-runtime-commit-hash-too.patch
         0060-Revert-Cygwin-pipe-Restore-blocking-mode-for-cygwin-.patch
-        0061-msys2-runtime-restore-fast-path-for-current-user-pri.patch
-        0062-fixup-Add-functionality-for-converting-UNIX-paths-in.patch
-        0063-fixup-Add-functionality-for-converting-UNIX-paths-in.patch)
+        0061-msys2-runtime-restore-fast-path-for-current-user-pri.patch)
 sha256sums=('SKIP'
-            'f1049252bc3891471b535672a2ef5eb1af794ac4bb0fedbc65852e6d98186932'
-            '021fd67841a12ef09dd72d08e3ed4a1ccc58d38dc475bdf79ecff3a90c7d6197'
-            '6b6187c8e9343cf2875fe8d622762892bfb2d8087f1e510882928ec63584e4bc'
-            '0b8933eb38b42aed816bdded768ed92047e220157085778a0dbf23278d8355d9'
-            '942ca9901118c8fa115a2a444f210bc7658cf0803e0599e7d7d6c4cac265c45f'
-            '618d815ae99becb1258691da1f5516aab046a3b8dbbf9ee2253bf9da605cc22e'
-            '944d4947f61c91db553402debf0031d4fc842ea9f68c1a527f639653939d768f'
-            '578d83b8c1bbef5b6dea2d6a8c2a69415b8ffbe4c290afe91b756aadb24c4443'
-            '207c21cc3a1a819ee138fd5b84214ee8c699e5e0cd01bb37c961ad540e166bed'
-            '2b9a0b5bcf8e377e3470efd1e462dd730617ad675454919e804f2faf2cdf24e5'
-            '61d1ce62bd4b8df3cf24ad22458a24faeadec24f00a39942ade8836f76f07f65'
-            'c20c6a1bda232532467489a140756b3063df6650eead472cfb25145c9312cbc7'
-            '93967ac10d07f7a86ffde37509d7d95e8b42f5bd9fee98ba6f9bf86bd0caf14e'
-            'e9e5da7e9b3774bfd12b2daa6c473360e83bc6a9b23b1b39e3f29316bbfd1a25'
-            '0bca116bfaf7c354eee8f8b08d406c3150c57420809383c572095b398c0b5c2d'
-            'eee4f98d26cef1a860b5e10174239779df3f80574dd0c958bc2d06174acb0765'
-            'b7c282e9696546e8f3ece8ada5befd59b8b9e548cb659df0b1416526920b6973'
-            'c8c871b3ef45052e0377b1bd0c01dcfb0cf1384391cf139d7367e3806ffd8326'
-            '19249eac1e85632d0fa53b099ae979b3a38aa91029632de14609c66d1fb08dc4'
-            'c085b8eab12e3bac5dcd8f7bdfb5121599714a7bca64ee4abc0fae87d8a1340f'
-            'ace573bd1d131258106504eb849ba0c20df6bb16ee3e4537d78374148f9ba1ef'
-            'd3033d5bbdb4a6107261a200b65224049d16721ecc6e342494020a9c4aab55d7'
-            '0734175b39fca6a4de8d6aec8a056266fc4c34a9ee40809e717dcf2838d1f6e4'
-            '8a7820a5682639448bae4db0a304ba08b27f4492458d9a9237a446fc0e9a3fff'
-            '5bbfbe070982c0565223a539f87f91b29c31b78bdcc2fb020e657c087db3f459'
-            '5630089c934e264942ae0820bda8c844955ea07ed71f7080448d8d41a2109d76'
-            'ddee0009f9da05f34a76b983419ff2d37a2323873b86d854f9c2b901cc8e134e'
-            '29c289e9b83272b07c5fd3ee2c8175c1a88da7207c2844f13214c562066c1097'
-            '51054cd6da7cefb1599be4658c9bf586727afeb4521089542542056b4d82964b'
-            'df01ecbed967af1ef11c00dc00ac158add8dc8501ee418128567269acc4b5309'
-            'cba2eda0a6cca5849d1003024721184b3bc73e19d65403f905a879c25cf09d1f'
-            '47c2a999b8679e87441713b55c54d074b7335d448a785b912c973cb54cc87073'
-            '2437209bfafce63468d8617168615af4952c9ec1ecf87aca4052cc15bf83c463'
-            '3e7c2d553ebefcce5e35ad5361118edd4f0d29fccb184ffff1f7e4c6670ad8e8'
-            '4add71cf941c6e49ee20b8b4a03772f539dbf04aabf7be0ebcd1de884a1a97a0'
-            'f9cf227e20e491a823d1bd8fac12f0be9d371e21239368e8b30f203a48b18995'
-            '6defe4f95bda4ba9ec52c6aab4bb6f61e51aad5e2b5aef25dc277e108bdef553'
-            '9226d25556c04de2506ee6d9d8ebc1e369d456fe5ca8d335705c2dd090b3cb64'
-            '54b45f5a0b86057bdd7225d9d1d69674dfd93e923ce3b053d7129f43700b1aeb'
-            'af53bdb79af48b5f3000e593d970096dc31215e4007790c21d834122684a5807'
-            'a4f05a6253afb7dd9c3d416fc3c3ab53a4c115c311ee71a81ed5fa1c746fa849'
-            '1d1f1c4963fea158d5c97a485be0ff5e06a72febe472edb1feb5f39fce4126ba'
-            '51e075e639e5283808b9cabd75140d514938955732b32f865531f2a134fcdd7a'
-            'eb910e48cbd3584c7c899d190eeda5b47e75a14e603120818db72245cb51d309'
-            'a11f9aefeabaa5e326c6630d62f256775ba35cbb250cdb9daec1e39271859eb6'
-            'b8cd6f42bfc3ca09f9084cc6ad043f01d073a6350792209d84d1dd873a24d215'
-            '21f833ce4c7b41e144b2104f6d380bbc8e8523848a2899e08d23253f4c377143'
-            'c73bfbf8c7bbe8b57e627490b6c0ffbb4247858493c5f39d69243283209c6d6e'
-            '44eed7a2622f0442fd68d47cdd3de0e4a522993f4758b9fac31fe98d2b36c4e8'
-            'a9a1f2cf01efb028085b871066993640037a362eaa1fff5b2dc617647423ee07'
-            'a7ba6bf16e691ff9c09017063cde0d66357e6c849b059ea756aed2b6e4c3daf1'
-            'b7d7dfe3a08102dadafbde94db4594dbb508198458003b14920fe1c52afd24d0'
-            '7937a4442e3c0964e1585726c4ce6b3cb1e4f44eb800ec608b14bdfbd0e5679b'
-            'a02b706c045ec497e1b06c04497c804203dbdbe77760fa5629f40a5e7eba91b7'
-            '350a7691ad744163ba7a1ebf894b655a2f935e2ee1b3955be2a2a78e7ce4c3fa'
-            '535e54fcfa65108050ecea6dc870eedba02d6812919ecc35751791bec24bbebe'
-            '6012a4823bb13775308d9e9d2a2ae6b3eb7c96b6f0e0c87bbf911b17bb2715ca'
-            '8512c65e1f8e48e5d0e130cbe88c44e5514ec1df33e5a1429bdbfae7e13428c7'
-            '0c94d7eb14cb56efa4a9b41cb7f99bb7d625942e8d61c4692d98f0c70c4d370f'
-            'bd6bdc7c022ac9cf7235548c152fed3b303fe69acf5a50e0e237c23a31d6c974'
-            'a697e81d8abd85fc10e5764afc551e775e99e8b49880c665474c102e005329ed'
-            '4985310df62a892d938dbd3d6b7a358d1b82bbf6e3a7a0e90fee84ea6dd9e5a4'
-            '58d6e4c32368af4e31de245d7ee59c0a52f25b6d9407ef23d7483aed24a9aeb5'
-            '866be726a53211bc55b4ca2e831dea62c9a5897bcc9844c99b21367f28577968')
+            'a3a43a62b1acc152d641a168c96f4aac0f83599b4f1d315e789d08d5c0bc825f'
+            '351bb1efdbdafe80c981e92d6b425c6ab71c85ce4e990db184e2118158eb2ab6'
+            'd3d3a01feeae9f7d5e6cb32f4662df74fc9476ff11a1aac3dad2df3e43fd88e4'
+            '2e50ecd65f2fd413baaf39e5058a6b252245abc7d34f4ebf17dd4f7ffed60ced'
+            '231757d797cf9be6a92b6f6976ee85216e9fa8eaba4aca241ace4b76e41cd862'
+            '23f97fac32ae2ba7681985e0d4910ec2d6d265f970bb0db6cec48540b6ebf055'
+            'd47c570e2ac7a9b1c15f1a9e4e51b530eef0a2dc0f261ddc088ad449840deb02'
+            '1bc7e3275eb9ffb3b70a0b9a5049bc6180d893d28ac6fc1d0e2ca29f8d890a33'
+            '8113de5e8ae37da6b96a3c7eb379806ccb1a90f42ae0d9061941d5e224f754a0'
+            '09ec71a8292035b38e5fb6db7fdd4f2fb6c5071ec9a7c180c72bb22216db88df'
+            '02cc70007deccabac988ae02a82b201a71772b0dc6570b0275793f37f71ef09d'
+            'b70c4cc2f37632d51e9ddcae56f12c9ec92357e11347cb806ed23af9251a601a'
+            '51571b603ca6a75f22125daeb1973a9f8ecdf82b1d4637814287fa311f9480c3'
+            'd4dbcdbfa4f2dbac9a06eac0cd42154e30df03466554778340dadf67ab861c8b'
+            '5c018ce376a7f2b0b8e3dc3a4eedc5eebf618ef2337889188e6f914d0ac09795'
+            '2350b6193166cab2596162d8a203a4edbddb413a615e84f7ecc120ffa98f609f'
+            '7d25457a43facd4231aad09bc5acf4717468a937c087427bd8cc5e2a1046db84'
+            '233b59d7ca0a339e09c15f7c64989ba347f1316f353d2d366dede33325b4091f'
+            'b4eeb001292c5a34df2ebe65d8deef987eb70baf60f821d86c3cbccb49fea40a'
+            '3afbea60cc0edfc7931ecaafeb1d6b7dfda1aac10be590afd41abff8a27815ef'
+            '691328ad116d972eeb0d04558c68ad605e306faec26a3e43de90024e31d797d6'
+            'b36301669c8e2802cc82c8ac7b99b10135f0aee12e3b01b258272e7089a9c4ed'
+            '231d6372dcbdb72f4cd10dad60bbdf9f4d55236193e5cbfc2377dd1af1194360'
+            'c6cfb73dab426e9b7649514408d4a0577ebac43aef9c0585e720e5624c2a904e'
+            'aa3c148a0655d47d9acd822547ef4e8ef35be309e71e7d85c4af8bb3a485f7db'
+            '4318b3e6e99f724c211b0c8b6ff93d644336a08fd29219381de9035b8f7b5415'
+            '4cf58088663b156ea6ca2278eb24226ef3f57f9bd486dea9b1ac7b04fa62eb0c'
+            '44d207e6e7cda10d427b6705735622fd7847a58d4f133862e9f82f11fd57cf0c'
+            '161e4bcbf55f5d4b81bdbed73e0c8fdc339c75b70cd9e292fde41b53988bfb5b'
+            '5528c8e0715404fc03068efcd8c42010604fe5940a7af962211066f9670276b5'
+            'd121cbfed47c72787c92eb817bba2071930f86fdf2bff424d1082ceccd59da49'
+            '832aaa93defa111e3d9f540532288398ad27352122b1ff84a8a2f53232e601b9'
+            'de44e80e60e61dbf91b6b99a3f5740f653f83b96c64f862f4aa99fd42e7db0d7'
+            '7cebdd623fe080bda89b0505d4e8dc8600969d3b7d71e6bdf0a7e6ac1c62708f'
+            '008adf33a2b3774d85aabe1b2b2a3fa32615c0cf7bfbc7cf4e4ce3c0302957d6'
+            'd5981d518ba4756dd6e976e9cc20ff8f52001aac588ee083a33045d260e02d6b'
+            '599905c7454e2f3039c717de8186d4e1cb7943f9b47a7745ce36e4acfa100e31'
+            'd37c835bc188786a4e8050f0a73d4f0b3070ded9030943ba2a6c47b03d9d96e8'
+            'a799e7edde58a0ec519bb7df6d0bcf4177e1c6236a72a8240936c574be1bdd61'
+            '31ff5a6708220857530434c06b454b92e9854959ba1be3851ec935ec13b0658d'
+            '4f2a4d56e94e73b7c2e390b1094290c475f7661884f4a8ad2bbae2be9a450b04'
+            '0498c9fd1cca930b2864783297de73528c646aad8a3e2efa2749950d079d9b25'
+            'a0abcdf33b992cc1c3cd1258cd255bdbe07095e7b41f497633630d1de837444e'
+            'b092095b050ee2a34224d973ef4086309d2df57ff979155f1837b27df24202d8'
+            '28e0d46690483ac9259f56db795411047afd40cc1ef249945d436c512436cc6a'
+            '1d0ab13576f3985f78632a1fa143287673847ea8ad24b41f57972ebecfa69f41'
+            'dd29a84985a2ca96681d742b4c510f4945be4998c8af5fe3df0a1d0dea8c28e6'
+            'c95e31fbc3b2466e422b872eb76d2e849e0ad2d9ce750e5d0afb31a5ae2f01b4'
+            '6c5fcffa44adbffc08e80a1a941c73b5034612ce70d2485face45672b6875186'
+            'f1815f8a275f5e00275a8fd89a96ac71f5f9a5d7bd6dd408f33a42d2e0edb32b'
+            'f3c551c5395ba8d77ab19583f538e5802d022f37c29d2a8566737546ca426888'
+            'fccabdff9e3a1bac75a45a0b4cff3a0a956988ea4cea5d3674daa9023d33025c'
+            'cc1b7fe86a247980204b054885d27a65cac8ef10c542357a322edfb9ae6eb567'
+            '8798d6230a35863a28f40cb37ed4cd4dfd02cdadaf383829b6d4dbbcdc464912'
+            '5bd11782eec27ccb9fb2452d5d2d31ede5db163cade0c3f54729cd426a57e4b5'
+            '73af0906b90ba60e8ab6c12f0b3447944e4512a9dcaae23899d39cf4a5949070'
+            'c75d7977db74781e7a3e756c555a0fac8b3a27949c815456bec00f6c7ec0e6f6'
+            '99ba3654fbe2e60019fe9ba57f84d7ad5264c673ba585b8bafb4588cde667b80'
+            '119511d1c5412616e2fc4142384025e74c71817f421e316895bfbb1b0b16adec'
+            'c261206c44323bb14329d9d9b04b3baa0d3544d6b119ec95df6872bebb4f8dc6'
+            'fef601c95cb0893ddc9b3479721d298c08e4e1cc1840c89330328e2be09e5ccd'
+            '4916e58433cb4df408c2068e11ff066925af8558341a38f99a216ab8b2871552')
 
 # Helper macros to help make tasks easier #
 apply_patch_with_msg() {
@@ -269,9 +265,7 @@ prepare() {
   0058-Avoid-sharing-cygheaps-across-Cygwin-versions.patch \
   0059-uname-report-msys2-runtime-commit-hash-too.patch \
   0060-Revert-Cygwin-pipe-Restore-blocking-mode-for-cygwin-.patch \
-  0061-msys2-runtime-restore-fast-path-for-current-user-pri.patch \
-  0062-fixup-Add-functionality-for-converting-UNIX-paths-in.patch \
-  0063-fixup-Add-functionality-for-converting-UNIX-paths-in.patch
+  0061-msys2-runtime-restore-fast-path-for-current-user-pri.patch
 }
 
 build() {

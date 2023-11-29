@@ -1,4 +1,4 @@
-From 0362055c9f96048d3bac6fb87cd72caaa8b70819 Mon Sep 17 00:00:00 2001
+From cebf577847edd3a658510ba4c3d2afe29780ce43 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Fri, 18 Dec 2015 20:19:57 +0100
 Subject: [PATCH 55/N] Make paths' WCS->MBS conversion explicit
@@ -456,7 +456,7 @@ index ddd85be..f34e0b2 100644
      }
  }
 diff --git a/winsup/cygwin/path.cc b/winsup/cygwin/path.cc
-index d534732..1638a4f 100644
+index af88ecf..af0ffa7 100644
 --- a/winsup/cygwin/path.cc
 +++ b/winsup/cygwin/path.cc
 @@ -621,7 +621,8 @@ path_conv::check (const UNICODE_STRING *src, unsigned opt,
@@ -541,7 +541,7 @@ index d534732..1638a4f 100644
  	return -1;
        what = (what & ~CCP_CONVTYPE_MASK) | CCP_WIN_A_TO_POSIX;
        from = (const void *) winp;
-@@ -5325,9 +5326,9 @@ cwdstuff::get_error_desc () const
+@@ -5324,9 +5325,9 @@ cwdstuff::get_error_desc () const
  void
  cwdstuff::reset_posix (wchar_t *w_cwd)
  {
@@ -553,7 +553,7 @@ index d534732..1638a4f 100644
  }
  
  char *
-@@ -5352,7 +5353,7 @@ cwdstuff::get (char *buf, int need_posix, int with_chroot, unsigned ulen)
+@@ -5351,7 +5352,7 @@ cwdstuff::get (char *buf, int need_posix, int with_chroot, unsigned ulen)
    if (!need_posix)
      {
        tocopy = tp.c_get ();

@@ -1,4 +1,4 @@
-From dbd0a16e278b3db7a10ca934767594ba0c75b86d Mon Sep 17 00:00:00 2001
+From 20469e724192a225e5ac1fa1193761c40096aff2 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Tue, 21 Feb 2023 16:36:36 +0100
 Subject: [PATCH 59/N] uname: report msys2-runtime commit hash, too
