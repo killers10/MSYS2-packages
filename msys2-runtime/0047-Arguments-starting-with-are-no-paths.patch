@@ -1,4 +1,4 @@
-From 6ee09769cfc45a39d7952638647a3395ad26aba5 Mon Sep 17 00:00:00 2001
+From 80323e9346c59d3187bb278548ec87093a20d6c1 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Wed, 18 Feb 2015 11:07:17 +0000
 Subject: [PATCH 47/N] Arguments starting with '@@' are no paths
@@ -13,7 +13,7 @@ Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
  1 file changed, 5 insertions(+)
 
 diff --git a/winsup/cygwin/msys2_path_conv.cc b/winsup/cygwin/msys2_path_conv.cc
-index e65b9ed..e2af04c 100644
+index 5e55eb1..c30babf 100644
 --- a/winsup/cygwin/msys2_path_conv.cc
 +++ b/winsup/cygwin/msys2_path_conv.cc
 @@ -381,6 +381,11 @@ skip_p2w:

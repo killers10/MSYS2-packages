@@ -1,4 +1,4 @@
-From d8f626b217d34b9d0fc45c40b97bc8904b37d059 Mon Sep 17 00:00:00 2001
+From 10faa7e47c27daf5b988d3425fd6ef7fc68e6a68 Mon Sep 17 00:00:00 2001
 From: Mikael Larsson <95430516+chirpnot@users.noreply.github.com>
 Date: Thu, 10 Mar 2022 17:26:42 +0000
 Subject: [PATCH 57/N] Change the default base address for x86_64
@@ -32,7 +32,7 @@ Signed-off-by: Mikael Larsson <95430516+chirpnot@users.noreply.github.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/winsup/cygwin/cygwin.din b/winsup/cygwin/cygwin.din
-index 34f6650..0f332b4 100644
+index 71f3a68..565c89f 100644
 --- a/winsup/cygwin/cygwin.din
 +++ b/winsup/cygwin/cygwin.din
 @@ -1,4 +1,4 @@

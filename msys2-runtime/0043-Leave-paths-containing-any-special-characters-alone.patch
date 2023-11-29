@@ -1,4 +1,4 @@
-From e03e3745678892ef2d2060be4ba7b17f5b08c88c Mon Sep 17 00:00:00 2001
+From 8ec99b7c44da39da3f1ab4b0c2f90ce9dda43e97 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Sun, 22 Feb 2015 18:33:48 +0100
 Subject: [PATCH 43/N] Leave paths containing any special characters alone
@@ -9,7 +9,7 @@ Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
  1 file changed, 14 insertions(+)
 
 diff --git a/winsup/cygwin/msys2_path_conv.cc b/winsup/cygwin/msys2_path_conv.cc
-index f112fa4..72e06d4 100644
+index 28975b3..d9ec504 100644
 --- a/winsup/cygwin/msys2_path_conv.cc
 +++ b/winsup/cygwin/msys2_path_conv.cc
 @@ -354,6 +354,20 @@ skip_p2w:

@@ -1,4 +1,4 @@
-From 69472494a4d7c3ba7cbd36c062050ffd8cd26550 Mon Sep 17 00:00:00 2001
+From 81a0e5d4a9566ebc22b857de5c61f0e12fa32192 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Mon, 27 Apr 2015 11:58:08 +0200
 Subject: [PATCH 51/N] Allow overriding the home directory via the HOME

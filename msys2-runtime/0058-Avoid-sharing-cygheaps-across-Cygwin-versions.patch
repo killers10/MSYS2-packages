@@ -1,4 +1,4 @@
-From 4d86367cd4de5de0688900883405e98cdeac12cc Mon Sep 17 00:00:00 2001
+From c2f3cdd0e37acb1700759000276058dad2233052 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Mon, 30 Jan 2023 23:22:22 +0100
 Subject: [PATCH 58/N] Avoid sharing cygheaps across Cygwin versions
