@@ -1,4 +1,4 @@
-From b9da3977328377010c5bec003a3fb2f50f22db1f Mon Sep 17 00:00:00 2001
+From 41edfeb98eea958b9a54fe00fe44775a74e809b1 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Mon, 22 Aug 2016 17:47:05 +0200
 Subject: [PATCH 3/4] openssh: skip privilege separation tests
@@ -13,24 +13,24 @@ Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile.in b/Makefile.in
-index c0ebfa04..301586de 100644
+index 1efe11f6..32bc2a0f 100644
 --- a/Makefile.in
 +++ b/Makefile.in
-@@ -710,7 +710,7 @@ regress-unit-binaries: regress-prep $(REGRESSLIBS) \
+@@ -715,7 +715,7 @@ regress-unit-binaries: regress-prep $(REGRESSLIBS) \
  	regress/unittests/sshsig/test_sshsig$(EXEEXT) \
  	regress/unittests/utf8/test_utf8$(EXEEXT)
  
--tests:	file-tests t-exec interop-tests unit
-+tests:	file-tests interop-tests unit
+-tests:	file-tests t-exec interop-tests extra-tests unit
++tests:	file-tests interop-tests extra-tests unit
  	echo all tests passed
  
  unit: regress-unit-binaries
 diff --git a/regress/Makefile b/regress/Makefile
-index bf1d057a..cd016577 100644
+index f5cb9bd4..33d9a679 100644
 --- a/regress/Makefile
 +++ b/regress/Makefile
 @@ -1,6 +1,6 @@
- #	$OpenBSD: Makefile,v 1.122 2023/01/06 08:07:39 djm Exp $
+ #	$OpenBSD: Makefile,v 1.131 2023/12/18 14:50:08 djm Exp $
  
 -tests:		prep file-tests t-exec unit
 +tests:		prep file-tests unit
