@@ -6,7 +6,7 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0 # needed to determine which packages to build
       - uses: git-for-windows/setup-git-for-windows-sdk@v1
@@ -24,7 +24,7 @@ jobs:
           MAKEFLAGS: -j5
           MSYS2_PATH_TYPE: minimal
       - name: "Upload binaries"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: msys2-packages
           path: artifacts/*.pkg.tar.*
@@ -32,7 +32,7 @@ jobs:
     if: contains(github.event.pull_request.title, 'msys2-runtime-3.3')
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0 # needed to determine which packages to build
       - uses: git-for-windows/setup-git-for-windows-sdk@v1
@@ -102,7 +102,7 @@ jobs:
           MSYS2_PATH_TYPE: minimal
           GIT_CONFIG_PARAMETERS: "'user.name=ci' 'user.email=ci@users.noreply.github.com'"
       - name: "Upload binaries"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: msys2-packages-i686
           path: artifacts/*.pkg.tar.*
