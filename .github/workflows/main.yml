@@ -4,6 +4,7 @@ on: [pull_request]
 
 jobs:
   build:
+    if: "!startsWith(github.event.pull_request.title, 'i686:') && !contains(github.event.pull_request.title, 'msys2-runtime-3.3')"
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
@@ -29,7 +30,7 @@ jobs:
           name: msys2-packages
           path: artifacts/*.pkg.tar.*
   build-i686:
-    if: contains(github.event.pull_request.title, 'msys2-runtime-3.3')
+    if: "!contains(github.event.pull_request.title, 'msys2-runtime') || contains(github.event.pull_request.title, 'msys2-runtime-3.3')"
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
