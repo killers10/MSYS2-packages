@@ -22,16 +22,16 @@ diff -ru gnupg-2.2.8-orig/build-aux/compile gnupg-2.2.8/build-aux/compile
 diff -ru gnupg-2.2.8-orig/build-aux/config.guess gnupg-2.2.8/build-aux/config.guess
 --- gnupg-2.2.8-orig/build-aux/config.guess	2017-08-28 12:22:54.000000000 +0200
 +++ gnupg-2.2.8/build-aux/config.guess	2018-06-20 22:41:49.000540700 +0200
-@@ -891,6 +891,9 @@
+@@ -950,6 +950,9 @@
      amd64:CYGWIN*:*:* | x86_64:CYGWIN*:*:*)
- 	echo x86_64-unknown-cygwin
- 	exit ;;
+ 	GUESS=x86_64-pc-cygwin
+ 	;;
 +    amd64:MSYS*:*:* | x86_64:MSYS*:*:*)
-+	echo x86_64-unknown-msys
-+	exit ;;
-     p*:CYGWIN*:*)
- 	echo powerpcle-unknown-cygwin
- 	exit ;;
++	GUESS=x86_64-pc-msys
++	;;
+     prep*:SunOS:5.*:*)
+ 	SUN_REL=`echo "$UNAME_RELEASE" | sed -e 's/[^.]*//'`
+ 	GUESS=powerpcle-unknown-solaris2$SUN_REL
 diff -ru gnupg-2.2.8-orig/build-aux/config.rpath gnupg-2.2.8/build-aux/config.rpath
 --- gnupg-2.2.8-orig/build-aux/config.rpath	2017-08-28 12:22:54.000000000 +0200
 +++ gnupg-2.2.8/build-aux/config.rpath	2018-06-20 22:44:10.790650700 +0200
@@ -105,15 +105,3 @@ diff -ru gnupg-2.2.8-orig/g10/gpg.c gnupg-2.2.8/g10/gpg.c
  		ret=0;
  	      else
  		perm=1;
-diff -ru gnupg-2.2.8-orig/m4/intl.m4 gnupg-2.2.8/m4/intl.m4
---- gnupg-2.2.8-orig/m4/intl.m4	2017-08-28 12:22:54.000000000 +0200
-+++ gnupg-2.2.8/m4/intl.m4	2018-06-20 22:38:34.133395000 +0200
-@@ -98,7 +98,7 @@
-   dnl    exported variables _also_ in the static library.
-   if test "$enable_shared" = yes; then
-     case "$host_os" in
--      cygwin*) is_woe32dll=yes ;;
-+      cygwin* | msys*) is_woe32dll=yes ;;
-       *) is_woe32dll=no ;;
-     esac
-   else

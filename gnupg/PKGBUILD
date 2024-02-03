@@ -1,7 +1,7 @@
 # Maintainer: Alexey Pavlov <alexpux@gmail.com>
 
 pkgname=gnupg
-pkgver=2.2.42
+pkgver=2.4.4
 pkgrel=1
 pkgdesc='Complete and free implementation of the OpenPGP standard'
 provides=('dirmngr' "gnupg2=${pkgver}")
@@ -47,13 +47,11 @@ depends=('bzip2'
         )
 source=("https://gnupg.org/ftp/gcrypt/${pkgname}/${pkgname}-${pkgver}.tar.bz2"{,.sig}
         'gnupg-2.2.8-msys2.patch'
-        '0001-gnupg-2.2.9-have-drive-letters.patch'
-        '0003-scd-Fix-for-SCARD_IO_REQUEST-structure.patch')
-sha256sums=('9189fbd4ec83ad243a4e499d5cb7fe72e4532176817e5ea880ed36a71dd82557'
+        '0001-gnupg-2.2.9-have-drive-letters.patch')
+sha256sums=('67ebe016ca90fa7688ce67a387ebd82c6261e95897db7b23df24ff335be85bc6'
             'SKIP'
-            'cb23f1a61fd213c25e85b6ba8afb190b7da14a8cfa59cc56ce82df941db8c3c9'
-            'bf9d6675024fa21003f48fc706a5f80799362b7370db0a6de19be36cf73919a5'
-            'fe8c17bf1ab486f275e270048242d891881f733eda399f4a0acea36033f77df3')
+            '6e6dfa9a64d4986f47dfb6937addb51e2e22f55c762559f104eae5a226bdd43f'
+            'bf9d6675024fa21003f48fc706a5f80799362b7370db0a6de19be36cf73919a5')
 validpgpkeys=('031EC2536E580D8EA286A9F22071B08A33BD3F06'
               'D8692123C4065DEA5E0F3AB5249B39D24F25E3B6'
               '6DAA6E64A76D2840571B4902528897B826403ADA'
@@ -66,7 +64,6 @@ prepare() {
   sed '/noinst_SCRIPTS = gpg-zip/c sbin_SCRIPTS += gpg-zip' -i tools/Makefile.in
   patch -p1 -i ${srcdir}/gnupg-2.2.8-msys2.patch
   patch -p1 -i ${srcdir}/0001-gnupg-2.2.9-have-drive-letters.patch
-  patch -p1 -i ${srcdir}/0003-scd-Fix-for-SCARD_IO_REQUEST-structure.patch
 
   autoreconf -fiv
 
