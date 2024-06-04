@@ -1,8 +1,8 @@
 diff --git a/Configurations/10-main.conf b/Configurations/10-main.conf
-index e8084ab..6af9f99 100644
+index b1719be..f68dc4e 100644
 --- a/Configurations/10-main.conf
 +++ b/Configurations/10-main.conf
-@@ -1690,6 +1690,53 @@ my %targets = (
+@@ -1774,6 +1774,53 @@ my %targets = (
  	inherit_from     => [ "Cygwin-x86" ]
      },
  
@@ -86,10 +86,10 @@ index 0000000..33c845d
 +1;
 +
 diff --git a/Configurations/shared-info.pl b/Configurations/shared-info.pl
-index edd16f4..531067b 100644
+index caf6f90..7fc7da2 100644
 --- a/Configurations/shared-info.pl
 +++ b/Configurations/shared-info.pl
-@@ -49,6 +49,10 @@ my %shared_info;
+@@ -55,6 +55,10 @@ my %shared_info;
          shared_ldflag         => '-shared -Wl,--enable-auto-image-base',
          shared_impflag        => '-Wl,--out-implib=',
      },
@@ -101,7 +101,7 @@ index edd16f4..531067b 100644
          return {
              %{$shared_info{'cygwin-shared'}},
 diff --git a/Configurations/unix-Makefile.tmpl b/Configurations/unix-Makefile.tmpl
-index 17e194f..bc242f2 100644
+index dcd41a9..cd417de 100644
 --- a/Configurations/unix-Makefile.tmpl
 +++ b/Configurations/unix-Makefile.tmpl
 @@ -8,7 +8,7 @@
@@ -127,10 +127,10 @@ index 020d129..0069a55 100644
      SOURCE[openssl]=openssl.rc
    ENDIF
 diff --git a/build.info b/build.info
-index 5a84216..3ce486e 100644
+index d9e3c90..1b1293c 100644
 --- a/build.info
 +++ b/build.info
-@@ -82,7 +82,7 @@ IF[{- defined $target{shared_defflag} -}]
+@@ -91,7 +91,7 @@ IF[{- defined $target{shared_defflag} -}]
    DEPEND[libcrypto.ld libssl.ld]=configdata.pm util/perl/OpenSSL/Ordinals.pm
  ENDIF
  
@@ -140,7 +140,7 @@ index 5a84216..3ce486e 100644
    GENERATE[libssl.rc]=util/mkrc.pl libssl
    DEPEND[libcrypto.rc libssl.rc]=configdata.pm
 diff --git a/crypto/build.info b/crypto/build.info
-index b67658c..3ab9a89 100644
+index 2d5b22f..11f08ab 100644
 --- a/crypto/build.info
 +++ b/crypto/build.info
 @@ -140,6 +140,6 @@ GENERATE[riscv64cpuid.s]=riscv64cpuid.pl
@@ -186,10 +186,10 @@ index 4dd1b44..8fe3d80 100644
  
  ##  Parse flags.
 diff --git a/util/perl/OpenSSL/config.pm b/util/perl/OpenSSL/config.pm
-index 6350e1e..3718ebc 100755
+index 047902c..b6f56d2 100755
 --- a/util/perl/OpenSSL/config.pm
 +++ b/util/perl/OpenSSL/config.pm
-@@ -163,6 +163,7 @@ my $guess_patterns = [
+@@ -164,6 +164,7 @@ my $guess_patterns = [
      [ 'MINGW64.*?:.*?:.*?:x86_64',  '${MACHINE}-whatever-mingw64' ],
      [ 'MINGW.*',                    '${MACHINE}-whatever-mingw' ],
      [ 'CYGWIN.*',                   '${MACHINE}-pc-cygwin' ],
@@ -198,23 +198,23 @@ index 6350e1e..3718ebc 100755
  
      # The MACHINE part of the array POSIX::uname() returns on VMS isn't
 diff --git a/crypto/bio/bss_dgram.c b/crypto/bio/bss_dgram.c
-index e8084ab..6af9f99 100644
+index 69f3b48..7df025f 100644
 --- a/crypto/bio/bss_dgram.c
 +++ b/crypto/bio/bss_dgram.c
-@@ -1169,7 +1169,7 @@
+@@ -1192,7 +1192,7 @@ static int pack_local(BIO *b, MSGHDR_TYPE *mh, const BIO_ADDR *local) {
          cmsg->cmsg_type  = IP_PKTINFO;
  
          info = (struct in_pktinfo *)BIO_CMSG_DATA(cmsg);
--#   if !defined(OPENSSL_SYS_WINDOWS) && !defined(OPENSSL_SYS_CYGWIN)
-+#   if !defined(OPENSSL_SYS_WINDOWS) && !defined(OPENSSL_SYS_CYGWIN) && !defined(OPENSSL_SYS_MSYS)
+-#   if !defined(OPENSSL_SYS_WINDOWS) && !defined(OPENSSL_SYS_CYGWIN) && !defined(__FreeBSD__)
++#   if !defined(OPENSSL_SYS_WINDOWS) && !defined(OPENSSL_SYS_CYGWIN) && !defined(__FreeBSD__) && !defined(OPENSSL_SYS_MSYS)
          info->ipi_spec_dst      = local->s_in.sin_addr;
  #   endif
          info->ipi_addr.s_addr   = 0;
 diff --git a/include/openssl/e_os2.h b/include/openssl/e_os2.h
-index e8084ab..6af9f99 100644
+index f1e1795..412cfff 100644
 --- a/include/openssl/e_os2.h
 +++ b/include/openssl/e_os2.h
-@@ -1169,7 +1169,7 @@
+@@ -54,7 +54,7 @@ extern "C" {
  #  undef OPENSSL_SYS_UNIX
  #  define OPENSSL_SYS_WIN32_UWIN
  # else
