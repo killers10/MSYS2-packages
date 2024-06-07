@@ -1,4 +1,4 @@
-From da1cb5fe906f7b52fd7b3d190ca5fcbf3b6a5436 Mon Sep 17 00:00:00 2001
+From 9d466b31c059f7045c5f424d1ddc57438c5f2284 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Fri, 2 Jun 2017 17:54:57 +0200
 Subject: [PATCH 2/3] RunTest: adjust ISO-8859-1 tests for Cygwin
