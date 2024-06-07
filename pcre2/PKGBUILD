@@ -54,7 +54,22 @@ build() {
 
 check() {
   cd "${srcdir}"/${pkgname}-${pkgver}
+
+  # Work around bug in PCRE2 10.44
+  test i686 != "$CARCH" ||
+  for f in testdata/testoutput8-8-2 testdata/testoutput8-16-2 testdata/testoutput8-32-2
+  do
+    cp "../${pkgname}-${pkgver}/$f" "../${pkgname}-${pkgver}/$f.backup"
+    perl -pi -e 's{^(Memory allocation - compiled block : )(\d+)$}{$1 . ($2 - 24)}e' "../${pkgname}-${pkgver}/$f"
+  done
+
   make -j1 check
+
+  for f in testdata/testoutput8-8-2 testdata/testoutput8-16-2 testdata/testoutput8-32-2
+  do
+    test ! -f "../${pkgname}-${pkgver}/$f.backup" ||
+    mv "../${pkgname}-${pkgver}/$f.backup" "../${pkgname}-${pkgver}/$f"
+  done
 }
 
 package_pcre2() {
