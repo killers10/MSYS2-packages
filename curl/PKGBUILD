@@ -6,8 +6,8 @@ pkgver=8.11.0
 pkgrel=1
 pkgdesc="Multi-protocol file transfer utility"
 arch=('i686' 'x86_64')
-url="https://curl.haxx.se"
-license=('MIT')
+url="https://curl.se/"
+license=('spdx:MIT')
 depends=('ca-certificates')
 makedepends=('heimdal-devel' 'libcrypt-devel' 'libidn2-devel'
              'libnghttp2-devel' 'libpsl-devel' 'libssh2-devel' 'openssl-devel' 'zlib-devel') #  'libcares-devel'
