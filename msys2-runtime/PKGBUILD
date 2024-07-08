@@ -4,7 +4,7 @@
 pkgbase=msys2-runtime
 pkgname=('msys2-runtime' 'msys2-runtime-devel')
 pkgver=3.4.10
-pkgrel=2
+pkgrel=3
 pkgdesc="Cygwin POSIX emulation engine"
 arch=('x86_64')
 url="https://www.cygwin.com/"
@@ -92,9 +92,10 @@ source=('msys2-runtime'::git+https://github.com/cygwin/cygwin#tag=cygwin-${pkgve
         0063-Cygwin-console-Avoid-slipping-past-disable_master_th.patch
         0064-Cygwin-pty-Fix-handle-leak-in-master-process.patch
         0065-Cygwin-pty-Fix-potential-handle-leak-regarding-CallN.patch
-        0066-Cygwin-console-Make-VMIN-and-VTIME-work.patch)
-sha256sums=('SKIP'
-            'a27c84e3755895bc81bb5bc5f6f3d9ac67de80f42a551480fc539b0a9670dd89'
+        0066-Cygwin-console-Make-VMIN-and-VTIME-work.patch
+        0067-Cygwin-suppress-a-warning-generated-with-w32api-12.0.patch)
+sha256sums=('4fb94e9f3bab9666dcab50c8940de6e8801d0aae900f0b5a6f79406479e757f1'
+            '06e14933861636ce850cf4cfb1a28abca7393e3efd6271981265a643e00b5d28'
             '351bb1efdbdafe80c981e92d6b425c6ab71c85ce4e990db184e2118158eb2ab6'
             'd3d3a01feeae9f7d5e6cb32f4662df74fc9476ff11a1aac3dad2df3e43fd88e4'
             '2e50ecd65f2fd413baaf39e5058a6b252245abc7d34f4ebf17dd4f7ffed60ced'
@@ -160,7 +161,8 @@ sha256sums=('SKIP'
             'd309a8ea69a0b1b173d56e5bb5a0003613a937d48c6d7736a5ed358ac25c1ef4'
             'f661eb5b8ea9270888ad8bb129b307af5408fbf02a046bed91692666b54fc610'
             '8177e7300bcd0a2d96de2d29faf0b21a7fec74c77ac0ac66bbb8244e37efb541'
-            '22a99a0f9f1b90ab6d7fb1cee76c76f7c82d2185a5d0acf7bd60553f54fc9e80')
+            '22a99a0f9f1b90ab6d7fb1cee76c76f7c82d2185a5d0acf7bd60553f54fc9e80'
+            '11c89890557f23dfaf754bc11381d8fd82e3db0755d56df6b6e30e018d2c3ef3')
 
 # Helper macros to help make tasks easier #
 apply_patch_with_msg() {
@@ -280,7 +282,8 @@ prepare() {
   0063-Cygwin-console-Avoid-slipping-past-disable_master_th.patch \
   0064-Cygwin-pty-Fix-handle-leak-in-master-process.patch \
   0065-Cygwin-pty-Fix-potential-handle-leak-regarding-CallN.patch \
-  0066-Cygwin-console-Make-VMIN-and-VTIME-work.patch
+  0066-Cygwin-console-Make-VMIN-and-VTIME-work.patch \
+  0067-Cygwin-suppress-a-warning-generated-with-w32api-12.0.patch
 }
 
 build() {
