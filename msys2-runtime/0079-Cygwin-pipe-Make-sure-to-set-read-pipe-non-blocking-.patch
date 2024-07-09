@@ -1,0 +1,176 @@
+From a4d92d60dc618a2c1207dab20dcd04b4fb7cb541 Mon Sep 17 00:00:00 2001
+From: Takashi Yano <takashi.yano@nifty.ne.jp>
+Date: Mon, 11 Mar 2024 22:08:00 +0900
+Subject: [PATCH 79/N] Cygwin: pipe: Make sure to set read pipe non-blocking
+ for cygwin apps.
+
+If pipe reader is a non-cygwin app first, and cygwin process reads
+the same pipe after that, the pipe has been set to bclocking mode
+for the cygwin app. However, the commit 9e4d308cd592 assumes the
+pipe for cygwin process always is non-blocking mode. With this patch,
+the pipe mode is reset to non-blocking when cygwin app is started.
+
+Backported-from: 55431b408e (Cygwin: pipe: Make sure to set read pipe non-blocking for cygwin apps., 2024-03-11)
+Addresses: https://cygwin.com/pipermail/cygwin/2024-March/255644.html
+Fixes: 9e4d308cd592 ("Cygwin: pipe: Adopt FILE_SYNCHRONOUS_IO_NONALERT flag for read pipe.")
+Reported-by: wh <wh9692@protonmail.com>
+Reviewed-by: Corinna Vinschen <corinna@vinschen.de>
+Signed-off-by: Takashi Yano <takashi.yano@nifty.ne.jp>
+Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
+---
+ winsup/cygwin/fhandler/pipe.cc          | 63 +++++++++++++++++++++++++
+ winsup/cygwin/local_includes/fhandler.h |  3 ++
+ winsup/cygwin/spawn.cc                  | 34 +------------
+ 3 files changed, 68 insertions(+), 32 deletions(-)
+
+diff --git a/winsup/cygwin/fhandler/pipe.cc b/winsup/cygwin/fhandler/pipe.cc
+index 05b1625..8daae8d 100644
+--- a/winsup/cygwin/fhandler/pipe.cc
++++ b/winsup/cygwin/fhandler/pipe.cc
+@@ -18,6 +18,7 @@ details. */
+ #include "pinfo.h"
+ #include "shared_info.h"
+ #include "tls_pbuf.h"
++#include "sigproc.h"
+ #include <assert.h>
+ 
+ /* This is only to be used for writing.  When reading,
+@@ -587,6 +588,17 @@ fhandler_pipe::fixup_after_fork (HANDLE parent)
+   ReleaseMutex (hdl_cnt_mtx);
+ }
+ 
++void
++fhandler_pipe::fixup_after_exec ()
++{
++  /* Set read pipe itself always non-blocking for cygwin process.
++     Blocking/non-blocking is simulated in raw_read(). For write
++     pipe, follow is_nonblocking(). */
++  bool mode = get_device () == FH_PIPEW ? is_nonblocking () : true;
++  set_pipe_non_blocking (mode);
++  fhandler_base::fixup_after_exec ();
++}
++
+ int
+ fhandler_pipe::dup (fhandler_base *child, int flags)
+ {
+@@ -1370,3 +1382,54 @@ close_proc:
+   HeapFree (GetProcessHeap (), 0, shi);
+   return NULL;
+ }
++
++void
++fhandler_pipe::spawn_worker (int fileno_stdin, int fileno_stdout,
++			     int fileno_stderr)
++{
++  bool need_send_noncygchld_sig = false;
++
++  /* spawn_worker() is called from spawn.cc only when non-cygwin app
++     is started. Set pipe mode blocking for the non-cygwin process. */
++  int fd;
++  cygheap_fdenum cfd (false);
++  while ((fd = cfd.next ()) >= 0)
++    if (cfd->get_dev () == FH_PIPEW
++	&& (fd == fileno_stdout || fd == fileno_stderr))
++      {
++	fhandler_pipe *pipe = (fhandler_pipe *)(fhandler_base *) cfd;
++	pipe->set_pipe_non_blocking (false);
++
++	/* Setup for query_ndl stuff. Read the comment below. */
++	if (pipe->request_close_query_hdl ())
++	  need_send_noncygchld_sig = true;
++      }
++    else if (cfd->get_dev () == FH_PIPER && fd == fileno_stdin)
++      {
++	fhandler_pipe *pipe = (fhandler_pipe *)(fhandler_base *) cfd;
++	pipe->set_pipe_non_blocking (false);
++      }
++
++  /* If multiple writers including non-cygwin app exist, the non-cygwin
++     app cannot detect pipe closure on the read side when the pipe is
++     created by system account or the pipe creator is running as service.
++     This is because query_hdl which is held in write side also is a read
++     end of the pipe, so the pipe is still alive for the non-cygwin app
++     even after the reader is closed.
++
++     To avoid this problem, let all processes in the same process
++     group close query_hdl using internal signal __SIGNONCYGCHLD when
++     non-cygwin app is started.  */
++  if (need_send_noncygchld_sig)
++    {
++      tty_min dummy_tty;
++      dummy_tty.ntty = (fh_devices) myself->ctty;
++      dummy_tty.pgid = myself->pgid;
++      tty_min *t = cygwin_shared->tty.get_cttyp ();
++      if (!t) /* If tty is not allocated, use dummy_tty instead. */
++	t = &dummy_tty;
++      /* Emit __SIGNONCYGCHLD to let all processes in the
++	 process group close query_hdl. */
++      t->kill_pgrp (__SIGNONCYGCHLD);
++    }
++}
+diff --git a/winsup/cygwin/local_includes/fhandler.h b/winsup/cygwin/local_includes/fhandler.h
+index 649a431..15b19f7 100644
+--- a/winsup/cygwin/local_includes/fhandler.h
++++ b/winsup/cygwin/local_includes/fhandler.h
+@@ -1212,6 +1212,7 @@ public:
+   int open (int flags, mode_t mode = 0);
+   bool open_setup (int flags);
+   void fixup_after_fork (HANDLE);
++  void fixup_after_exec ();
+   int dup (fhandler_base *child, int);
+   void set_close_on_exec (bool val);
+   int close ();
+@@ -1273,6 +1274,8 @@ public:
+ 	}
+       return false;
+     }
++  static void spawn_worker (int fileno_stdin, int fileno_stdout,
++			    int fileno_stderr);
+ };
+ 
+ #define CYGWIN_FIFO_PIPE_NAME_LEN     47
+diff --git a/winsup/cygwin/spawn.cc b/winsup/cygwin/spawn.cc
+index 383f5e5..acdef49 100644
+--- a/winsup/cygwin/spawn.cc
++++ b/winsup/cygwin/spawn.cc
+@@ -607,38 +607,8 @@ child_info_spawn::worker (const char *prog_arg, const char *const *argv,
+       int fileno_stderr = 2;
+ 
+       if (!iscygwin ())
+-	{
+-	  bool need_send_sig = false;
+-	  int fd;
+-	  cygheap_fdenum cfd (false);
+-	  while ((fd = cfd.next ()) >= 0)
+-	    if (cfd->get_dev () == FH_PIPEW
+-		     && (fd == fileno_stdout || fd == fileno_stderr))
+-	      {
+-		fhandler_pipe *pipe = (fhandler_pipe *)(fhandler_base *) cfd;
+-		pipe->set_pipe_non_blocking (false);
+-		if (pipe->request_close_query_hdl ())
+-		  need_send_sig = true;
+-	      }
+-	    else if (cfd->get_dev () == FH_PIPER && fd == fileno_stdin)
+-	      {
+-		fhandler_pipe *pipe = (fhandler_pipe *)(fhandler_base *) cfd;
+-		pipe->set_pipe_non_blocking (false);
+-	      }
+-
+-	  if (need_send_sig)
+-	    {
+-	      tty_min dummy_tty;
+-	      dummy_tty.ntty = (fh_devices) myself->ctty;
+-	      dummy_tty.pgid = myself->pgid;
+-	      tty_min *t = cygwin_shared->tty.get_cttyp ();
+-	      if (!t) /* If tty is not allocated, use dummy_tty instead. */
+-		t = &dummy_tty;
+-	      /* Emit __SIGNONCYGCHLD to let all processes in the
+-		 process group close query_hdl. */
+-	      t->kill_pgrp (__SIGNONCYGCHLD);
+-	    }
+-	}
++	fhandler_pipe::spawn_worker (fileno_stdin, fileno_stdout,
++				     fileno_stderr);
+ 
+       bool no_pcon = mode != _P_OVERLAY && mode != _P_WAIT;
+       term_spawn_worker.setup (iscygwin (), handle (fileno_stdin, false),

@@ -4,7 +4,7 @@
 pkgbase=msys2-runtime
 pkgname=('msys2-runtime' 'msys2-runtime-devel')
 pkgver=3.4.10
-pkgrel=4
+pkgrel=5
 pkgdesc="Cygwin POSIX emulation engine"
 arch=('x86_64')
 url="https://www.cygwin.com/"
@@ -100,9 +100,14 @@ source=('msys2-runtime'::git+https://github.com/cygwin/cygwin#tag=cygwin-${pkgve
         0071-Allow-deriving-the-current-user-s-home-directory-via.patch
         0072-Respect-db_home-setting-even-for-SYSTEM-Microsoft-ac.patch
         0073-uinfo-special-case-IIS-APPPOOL-accounts.patch
-        0074-Do-not-rely-on-getenv-HOME-s-path-conversion.patch)
+        0074-Do-not-rely-on-getenv-HOME-s-path-conversion.patch
+        0075-pathconv-don-t-skip-arguments-with-double-quote.patch
+        0076-Cygwin-console-Fix-exit-code-for-non-cygwin-process.patch
+        0077-Cygwin-console-Avoid-slipping-past-disable_master_th.patch
+        0078-Cygwin-pipe-Give-up-to-use-query_hdl-for-non-cygwin-.patch
+        0079-Cygwin-pipe-Make-sure-to-set-read-pipe-non-blocking-.patch)
 sha256sums=('4fb94e9f3bab9666dcab50c8940de6e8801d0aae900f0b5a6f79406479e757f1'
-            '17057a2215cab634b3bf831b646177d44bb0886baac817c5dd3a58977c45345c'
+            'ed45a5f7b0ec05d4499ab5fa2a28c6a7f680550c8721575c1a4f5c16f6e26218'
             '351bb1efdbdafe80c981e92d6b425c6ab71c85ce4e990db184e2118158eb2ab6'
             'd3d3a01feeae9f7d5e6cb32f4662df74fc9476ff11a1aac3dad2df3e43fd88e4'
             '2e50ecd65f2fd413baaf39e5058a6b252245abc7d34f4ebf17dd4f7ffed60ced'
@@ -176,7 +181,12 @@ sha256sums=('4fb94e9f3bab9666dcab50c8940de6e8801d0aae900f0b5a6f79406479e757f1'
             '5eeebaad19822c72b2ef599c798d9bf93a31f868b47798b7b8437a3ec38184e8'
             'b7749b7829af7155a1351d954d5321a20c2919875109633382f21f244789063d'
             'f09716621fd2a6b368f2ea66ef3d54196cc4419c4241c0b6df04c29f4ce152ec'
-            '1a8f598901d871e4661e67fcfbb96abcdf4399c4a55d17ed40d21c8f0473418d')
+            '1a8f598901d871e4661e67fcfbb96abcdf4399c4a55d17ed40d21c8f0473418d'
+            '88db7e55e873372dc173c3168dc196e7e09778f36417fc8d13235f44f4b45594'
+            'f79dfecd2d21b2900e0ff5779f0a0d6aeea0b3d5169718f43c84e3890b72a7c4'
+            '3a0c596ffe04e99d96b18e77c39c99ce7f3a25a18827953079dbea52b6cd161e'
+            '26e744a65f5143885816bbc86268b1543a05b140716854560063e936b75456ff'
+            '7b4e8e91b757d3597c85eb2d83a85ed5f57414b74967b0fa4c87a87332eb04c7')
 
 # Helper macros to help make tasks easier #
 apply_patch_with_msg() {
@@ -304,7 +314,12 @@ prepare() {
   0071-Allow-deriving-the-current-user-s-home-directory-via.patch \
   0072-Respect-db_home-setting-even-for-SYSTEM-Microsoft-ac.patch \
   0073-uinfo-special-case-IIS-APPPOOL-accounts.patch \
-  0074-Do-not-rely-on-getenv-HOME-s-path-conversion.patch
+  0074-Do-not-rely-on-getenv-HOME-s-path-conversion.patch \
+  0075-pathconv-don-t-skip-arguments-with-double-quote.patch \
+  0076-Cygwin-console-Fix-exit-code-for-non-cygwin-process.patch \
+  0077-Cygwin-console-Avoid-slipping-past-disable_master_th.patch \
+  0078-Cygwin-pipe-Give-up-to-use-query_hdl-for-non-cygwin-.patch \
+  0079-Cygwin-pipe-Make-sure-to-set-read-pipe-non-blocking-.patch
 }
 
 build() {
