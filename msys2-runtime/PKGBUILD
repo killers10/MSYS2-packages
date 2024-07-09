@@ -4,7 +4,7 @@
 pkgbase=msys2-runtime
 pkgname=('msys2-runtime' 'msys2-runtime-devel')
 pkgver=3.4.10
-pkgrel=3
+pkgrel=4
 pkgdesc="Cygwin POSIX emulation engine"
 arch=('x86_64')
 url="https://www.cygwin.com/"
@@ -93,9 +93,16 @@ source=('msys2-runtime'::git+https://github.com/cygwin/cygwin#tag=cygwin-${pkgve
         0064-Cygwin-pty-Fix-handle-leak-in-master-process.patch
         0065-Cygwin-pty-Fix-potential-handle-leak-regarding-CallN.patch
         0066-Cygwin-console-Make-VMIN-and-VTIME-work.patch
-        0067-Cygwin-suppress-a-warning-generated-with-w32api-12.0.patch)
+        0067-Cygwin-suppress-a-warning-generated-with-w32api-12.0.patch
+        0068-fixup-Allow-overriding-the-home-directory-via-the-HO.patch
+        0069-fixup-Respect-db_home-setting-even-for-the-SYSTEM-ac.patch
+        0070-fixup-Respect-the-db_home-env-setting-under-more-cir.patch
+        0071-Allow-deriving-the-current-user-s-home-directory-via.patch
+        0072-Respect-db_home-setting-even-for-SYSTEM-Microsoft-ac.patch
+        0073-uinfo-special-case-IIS-APPPOOL-accounts.patch
+        0074-Do-not-rely-on-getenv-HOME-s-path-conversion.patch)
 sha256sums=('4fb94e9f3bab9666dcab50c8940de6e8801d0aae900f0b5a6f79406479e757f1'
-            '06e14933861636ce850cf4cfb1a28abca7393e3efd6271981265a643e00b5d28'
+            '17057a2215cab634b3bf831b646177d44bb0886baac817c5dd3a58977c45345c'
             '351bb1efdbdafe80c981e92d6b425c6ab71c85ce4e990db184e2118158eb2ab6'
             'd3d3a01feeae9f7d5e6cb32f4662df74fc9476ff11a1aac3dad2df3e43fd88e4'
             '2e50ecd65f2fd413baaf39e5058a6b252245abc7d34f4ebf17dd4f7ffed60ced'
@@ -162,7 +169,14 @@ sha256sums=('4fb94e9f3bab9666dcab50c8940de6e8801d0aae900f0b5a6f79406479e757f1'
             'f661eb5b8ea9270888ad8bb129b307af5408fbf02a046bed91692666b54fc610'
             '8177e7300bcd0a2d96de2d29faf0b21a7fec74c77ac0ac66bbb8244e37efb541'
             '22a99a0f9f1b90ab6d7fb1cee76c76f7c82d2185a5d0acf7bd60553f54fc9e80'
-            '11c89890557f23dfaf754bc11381d8fd82e3db0755d56df6b6e30e018d2c3ef3')
+            '11c89890557f23dfaf754bc11381d8fd82e3db0755d56df6b6e30e018d2c3ef3'
+            'f0b4b25869832822f8b943de9e09bf99c3eaa76cd339fb46edfd57db3f80ff18'
+            'bd492e06e404fd1b77a7e6851cc74e80e02d3611c662c43b4efd9f40749c1fee'
+            '1785d26cc923ef5ad0dca7cb0f8ee0b8fe90cb7a1ec74b0b73a4a1fd0492eee7'
+            '5eeebaad19822c72b2ef599c798d9bf93a31f868b47798b7b8437a3ec38184e8'
+            'b7749b7829af7155a1351d954d5321a20c2919875109633382f21f244789063d'
+            'f09716621fd2a6b368f2ea66ef3d54196cc4419c4241c0b6df04c29f4ce152ec'
+            '1a8f598901d871e4661e67fcfbb96abcdf4399c4a55d17ed40d21c8f0473418d')
 
 # Helper macros to help make tasks easier #
 apply_patch_with_msg() {
@@ -283,7 +297,14 @@ prepare() {
   0064-Cygwin-pty-Fix-handle-leak-in-master-process.patch \
   0065-Cygwin-pty-Fix-potential-handle-leak-regarding-CallN.patch \
   0066-Cygwin-console-Make-VMIN-and-VTIME-work.patch \
-  0067-Cygwin-suppress-a-warning-generated-with-w32api-12.0.patch
+  0067-Cygwin-suppress-a-warning-generated-with-w32api-12.0.patch \
+  0068-fixup-Allow-overriding-the-home-directory-via-the-HO.patch \
+  0069-fixup-Respect-db_home-setting-even-for-the-SYSTEM-ac.patch \
+  0070-fixup-Respect-the-db_home-env-setting-under-more-cir.patch \
+  0071-Allow-deriving-the-current-user-s-home-directory-via.patch \
+  0072-Respect-db_home-setting-even-for-SYSTEM-Microsoft-ac.patch \
+  0073-uinfo-special-case-IIS-APPPOOL-accounts.patch \
+  0074-Do-not-rely-on-getenv-HOME-s-path-conversion.patch
 }
 
 build() {
