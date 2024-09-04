@@ -1,7 +1,7 @@
 # Maintainer: Alexey Pavlov <alexpux@gmail.com>
 
 pkgname=('openssl' 'libopenssl' 'openssl-devel' 'openssl-docs')
-pkgver=3.2.2
+pkgver=3.2.3
 pkgrel=1
 pkgdesc='The Open Source toolkit for Secure Sockets Layer and Transport Layer Security'
 arch=('i686' 'x86_64')
@@ -9,12 +9,12 @@ url='https://www.openssl.org'
 license=('spdx:Apache-2.0')
 makedepends=('gcc' 'tar' 'perl' 'diffutils' 'nasm')
 noextract=(${pkgname}-${pkgver}.tar.gz)
-source=("https://www.openssl.org/source/${pkgname}-${pkgver}.tar.gz"{,.asc}
+source=("https://github.com/openssl/openssl/releases/download/openssl-${pkgver}/openssl-${pkgver}.tar.gz"{,.asc}
         '0001-Use-usr-ssl-as-ca-dir-instead-of-.-demoCA.patch'
         '0002-Support-MSYS2.patch'
         '0004-Override-engines-directory.patch'
         '0005-skip-dllmain-detach.patch')
-sha256sums=('197149c18d9e9f292c43f0400acaba12e5f52cacfe050f3d199277ea738ec2e7'
+sha256sums=('52b5f1c6b8022bc5868c308c54fb77705e702d6c6f4594f99a0df216acf46239'
             'SKIP'
             '7ff3213d8d085238695f076d254f16d15b16a9baca1f9393c1bed0057006da2c'
             '3d298e18ad5206167508df151cf16c8dd6d3b6e2516044e289578b4eaa083e7e'
