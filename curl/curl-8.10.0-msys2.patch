@@ -1,4 +1,4 @@
-From 9eb3137f8be9250873c3bf5254eda5baca88450e Mon Sep 17 00:00:00 2001
+From 716d8ad8006bac43e43729c7a504a1ee084e3dc1 Mon Sep 17 00:00:00 2001
 From: Alexpux <alexey.pawlow@gmail.com>
 Date: Sat, 2 Nov 2013 12:42:49 +0400
 Subject: [PATCH] MSYS2 support for cURL
@@ -10,23 +10,23 @@ Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/m4/curl-compilers.m4 b/m4/curl-compilers.m4
-index e732a87..920ef73 100644
+index 240aa2b..a6c5c02 100644
 --- a/m4/curl-compilers.m4
 +++ b/m4/curl-compilers.m4
-@@ -921,7 +921,7 @@ AC_DEFUN([CURL_SET_COMPILER_WARNING_OPTS], [
-           dnl Only clang 3.2 or later
-           if test "$compiler_num" -ge "302"; then
+@@ -852,7 +852,7 @@ AC_DEFUN([CURL_SET_COMPILER_WARNING_OPTS], [
+             CURL_ADD_COMPILER_WARNINGS([tmp_CFLAGS], [enum-conversion])
+             CURL_ADD_COMPILER_WARNINGS([tmp_CFLAGS], [sometimes-uninitialized])
              case $host_os in
--            cygwin* | mingw*)
-+            cygwin* | msys* | mingw*)
-               dnl skip missing-variable-declarations warnings for cygwin and
-               dnl mingw because the libtool wrapper executable causes them
-               ;;
+-              cygwin* | mingw*)
++              cygwin* | msys* | mingw*)
+                 dnl skip missing-variable-declarations warnings for Cygwin and
+                 dnl MinGW because the libtool wrapper executable causes them
+                 ;;
 diff --git a/m4/xc-lt-iface.m4 b/m4/xc-lt-iface.m4
-index 465767f..752c8f9 100644
+index f3ac0de..c1ba53c 100644
 --- a/m4/xc-lt-iface.m4
 +++ b/m4/xc-lt-iface.m4
-@@ -263,7 +263,7 @@ elif test "x$allow_undefined_flag" = 'xunsupported'; then
+@@ -265,7 +265,7 @@ elif test "x$allow_undefined_flag" = 'xunsupported'; then
    xc_lt_shlib_use_no_undefined='yes'
  fi
  case $host_os in @%:@ (
