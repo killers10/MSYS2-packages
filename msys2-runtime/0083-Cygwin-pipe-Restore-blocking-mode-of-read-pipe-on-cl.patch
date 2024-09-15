@@ -1,0 +1,75 @@
+From acc71340a481ff3ebe339b015f58ae7505fec585 Mon Sep 17 00:00:00 2001
+From: Takashi Yano <takashi.yano@nifty.ne.jp>
+Date: Fri, 30 Aug 2024 23:15:44 +0900
+Subject: [PATCH 83/N] Cygwin: pipe: Restore blocking mode of read pipe on
+ close()
+
+If a cygwin app is executed from a non-cygwin app and the cygwin
+app exits, read pipe remains on non-blocking mode because of the
+commit fc691d0246b9. Due to this behaviour, the non-cygwin app
+cannot read the pipe correctly after that. With this patch, the
+blocking mode of the read pipe is stored into was_blocking_read_pipe
+on set_pipe_non_blocking() when the cygwin app starts and restored
+on close().
+
+Addresses: https://github.com/git-for-windows/git/issues/5115
+Fixes: fc691d0246b9 ("Cygwin: pipe: Make sure to set read pipe non-blocking for cygwin apps.");
+Reported-by: isaacag, Johannes Schindelin <Johannes.Schindelin@gmx.de>
+Reported-at: https://github.com/git-for-windows/git/issues/5115
+Signed-off-by: Takashi Yano <takashi.yano@nifty.ne.jp>
+Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
+---
+ winsup/cygwin/fhandler/pipe.cc          | 13 +++++++++++++
+ winsup/cygwin/local_includes/fhandler.h |  1 +
+ 2 files changed, 14 insertions(+)
+
+diff --git a/winsup/cygwin/fhandler/pipe.cc b/winsup/cygwin/fhandler/pipe.cc
+index 8daae8d..c47226b 100644
+--- a/winsup/cygwin/fhandler/pipe.cc
++++ b/winsup/cygwin/fhandler/pipe.cc
+@@ -54,6 +54,15 @@ fhandler_pipe::set_pipe_non_blocking (bool nonblocking)
+   IO_STATUS_BLOCK io;
+   FILE_PIPE_INFORMATION fpi;
+ 
++  if (get_device () == FH_PIPER && nonblocking && !was_blocking_read_pipe)
++    {
++      status = NtQueryInformationFile (get_handle (), &io, &fpi, sizeof fpi,
++				       FilePipeInformation);
++      if (NT_SUCCESS (status))
++	was_blocking_read_pipe =
++	  (fpi.CompletionMode == FILE_PIPE_QUEUE_OPERATION);
++    }
++
+   fpi.ReadMode = FILE_PIPE_BYTE_STREAM_MODE;
+   fpi.CompletionMode = nonblocking ? FILE_PIPE_COMPLETE_OPERATION
+     : FILE_PIPE_QUEUE_OPERATION;
+@@ -94,6 +103,8 @@ fhandler_pipe::init (HANDLE f, DWORD a, mode_t mode, int64_t uniq_id)
+        even with FILE_SYNCHRONOUS_IO_NONALERT. */
+     set_pipe_non_blocking (get_device () == FH_PIPER ?
+ 			   true : is_nonblocking ());
++  was_blocking_read_pipe = false;
++
+   return 1;
+ }
+ 
+@@ -675,6 +686,8 @@ fhandler_pipe::close ()
+     CloseHandle (query_hdl);
+   if (query_hdl_close_req_evt)
+     CloseHandle (query_hdl_close_req_evt);
++  if (was_blocking_read_pipe)
++    set_pipe_non_blocking (false);
+   int ret = fhandler_base::close ();
+   ReleaseMutex (hdl_cnt_mtx);
+   CloseHandle (hdl_cnt_mtx);
+diff --git a/winsup/cygwin/local_includes/fhandler.h b/winsup/cygwin/local_includes/fhandler.h
+index 15b19f7..f017a6d 100644
+--- a/winsup/cygwin/local_includes/fhandler.h
++++ b/winsup/cygwin/local_includes/fhandler.h
+@@ -1193,6 +1193,7 @@ private:
+   uint64_t pipename_key;
+   DWORD pipename_pid;
+   LONG pipename_id;
++  bool was_blocking_read_pipe;
+   void release_select_sem (const char *);
+   HANDLE get_query_hdl_per_process (WCHAR *, OBJECT_NAME_INFORMATION *);
+   HANDLE get_query_hdl_per_system (WCHAR *, OBJECT_NAME_INFORMATION *);

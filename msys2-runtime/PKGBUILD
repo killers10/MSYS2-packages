@@ -4,7 +4,7 @@
 pkgbase=msys2-runtime
 pkgname=('msys2-runtime' 'msys2-runtime-devel')
 pkgver=3.4.10
-pkgrel=6
+pkgrel=7
 pkgdesc="Cygwin POSIX emulation engine"
 arch=('x86_64')
 url="https://www.cygwin.com/"
@@ -108,9 +108,10 @@ source=('msys2-runtime'::git+https://github.com/cygwin/cygwin#tag=cygwin-${pkgve
         0079-Cygwin-pipe-Make-sure-to-set-read-pipe-non-blocking-.patch
         0080-Cygwin-try-to-avoid-recalling-offline-files.patch
         0081-Cygwin-get-set-security-descriptors-using-FILE_OPEN_.patch
-        0082-Cygwin-FILE_OPEN_NO_RECALL-is-incompatible-with-FILE.patch)
+        0082-Cygwin-FILE_OPEN_NO_RECALL-is-incompatible-with-FILE.patch
+        0083-Cygwin-pipe-Restore-blocking-mode-of-read-pipe-on-cl.patch)
 sha256sums=('4fb94e9f3bab9666dcab50c8940de6e8801d0aae900f0b5a6f79406479e757f1'
-            '79be406cf3a35561e7873403cb24d84c5cd2c2af71c940319f969b061ac013f1'
+            '6f297ae4049c2a5b4ff085119284822d1b8045cd24c4b0328ab2808e68c18556'
             '351bb1efdbdafe80c981e92d6b425c6ab71c85ce4e990db184e2118158eb2ab6'
             'd3d3a01feeae9f7d5e6cb32f4662df74fc9476ff11a1aac3dad2df3e43fd88e4'
             '2e50ecd65f2fd413baaf39e5058a6b252245abc7d34f4ebf17dd4f7ffed60ced'
@@ -192,7 +193,8 @@ sha256sums=('4fb94e9f3bab9666dcab50c8940de6e8801d0aae900f0b5a6f79406479e757f1'
             '7b4e8e91b757d3597c85eb2d83a85ed5f57414b74967b0fa4c87a87332eb04c7'
             '7012f34047186556ae78b69bfe3eafccb2fe399ab122d5a21cadbf40533b4e0f'
             '7fd616f587212716ebdb21cad257c99ec5827638cf7c7819068c1d70020bd251'
-            '1b74ea7c955991440d61b6059386589e893ddd7513a86cb554833391cf172c41')
+            '1b74ea7c955991440d61b6059386589e893ddd7513a86cb554833391cf172c41'
+            'c8542adeb6324ee0edc96c1c9dfce3994cbbe3a42529e63db2b8b7213dbe393f')
 
 # Helper macros to help make tasks easier #
 apply_patch_with_msg() {
@@ -328,7 +330,8 @@ prepare() {
   0079-Cygwin-pipe-Make-sure-to-set-read-pipe-non-blocking-.patch \
   0080-Cygwin-try-to-avoid-recalling-offline-files.patch \
   0081-Cygwin-get-set-security-descriptors-using-FILE_OPEN_.patch \
-  0082-Cygwin-FILE_OPEN_NO_RECALL-is-incompatible-with-FILE.patch
+  0082-Cygwin-FILE_OPEN_NO_RECALL-is-incompatible-with-FILE.patch \
+  0083-Cygwin-pipe-Restore-blocking-mode-of-read-pipe-on-cl.patch
 }
 
 build() {
