@@ -17,7 +17,7 @@ die "Clean worktree required"
 git rm 0*.patch ||
 die "Could not remove previous patches"
 
-base_tag=refs/tags/cygwin-"$(sed -n -e 's/^pkgver=//p' <PKGBUILD)"
+base_tag=refs/tags/"$(expr "$(git -C src/msys2-runtime/ describe --tags HEAD)" : '^\(cygwin-[0-9.]*\)')"
 source_url=$(sed -ne 's/git+https:/https:/' -e 's/^source=\([^:]\+::\)\?["'\'']\?\([^"'\''#?=&,;[:space:]]\+[^)"'\''#?=&,;[:space:]]\).*/\2/p' <PKGBUILD)
 
 git -C src/msys2-runtime fetch --no-tags "$source_url" "$base_tag:$base_tag"
@@ -60,6 +60,7 @@ in_sources="$(echo "$patches" | sed "{s/^/        /;:1;N;s/\\n/\\\\n        /;b1
 in_prepare="$(echo "$patches" | sed -n '{:1;s|^|  |;H;${x;s/\n/ \\\\\\n/g;p;q};n;b1}')"
 sed -i -e "/^        0.*\.patch$/{:1;N;/[^)]$/b1;s|.*|$in_sources)|}" \
 	-e "/^ *apply_git_am_with_msg .*\\\\$/{s/.*/  apply_git_am_with_msg \\\\/p;:2;N;/[^}]$/b2;s|.*|$in_prepare\\n\\}|}" \
+	-e "s/^\\(pkgver=\\).*/\\1${base_tag#refs/tags/cygwin-}/" \
 	PKGBUILD ||
 die "Could not update the patch set in PKGBUILD"
 
@@ -72,13 +73,16 @@ then
 	exit 0
 fi
 
-GIT_CONFIG_PARAMETERS="${GIT_CONFIG_PARAMETERS+$GIT_CONFIG_PARAMETERS }'core.autocrlf=false'" \
+GIT_CONFIG_PARAMETERS="${GIT_CONFIG_PARAMETERS+$GIT_CONFIG_PARAMETERS }'core.autocrlf=true'" \
 updpkgsums ||
 die "Could not update the patch set checksums in PKGBUILD"
 
 # bump pkgrel
-if ! git diff @{u} -- PKGBUILD | grep -q '^+pkgver'
+if test -n "$(git diff @{u} -- PKGBUILD | grep '^+pkgver')"
 then
+	sed -i -e "s/^\(pkgrel=\).*/\11/" PKGBUILD ||
+	die "Could not reset pkgrel"
+else
 	pkgrel=$((1+$(sed -n -e 's/^pkgrel=//p' <PKGBUILD))) &&
 	sed -i -e "s/^\(pkgrel=\).*/\1$pkgrel/" PKGBUILD ||
 	die "Could not increment pkgrel"
