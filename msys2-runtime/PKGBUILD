@@ -3,8 +3,8 @@
 
 pkgbase=msys2-runtime
 pkgname=('msys2-runtime' 'msys2-runtime-devel')
-pkgver=3.4.10
-pkgrel=7
+pkgver=3.5.4
+pkgrel=1
 pkgdesc="Cygwin POSIX emulation engine"
 arch=('x86_64')
 url="https://www.cygwin.com/"
@@ -36,165 +36,101 @@ source=('msys2-runtime'::git+https://github.com/cygwin/cygwin#tag=cygwin-${pkgve
         0007-Instead-of-creating-Cygwin-symlinks-use-deep-copy-by.patch
         0008-Automatically-rewrite-TERM-msys-to-TERM-cygwin.patch
         0009-Do-not-convert-environment-for-strace.patch
-        0010-path_conv-special-case-root-directory-to-have-traili.patch
-        0011-dcrt0.cc-Untangle-allow_glob-from-winshell.patch
-        0012-dcrt0.cc-globify-Don-t-quote-literal-strings-differe.patch
-        0013-strace.cc-Don-t-set-MSYS-noglob.patch
-        0014-Add-debugging-for-build_argv.patch
-        0015-Add-debugging-for-strace-make_command_line.patch
-        0016-environ.cc-New-facility-environment-variable-MSYS2_E.patch
-        0017-Fix-native-symbolic-link-spawn-passing-wrong-arg0.patch
-        0018-strace-quiet-be-really-quiet.patch
-        0019-Introduce-the-enable_pcon-value-for-MSYS.patch
-        0020-popen-call-usr-bin-sh-instead-of-bin-sh.patch
-        0021-Expose-full-command-lines-to-other-Win32-processes-b.patch
-        0022-Do-not-show-Error-dialogs-by-default.patch
-        0023-Add-a-helper-to-obtain-a-function-s-address-in-kerne.patch
-        0024-Emulate-GenerateConsoleCtrlEvent-upon-Ctrl-C.patch
-        0025-kill-kill-Win32-processes-more-gently.patch
-        0026-Cygwin-make-option-for-native-inner-link-handling.patch
-        0027-docs-skip-building-texinfo-and-PDF-files.patch
-        0028-install-libs-depend-on-the-toollibs.patch
-        0029-POSIX-ify-the-SHELL-variable.patch
-        0030-Handle-ORIGINAL_PATH-just-like-PATH.patch
-        0031-uname-allow-setting-the-system-name-to-CYGWIN.patch
-        0032-Pass-environment-variables-with-empty-values.patch
-        0033-Optionally-disallow-empty-environment-values-again.patch
-        0034-build_env-respect-the-MSYS-environment-variable.patch
-        0035-When-converting-to-a-Unix-path-avoid-double-trailing.patch
-        0036-msys2_path_conv-pass-PC_NOFULL-to-path_conv.patch
+        0010-strace.cc-Don-t-set-MSYS-noglob.patch
+        0011-Add-debugging-for-strace-make_command_line.patch
+        0012-strace-quiet-be-really-quiet.patch
+        0013-path_conv-special-case-root-directory-to-have-traili.patch
+        0014-When-converting-to-a-Unix-path-avoid-double-trailing.patch
+        0015-msys2_path_conv-pass-PC_NOFULL-to-path_conv.patch
+        0016-path-conversion-Introduce-ability-to-switch-off-conv.patch
+        0017-dcrt0.cc-Untangle-allow_glob-from-winshell.patch
+        0018-dcrt0.cc-globify-Don-t-quote-literal-strings-differe.patch
+        0019-Add-debugging-for-build_argv.patch
+        0020-environ.cc-New-facility-environment-variable-MSYS2_E.patch
+        0021-Fix-native-symbolic-link-spawn-passing-wrong-arg0.patch
+        0022-Introduce-the-enable_pcon-value-for-MSYS.patch
+        0023-popen-call-usr-bin-sh-instead-of-bin-sh.patch
+        0024-Expose-full-command-lines-to-other-Win32-processes-b.patch
+        0025-Add-a-helper-to-obtain-a-function-s-address-in-kerne.patch
+        0026-Emulate-GenerateConsoleCtrlEvent-upon-Ctrl-C.patch
+        0027-kill-kill-Win32-processes-more-gently.patch
+        0028-Cygwin-make-option-for-native-inner-link-handling.patch
+        0029-docs-skip-building-texinfo-and-PDF-files.patch
+        0030-install-libs-depend-on-the-toollibs.patch
+        0031-POSIX-ify-the-SHELL-variable.patch
+        0032-Handle-ORIGINAL_PATH-just-like-PATH.patch
+        0033-uname-allow-setting-the-system-name-to-CYGWIN.patch
+        0034-Pass-environment-variables-with-empty-values.patch
+        0035-Optionally-disallow-empty-environment-values-again.patch
+        0036-build_env-respect-the-MSYS-environment-variable.patch
         0037-Revert-Cygwin-Enable-dynamicbase-on-the-Cygwin-DLL-b.patch
-        0038-dumper-avoid-linker-problem-when-libbfd-depends-on-l.patch
-        0039-Handle-8-bit-characters-under-LOCALE-C.patch
-        0040-Mention-the-extremely-useful-small_printf-function.patch
-        0041-Leave-arguments-starting-with-a-tilde-or-quote-alone.patch
-        0042-Leave-Git-s-name-and-message-arguments-alone-please.patch
-        0043-Leave-paths-containing-any-special-characters-alone.patch
-        0044-Leave-paths-containing-alone.patch
-        0045-Skip-posix-to-windows-conversion-when-is-seen.patch
-        0046-Also-leave-Git-s-rev-.-name-syntax-alone.patch
-        0047-Arguments-starting-with-are-no-paths.patch
-        0048-Prevent-scp-style-arguments-from-being-mangled.patch
-        0049-Fixed-path-converting-with-non-ascii-char.patch
-        0050-path-conversion-Introduce-ability-to-switch-off-conv.patch
-        0051-Allow-overriding-the-home-directory-via-the-HOME-var.patch
-        0052-Respect-db_home-setting-even-for-the-SYSTEM-account.patch
-        0053-Respect-the-db_home-env-setting-under-more-circumsta.patch
-        0054-Allow-native-symlinks-to-non-existing-targets-in-nat.patch
-        0055-Make-paths-WCS-MBS-conversion-explicit.patch
-        0056-Use-MB_CUR_MAX-6-by-default.patch
-        0057-Change-the-default-base-address-for-x86_64.patch
-        0058-Avoid-sharing-cygheaps-across-Cygwin-versions.patch
-        0059-uname-report-msys2-runtime-commit-hash-too.patch
-        0060-Revert-Cygwin-pipe-Restore-blocking-mode-for-cygwin-.patch
-        0061-msys2-runtime-restore-fast-path-for-current-user-pri.patch
-        0062-Work-around-fragile-include-in-binutils.patch
-        0063-Cygwin-console-Avoid-slipping-past-disable_master_th.patch
-        0064-Cygwin-pty-Fix-handle-leak-in-master-process.patch
-        0065-Cygwin-pty-Fix-potential-handle-leak-regarding-CallN.patch
-        0066-Cygwin-console-Make-VMIN-and-VTIME-work.patch
-        0067-Cygwin-suppress-a-warning-generated-with-w32api-12.0.patch
-        0068-fixup-Allow-overriding-the-home-directory-via-the-HO.patch
-        0069-fixup-Respect-db_home-setting-even-for-the-SYSTEM-ac.patch
-        0070-fixup-Respect-the-db_home-env-setting-under-more-cir.patch
-        0071-Allow-deriving-the-current-user-s-home-directory-via.patch
-        0072-Respect-db_home-setting-even-for-SYSTEM-Microsoft-ac.patch
-        0073-uinfo-special-case-IIS-APPPOOL-accounts.patch
-        0074-Do-not-rely-on-getenv-HOME-s-path-conversion.patch
-        0075-pathconv-don-t-skip-arguments-with-double-quote.patch
-        0076-Cygwin-console-Fix-exit-code-for-non-cygwin-process.patch
-        0077-Cygwin-console-Avoid-slipping-past-disable_master_th.patch
-        0078-Cygwin-pipe-Give-up-to-use-query_hdl-for-non-cygwin-.patch
-        0079-Cygwin-pipe-Make-sure-to-set-read-pipe-non-blocking-.patch
-        0080-Cygwin-try-to-avoid-recalling-offline-files.patch
-        0081-Cygwin-get-set-security-descriptors-using-FILE_OPEN_.patch
-        0082-Cygwin-FILE_OPEN_NO_RECALL-is-incompatible-with-FILE.patch
-        0083-Cygwin-pipe-Restore-blocking-mode-of-read-pipe-on-cl.patch)
-sha256sums=('4fb94e9f3bab9666dcab50c8940de6e8801d0aae900f0b5a6f79406479e757f1'
-            '6f297ae4049c2a5b4ff085119284822d1b8045cd24c4b0328ab2808e68c18556'
-            '351bb1efdbdafe80c981e92d6b425c6ab71c85ce4e990db184e2118158eb2ab6'
-            'd3d3a01feeae9f7d5e6cb32f4662df74fc9476ff11a1aac3dad2df3e43fd88e4'
-            '2e50ecd65f2fd413baaf39e5058a6b252245abc7d34f4ebf17dd4f7ffed60ced'
-            '231757d797cf9be6a92b6f6976ee85216e9fa8eaba4aca241ace4b76e41cd862'
-            '23f97fac32ae2ba7681985e0d4910ec2d6d265f970bb0db6cec48540b6ebf055'
-            'd47c570e2ac7a9b1c15f1a9e4e51b530eef0a2dc0f261ddc088ad449840deb02'
-            '1bc7e3275eb9ffb3b70a0b9a5049bc6180d893d28ac6fc1d0e2ca29f8d890a33'
-            '8113de5e8ae37da6b96a3c7eb379806ccb1a90f42ae0d9061941d5e224f754a0'
-            '09ec71a8292035b38e5fb6db7fdd4f2fb6c5071ec9a7c180c72bb22216db88df'
-            '02cc70007deccabac988ae02a82b201a71772b0dc6570b0275793f37f71ef09d'
-            'b70c4cc2f37632d51e9ddcae56f12c9ec92357e11347cb806ed23af9251a601a'
-            '51571b603ca6a75f22125daeb1973a9f8ecdf82b1d4637814287fa311f9480c3'
-            'd4dbcdbfa4f2dbac9a06eac0cd42154e30df03466554778340dadf67ab861c8b'
-            '5c018ce376a7f2b0b8e3dc3a4eedc5eebf618ef2337889188e6f914d0ac09795'
-            '2350b6193166cab2596162d8a203a4edbddb413a615e84f7ecc120ffa98f609f'
-            '7d25457a43facd4231aad09bc5acf4717468a937c087427bd8cc5e2a1046db84'
-            '233b59d7ca0a339e09c15f7c64989ba347f1316f353d2d366dede33325b4091f'
-            'b4eeb001292c5a34df2ebe65d8deef987eb70baf60f821d86c3cbccb49fea40a'
-            '3afbea60cc0edfc7931ecaafeb1d6b7dfda1aac10be590afd41abff8a27815ef'
-            '691328ad116d972eeb0d04558c68ad605e306faec26a3e43de90024e31d797d6'
-            'b36301669c8e2802cc82c8ac7b99b10135f0aee12e3b01b258272e7089a9c4ed'
-            '231d6372dcbdb72f4cd10dad60bbdf9f4d55236193e5cbfc2377dd1af1194360'
-            'c6cfb73dab426e9b7649514408d4a0577ebac43aef9c0585e720e5624c2a904e'
-            'aa3c148a0655d47d9acd822547ef4e8ef35be309e71e7d85c4af8bb3a485f7db'
-            '4318b3e6e99f724c211b0c8b6ff93d644336a08fd29219381de9035b8f7b5415'
-            '4cf58088663b156ea6ca2278eb24226ef3f57f9bd486dea9b1ac7b04fa62eb0c'
-            '44d207e6e7cda10d427b6705735622fd7847a58d4f133862e9f82f11fd57cf0c'
-            '161e4bcbf55f5d4b81bdbed73e0c8fdc339c75b70cd9e292fde41b53988bfb5b'
-            '5528c8e0715404fc03068efcd8c42010604fe5940a7af962211066f9670276b5'
-            'd121cbfed47c72787c92eb817bba2071930f86fdf2bff424d1082ceccd59da49'
-            '832aaa93defa111e3d9f540532288398ad27352122b1ff84a8a2f53232e601b9'
-            'de44e80e60e61dbf91b6b99a3f5740f653f83b96c64f862f4aa99fd42e7db0d7'
-            '7cebdd623fe080bda89b0505d4e8dc8600969d3b7d71e6bdf0a7e6ac1c62708f'
-            '008adf33a2b3774d85aabe1b2b2a3fa32615c0cf7bfbc7cf4e4ce3c0302957d6'
-            'd5981d518ba4756dd6e976e9cc20ff8f52001aac588ee083a33045d260e02d6b'
-            '599905c7454e2f3039c717de8186d4e1cb7943f9b47a7745ce36e4acfa100e31'
-            'd37c835bc188786a4e8050f0a73d4f0b3070ded9030943ba2a6c47b03d9d96e8'
-            'a799e7edde58a0ec519bb7df6d0bcf4177e1c6236a72a8240936c574be1bdd61'
-            '31ff5a6708220857530434c06b454b92e9854959ba1be3851ec935ec13b0658d'
-            '4f2a4d56e94e73b7c2e390b1094290c475f7661884f4a8ad2bbae2be9a450b04'
-            '0498c9fd1cca930b2864783297de73528c646aad8a3e2efa2749950d079d9b25'
-            'a0abcdf33b992cc1c3cd1258cd255bdbe07095e7b41f497633630d1de837444e'
-            'b092095b050ee2a34224d973ef4086309d2df57ff979155f1837b27df24202d8'
-            '28e0d46690483ac9259f56db795411047afd40cc1ef249945d436c512436cc6a'
-            '1d0ab13576f3985f78632a1fa143287673847ea8ad24b41f57972ebecfa69f41'
-            'dd29a84985a2ca96681d742b4c510f4945be4998c8af5fe3df0a1d0dea8c28e6'
-            'c95e31fbc3b2466e422b872eb76d2e849e0ad2d9ce750e5d0afb31a5ae2f01b4'
-            '6c5fcffa44adbffc08e80a1a941c73b5034612ce70d2485face45672b6875186'
-            'f1815f8a275f5e00275a8fd89a96ac71f5f9a5d7bd6dd408f33a42d2e0edb32b'
-            'f3c551c5395ba8d77ab19583f538e5802d022f37c29d2a8566737546ca426888'
-            'fccabdff9e3a1bac75a45a0b4cff3a0a956988ea4cea5d3674daa9023d33025c'
-            'cc1b7fe86a247980204b054885d27a65cac8ef10c542357a322edfb9ae6eb567'
-            '8798d6230a35863a28f40cb37ed4cd4dfd02cdadaf383829b6d4dbbcdc464912'
-            '5bd11782eec27ccb9fb2452d5d2d31ede5db163cade0c3f54729cd426a57e4b5'
-            '73af0906b90ba60e8ab6c12f0b3447944e4512a9dcaae23899d39cf4a5949070'
-            'c75d7977db74781e7a3e756c555a0fac8b3a27949c815456bec00f6c7ec0e6f6'
-            '99ba3654fbe2e60019fe9ba57f84d7ad5264c673ba585b8bafb4588cde667b80'
-            '119511d1c5412616e2fc4142384025e74c71817f421e316895bfbb1b0b16adec'
-            'c261206c44323bb14329d9d9b04b3baa0d3544d6b119ec95df6872bebb4f8dc6'
-            'fef601c95cb0893ddc9b3479721d298c08e4e1cc1840c89330328e2be09e5ccd'
-            '4916e58433cb4df408c2068e11ff066925af8558341a38f99a216ab8b2871552'
-            '322e300dd638a18cce5c373ca85fc374e21c0cb191faf847bd7f91ee730892ad'
-            'd309a8ea69a0b1b173d56e5bb5a0003613a937d48c6d7736a5ed358ac25c1ef4'
-            'f661eb5b8ea9270888ad8bb129b307af5408fbf02a046bed91692666b54fc610'
-            '8177e7300bcd0a2d96de2d29faf0b21a7fec74c77ac0ac66bbb8244e37efb541'
-            '22a99a0f9f1b90ab6d7fb1cee76c76f7c82d2185a5d0acf7bd60553f54fc9e80'
-            '11c89890557f23dfaf754bc11381d8fd82e3db0755d56df6b6e30e018d2c3ef3'
-            'f0b4b25869832822f8b943de9e09bf99c3eaa76cd339fb46edfd57db3f80ff18'
-            'bd492e06e404fd1b77a7e6851cc74e80e02d3611c662c43b4efd9f40749c1fee'
-            '1785d26cc923ef5ad0dca7cb0f8ee0b8fe90cb7a1ec74b0b73a4a1fd0492eee7'
-            '5eeebaad19822c72b2ef599c798d9bf93a31f868b47798b7b8437a3ec38184e8'
-            'b7749b7829af7155a1351d954d5321a20c2919875109633382f21f244789063d'
-            'f09716621fd2a6b368f2ea66ef3d54196cc4419c4241c0b6df04c29f4ce152ec'
-            '1a8f598901d871e4661e67fcfbb96abcdf4399c4a55d17ed40d21c8f0473418d'
-            '88db7e55e873372dc173c3168dc196e7e09778f36417fc8d13235f44f4b45594'
-            'f79dfecd2d21b2900e0ff5779f0a0d6aeea0b3d5169718f43c84e3890b72a7c4'
-            '3a0c596ffe04e99d96b18e77c39c99ce7f3a25a18827953079dbea52b6cd161e'
-            '26e744a65f5143885816bbc86268b1543a05b140716854560063e936b75456ff'
-            '7b4e8e91b757d3597c85eb2d83a85ed5f57414b74967b0fa4c87a87332eb04c7'
-            '7012f34047186556ae78b69bfe3eafccb2fe399ab122d5a21cadbf40533b4e0f'
-            '7fd616f587212716ebdb21cad257c99ec5827638cf7c7819068c1d70020bd251'
-            '1b74ea7c955991440d61b6059386589e893ddd7513a86cb554833391cf172c41'
-            'c8542adeb6324ee0edc96c1c9dfce3994cbbe3a42529e63db2b8b7213dbe393f')
+        0038-Avoid-sharing-cygheaps-across-Cygwin-versions.patch
+        0039-uname-report-msys2-runtime-commit-hash-too.patch
+        0040-Cygwin-pipe-Fix-a-regression-that-raw_write-slows-do.patch
+        0041-Handle-8-bit-characters-under-LOCALE-C.patch
+        0042-Mention-the-extremely-useful-small_printf-function.patch
+        0043-Fixed-path-converting-with-non-ascii-char.patch
+        0044-Allow-native-symlinks-to-non-existing-targets-in-nat.patch
+        0045-Make-paths-WCS-MBS-conversion-explicit.patch
+        0046-Use-MB_CUR_MAX-6-by-default.patch
+        0047-Change-the-default-base-address-for-x86_64.patch
+        0048-msys2-runtime-restore-fast-path-for-current-user-pri.patch
+        0049-Cygwin-console-Disable-cons_master_thread-in-win32-i.patch
+        0050-Cygwin-pipe-Fix-a-regression-that-raw_write-slows-do.patch
+        0051-Cygwin-pipe-Restore-blocking-mode-of-read-pipe-on-cl.patch)
+sha256sums=('3812485e2a6ab8360e5b9d566a47b982852ff2b140cea4e332ded19c11c77663'
+            '8540718a0c4812716949817852d914297ea214eabaa1de126f59ce77e8582e48'
+            '9f9e1b6b05cbc9a715fe9443740b25171e9c1a276a058e6ba7e4f6eada6872c8'
+            'e5b2095e543a5d702cfce6da26cd17a78f40e17620315b1bcc434b94a007ae9b'
+            'f13b15dc14aa6ee1dd628a2487564bb484e74ff2f3e4059b9d9d64446a327db1'
+            '155986f35dfb072fe85993ef184ca029542c1706cf2b29c6483444bd31b13be1'
+            '87f23592b90efc996a4afa4cf4b74aa6828d62393550b8dca93280880cace5b4'
+            'd312eeec44f03b1be90e88fa5172f0c39412b3e89b5886799a956494bc91d9a2'
+            '83c7d19449c1e39d7d00ae1208ec3ad5c9807b7bdb0471e415f18ade67d5c39e'
+            'd77ae7eead224a20e4bf68013e049ca07ecbca63a18d7318d1061162978f3d6b'
+            'bae2d10f60e25dca74cd435e43fdc6bf9be47103d7d650c87a2fd6272954329a'
+            '9db10ecf658cd5f443f61d06e7649ffcd677d7be31b7e6fdf6dfa6268384834f'
+            '934ccc478f7d8e83b6da6f3b7436e613e169500f40905b5ec11bebc0729135c8'
+            '17c37645cf7cf4c3518b9135c498379de10820b686f99ffa2203284b024e6974'
+            '253bc53d1414e5096de6fce89796b89907fa33a779ea95c889bf9b9ce3e17bde'
+            'fde2bcc5ca961c7e22a38c85365e46584630d2886966c8c386846572db30146a'
+            '3568ad0e60a94da91716d3a300a2aded0f15cec964635ee7bec0371af0d7c44c'
+            '571e5ed60721f42e888b46e02fc503283a7813ac4e957ce962d36970b3f7eca0'
+            '5a1c306458090293d42ae9ffae7b1d75485b5365e31f5f62a0c548e1c411ccac'
+            '06367d83f7817f5ca9c494f688f224873fd8c56f90ea3bfb2f500c8649aa6150'
+            'ea67073b27f8f78de70a4e1ae4340e2c787115a8670d8140e36df2685e7c35ee'
+            '699f223b03b36332aebea12984c3770235b66df2902ab3ea177ff1066fd168e3'
+            'b00affd0e6df8b9697b1e13695cff3c6db98b484de7038abad6f533580db7e9a'
+            '158a53bcbdd2f044c197d015bf4fa9b05b2300ea2435794a7527adff2bc277de'
+            '902c4998dadba3b5a17f031afb9db0fe60feb65a537981921a04734c60bc9910'
+            '3bceeac2fe9ce7d88324cdc0f9bebe7de120e1d5b909571e606c619bce277689'
+            'c546b87225d433f6b312abc4f571a10bd4efbd4138fb11a5477dfe5e6df213c0'
+            'b21933657b87ff773b633c8dabb576d55c6aa9f8f42c7ab784f980de767c220d'
+            '9a9339b069a1c3f45fdd70805bae788e95f0d4fd2fea0ae8f37ae058b1ecfdde'
+            '785bf87f823025a842466647bdfbd83bade952c007d06f7e68176a186a983ad8'
+            'd729c1886bd2249e565ccb8b64f0c31fb71d605715320a76b56aa032e9fa5575'
+            '471c1a68767b05dafa5e12b23efdbd85123813cfcfef708be4bb6d734ae6b51c'
+            '33ec577def8ddc9180da824828acc8e201c08d87181f81685c26e0fd163d126e'
+            '61a411b4747c36fd20d2365eb3d45f53a8eed50b88a22a337e1ab73f8ee54928'
+            '14a7f6afdc232acaffbc8315543a973118ea205f559e04c6c17de75e9e12d845'
+            '0c2290d16f120bd64ef2e9824e5ba3af38c59d74008fd4c2028f42ed3bcbb058'
+            'e14b90eddb75b56fcf84b8d37044d57eb45c109f08d103ebac160f173a763192'
+            '5990fbc34e4ac09229383e9a0f3326513a5a9482ebcca929302af0707d96a321'
+            'f74cb189aafc9f8bf04cdad02531d9eca524c2dd12672e4e118bfdbb48926110'
+            '344f108bc9e9ad597e07f1cc8e834e3d1a9fbd9972a1554c1c5de0fce0ae8506'
+            'f93578a1150d724a60a7e8eb8491342aeb13f809e2ddb5193d8d126465f665cb'
+            '41e896036ea67c5d12a712554f4d53949c2dc809bb3545ac6be1fe619848f8af'
+            '4ad9e540b83f4b71e7e4a6404c3d80d1c5b77edef75a62cda81eb9893b8acd8c'
+            '5f0acf2e9653f061bb050b08ae2f06cc8ce15a638c9de8079eadbe35514f0a26'
+            '5502489dbce55e7d267f93d2e571b95c810bdf20a94d70ae0e0783310b0f70bc'
+            '32f7d58f9544917ce3d40efb27ce58ee1fa6c7075db149a2db7d1e13047078b1'
+            'f3d2a214d28219b74414db42210a555bd6cb42146da15f4db533c7d7d36a8a6d'
+            '41a01da6201460242f7367baa252126b5e3df0b8f1cec040be6c92a1df41ece4'
+            '6e097d6edb003c7feb578de7a9c26dba6eb5ac96d0176adcaa7aca0fa00ff7ce'
+            'ccc574aee2f518ccb70aa65fa85e802d0b3da73c6833c1a8a3d07c91138135db'
+            '5fb74f788388fcf23b2eab5e74be176c981f5cfcd9f01caf6a9e78cd8fc58e00'
+            '394229cfa5293e4572dfd7155605343ca7426395429fa47eb38aced11d4f924b'
+            '590dc0ce9e72a1adf1424c7a4f55bd57d8955eef036776895b3d779d4932d4ce')
 
 # Helper macros to help make tasks easier #
 apply_patch_with_msg() {
@@ -258,80 +194,48 @@ prepare() {
   0007-Instead-of-creating-Cygwin-symlinks-use-deep-copy-by.patch \
   0008-Automatically-rewrite-TERM-msys-to-TERM-cygwin.patch \
   0009-Do-not-convert-environment-for-strace.patch \
-  0010-path_conv-special-case-root-directory-to-have-traili.patch \
-  0011-dcrt0.cc-Untangle-allow_glob-from-winshell.patch \
-  0012-dcrt0.cc-globify-Don-t-quote-literal-strings-differe.patch \
-  0013-strace.cc-Don-t-set-MSYS-noglob.patch \
-  0014-Add-debugging-for-build_argv.patch \
-  0015-Add-debugging-for-strace-make_command_line.patch \
-  0016-environ.cc-New-facility-environment-variable-MSYS2_E.patch \
-  0017-Fix-native-symbolic-link-spawn-passing-wrong-arg0.patch \
-  0018-strace-quiet-be-really-quiet.patch \
-  0019-Introduce-the-enable_pcon-value-for-MSYS.patch \
-  0020-popen-call-usr-bin-sh-instead-of-bin-sh.patch \
-  0021-Expose-full-command-lines-to-other-Win32-processes-b.patch \
-  0022-Do-not-show-Error-dialogs-by-default.patch \
-  0023-Add-a-helper-to-obtain-a-function-s-address-in-kerne.patch \
-  0024-Emulate-GenerateConsoleCtrlEvent-upon-Ctrl-C.patch \
-  0025-kill-kill-Win32-processes-more-gently.patch \
-  0026-Cygwin-make-option-for-native-inner-link-handling.patch \
-  0027-docs-skip-building-texinfo-and-PDF-files.patch \
-  0028-install-libs-depend-on-the-toollibs.patch \
-  0029-POSIX-ify-the-SHELL-variable.patch \
-  0030-Handle-ORIGINAL_PATH-just-like-PATH.patch \
-  0031-uname-allow-setting-the-system-name-to-CYGWIN.patch \
-  0032-Pass-environment-variables-with-empty-values.patch \
-  0033-Optionally-disallow-empty-environment-values-again.patch \
-  0034-build_env-respect-the-MSYS-environment-variable.patch \
-  0035-When-converting-to-a-Unix-path-avoid-double-trailing.patch \
-  0036-msys2_path_conv-pass-PC_NOFULL-to-path_conv.patch \
+  0010-strace.cc-Don-t-set-MSYS-noglob.patch \
+  0011-Add-debugging-for-strace-make_command_line.patch \
+  0012-strace-quiet-be-really-quiet.patch \
+  0013-path_conv-special-case-root-directory-to-have-traili.patch \
+  0014-When-converting-to-a-Unix-path-avoid-double-trailing.patch \
+  0015-msys2_path_conv-pass-PC_NOFULL-to-path_conv.patch \
+  0016-path-conversion-Introduce-ability-to-switch-off-conv.patch \
+  0017-dcrt0.cc-Untangle-allow_glob-from-winshell.patch \
+  0018-dcrt0.cc-globify-Don-t-quote-literal-strings-differe.patch \
+  0019-Add-debugging-for-build_argv.patch \
+  0020-environ.cc-New-facility-environment-variable-MSYS2_E.patch \
+  0021-Fix-native-symbolic-link-spawn-passing-wrong-arg0.patch \
+  0022-Introduce-the-enable_pcon-value-for-MSYS.patch \
+  0023-popen-call-usr-bin-sh-instead-of-bin-sh.patch \
+  0024-Expose-full-command-lines-to-other-Win32-processes-b.patch \
+  0025-Add-a-helper-to-obtain-a-function-s-address-in-kerne.patch \
+  0026-Emulate-GenerateConsoleCtrlEvent-upon-Ctrl-C.patch \
+  0027-kill-kill-Win32-processes-more-gently.patch \
+  0028-Cygwin-make-option-for-native-inner-link-handling.patch \
+  0029-docs-skip-building-texinfo-and-PDF-files.patch \
+  0030-install-libs-depend-on-the-toollibs.patch \
+  0031-POSIX-ify-the-SHELL-variable.patch \
+  0032-Handle-ORIGINAL_PATH-just-like-PATH.patch \
+  0033-uname-allow-setting-the-system-name-to-CYGWIN.patch \
+  0034-Pass-environment-variables-with-empty-values.patch \
+  0035-Optionally-disallow-empty-environment-values-again.patch \
+  0036-build_env-respect-the-MSYS-environment-variable.patch \
   0037-Revert-Cygwin-Enable-dynamicbase-on-the-Cygwin-DLL-b.patch \
-  0038-dumper-avoid-linker-problem-when-libbfd-depends-on-l.patch \
-  0039-Handle-8-bit-characters-under-LOCALE-C.patch \
-  0040-Mention-the-extremely-useful-small_printf-function.patch \
-  0041-Leave-arguments-starting-with-a-tilde-or-quote-alone.patch \
-  0042-Leave-Git-s-name-and-message-arguments-alone-please.patch \
-  0043-Leave-paths-containing-any-special-characters-alone.patch \
-  0044-Leave-paths-containing-alone.patch \
-  0045-Skip-posix-to-windows-conversion-when-is-seen.patch \
-  0046-Also-leave-Git-s-rev-.-name-syntax-alone.patch \
-  0047-Arguments-starting-with-are-no-paths.patch \
-  0048-Prevent-scp-style-arguments-from-being-mangled.patch \
-  0049-Fixed-path-converting-with-non-ascii-char.patch \
-  0050-path-conversion-Introduce-ability-to-switch-off-conv.patch \
-  0051-Allow-overriding-the-home-directory-via-the-HOME-var.patch \
-  0052-Respect-db_home-setting-even-for-the-SYSTEM-account.patch \
-  0053-Respect-the-db_home-env-setting-under-more-circumsta.patch \
-  0054-Allow-native-symlinks-to-non-existing-targets-in-nat.patch \
-  0055-Make-paths-WCS-MBS-conversion-explicit.patch \
-  0056-Use-MB_CUR_MAX-6-by-default.patch \
-  0057-Change-the-default-base-address-for-x86_64.patch \
-  0058-Avoid-sharing-cygheaps-across-Cygwin-versions.patch \
-  0059-uname-report-msys2-runtime-commit-hash-too.patch \
-  0060-Revert-Cygwin-pipe-Restore-blocking-mode-for-cygwin-.patch \
-  0061-msys2-runtime-restore-fast-path-for-current-user-pri.patch \
-  0062-Work-around-fragile-include-in-binutils.patch \
-  0063-Cygwin-console-Avoid-slipping-past-disable_master_th.patch \
-  0064-Cygwin-pty-Fix-handle-leak-in-master-process.patch \
-  0065-Cygwin-pty-Fix-potential-handle-leak-regarding-CallN.patch \
-  0066-Cygwin-console-Make-VMIN-and-VTIME-work.patch \
-  0067-Cygwin-suppress-a-warning-generated-with-w32api-12.0.patch \
-  0068-fixup-Allow-overriding-the-home-directory-via-the-HO.patch \
-  0069-fixup-Respect-db_home-setting-even-for-the-SYSTEM-ac.patch \
-  0070-fixup-Respect-the-db_home-env-setting-under-more-cir.patch \
-  0071-Allow-deriving-the-current-user-s-home-directory-via.patch \
-  0072-Respect-db_home-setting-even-for-SYSTEM-Microsoft-ac.patch \
-  0073-uinfo-special-case-IIS-APPPOOL-accounts.patch \
-  0074-Do-not-rely-on-getenv-HOME-s-path-conversion.patch \
-  0075-pathconv-don-t-skip-arguments-with-double-quote.patch \
-  0076-Cygwin-console-Fix-exit-code-for-non-cygwin-process.patch \
-  0077-Cygwin-console-Avoid-slipping-past-disable_master_th.patch \
-  0078-Cygwin-pipe-Give-up-to-use-query_hdl-for-non-cygwin-.patch \
-  0079-Cygwin-pipe-Make-sure-to-set-read-pipe-non-blocking-.patch \
-  0080-Cygwin-try-to-avoid-recalling-offline-files.patch \
-  0081-Cygwin-get-set-security-descriptors-using-FILE_OPEN_.patch \
-  0082-Cygwin-FILE_OPEN_NO_RECALL-is-incompatible-with-FILE.patch \
-  0083-Cygwin-pipe-Restore-blocking-mode-of-read-pipe-on-cl.patch
+  0038-Avoid-sharing-cygheaps-across-Cygwin-versions.patch \
+  0039-uname-report-msys2-runtime-commit-hash-too.patch \
+  0040-Cygwin-pipe-Fix-a-regression-that-raw_write-slows-do.patch \
+  0041-Handle-8-bit-characters-under-LOCALE-C.patch \
+  0042-Mention-the-extremely-useful-small_printf-function.patch \
+  0043-Fixed-path-converting-with-non-ascii-char.patch \
+  0044-Allow-native-symlinks-to-non-existing-targets-in-nat.patch \
+  0045-Make-paths-WCS-MBS-conversion-explicit.patch \
+  0046-Use-MB_CUR_MAX-6-by-default.patch \
+  0047-Change-the-default-base-address-for-x86_64.patch \
+  0048-msys2-runtime-restore-fast-path-for-current-user-pri.patch \
+  0049-Cygwin-console-Disable-cons_master_thread-in-win32-i.patch \
+  0050-Cygwin-pipe-Fix-a-regression-that-raw_write-slows-do.patch \
+  0051-Cygwin-pipe-Restore-blocking-mode-of-read-pipe-on-cl.patch
 }
 
 build() {
