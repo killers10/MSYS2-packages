@@ -17,6 +17,26 @@ jobs:
       - name: install pactoys (needed for `saneman`)
         shell: bash
         run: bash -lc "pacman -S --noconfirm pactoys"
+      - name: work around curl v8.11.0-1 problem
+        shell: bash
+        run: |
+          # `git fetch` does not work with that libcurl version. For details,
+          # see https://github.com/git-for-windows/MSYS2-packages/pull/199
+          test ! -f /var/lib/pacman/local/libcurl-8.11.0-1/desc ||
+          for pkg in libcurl curl
+          do
+            for suffix in '' .sig
+            do
+              curl --retry 5 -fLO \
+                https://wingit.blob.core.windows.net/x86-64/$pkg-8.10.1-1-x86_64.pkg.tar.xz$suffix ||
+              exit 1
+            done
+            pacman -U --noconfirm $pkg-8.10.1-1-x86_64.pkg.tar.xz || exit 1
+          done
+
+          # Sadly, this does not work because the Pacman repository's index only
+          # ever lists the latest package version:
+          # pacman -S --noconfirm libcurl=8.10.1-1 curl=8.10.1-1
       - name: CI-Build
         shell: bash
         run: bash -l .ci/ci-build.sh
