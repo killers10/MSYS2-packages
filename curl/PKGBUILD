@@ -3,27 +3,32 @@
 pkgbase=curl
 pkgname=('curl' 'libcurl' 'libcurl-devel')
 pkgver=8.11.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Multi-protocol file transfer utility"
 arch=('i686' 'x86_64')
-url="https://curl.haxx.se"
-license=('MIT')
+url="https://curl.se/"
+license=('spdx:MIT')
 depends=('ca-certificates')
 makedepends=('heimdal-devel' 'libcrypt-devel' 'libidn2-devel'
              'libnghttp2-devel' 'libpsl-devel' 'libssh2-devel' 'openssl-devel' 'zlib-devel') #  'libcares-devel'
 options=('!libtool' 'strip' '!debug')
 source=("https://github.com/curl/curl/releases/download/${pkgbase}-${pkgver//./_}/${pkgbase}-${pkgver}.tar.bz2"{,.asc}
-        curl-8.10.0-msys2.patch)
+        curl-8.10.0-msys2.patch
+        "netrc-regression-1.patch::https://github.com/curl/curl/commit/f5c616930b5cf148b1b2632da4f5963ff48bdf88.patch"
+        "netrc-regression-2.patch::https://github.com/curl/curl/commit/0cdde0fdfbeb8c35420f6d03fa4b77ed73497694.patch")
 sha256sums=('c95d5a1368803729345a632ce42cceeefd5f09c3b4d9582f858f6779f4b8b254'
             'SKIP'
-            'f3d1ff0ca77636323ee5156c14275cb6cec98021aa0ad1b30735dbc4c3b619fd')
-validpgpkeys=('27EDEAF22F3ABCEB50DB9A125CC908FDB71E12C2'   # Daniel Stenberg
-              '914C533DF9B2ADA2204F586D78E11C6B279D5C91')  # Daniel Stenberg (old key)
+            'f3d1ff0ca77636323ee5156c14275cb6cec98021aa0ad1b30735dbc4c3b619fd'
+            '708429a4e0b387dc9addc1f9166e07e5db22da42221887ddab9533c9e2bd1ca8'
+            'd817dd3746476bc513edd24a4f9a32674c3d5a04484bf80d894c1d2add67e8e2')
+validpgpkeys=('27EDEAF22F3ABCEB50DB9A125CC908FDB71E12C2')   # Daniel Stenberg
 
 prepare() {
   cd "${pkgname}-${pkgver}"
   patch -p1 -i ${srcdir}/curl-8.10.0-msys2.patch
-  autoreconf -fi
+  patch -p1 -i ${srcdir}/netrc-regression-1.patch
+  patch -p1 -i ${srcdir}/netrc-regression-2.patch
+  autoreconf -fiv
 }
 
 build() {
@@ -37,15 +42,13 @@ build() {
     --enable-debug \
     --enable-optimize \
     --enable-ipv6 \
-    --disable-hidden-symbols \
+    --disable-symbol-hiding \
     --disable-ares \
     --with-gssapi \
-    --with-libidn \
+    --with-libidn2 \
     --without-librtmp \
     --with-libssh2 \
-    --without-spnego \
-    --with-ssl \
-    --without-gnutls \
+    --with-openssl \
     --with-zlib \
     --with-libpsl \
     --with-ca-bundle=/usr/ssl/certs/ca-bundle.crt \
