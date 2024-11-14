@@ -37,15 +37,13 @@ build() {
     --enable-debug \
     --enable-optimize \
     --enable-ipv6 \
-    --disable-hidden-symbols \
+    --disable-symbol-hiding \
     --disable-ares \
     --with-gssapi \
-    --with-libidn \
+    --with-libidn2 \
     --without-librtmp \
     --with-libssh2 \
-    --without-spnego \
-    --with-ssl \
-    --without-gnutls \
+    --with-openssl \
     --with-zlib \
     --with-libpsl \
     --with-ca-bundle=/usr/ssl/certs/ca-bundle.crt \
