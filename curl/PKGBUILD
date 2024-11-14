@@ -17,13 +17,12 @@ source=("https://github.com/curl/curl/releases/download/${pkgbase}-${pkgver//./_
 sha256sums=('c95d5a1368803729345a632ce42cceeefd5f09c3b4d9582f858f6779f4b8b254'
             'SKIP'
             'f3d1ff0ca77636323ee5156c14275cb6cec98021aa0ad1b30735dbc4c3b619fd')
-validpgpkeys=('27EDEAF22F3ABCEB50DB9A125CC908FDB71E12C2'   # Daniel Stenberg
-              '914C533DF9B2ADA2204F586D78E11C6B279D5C91')  # Daniel Stenberg (old key)
+validpgpkeys=('27EDEAF22F3ABCEB50DB9A125CC908FDB71E12C2')   # Daniel Stenberg
 
 prepare() {
   cd "${pkgname}-${pkgver}"
   patch -p1 -i ${srcdir}/curl-8.10.0-msys2.patch
-  autoreconf -fi
+  autoreconf -fiv
 }
 
 build() {
