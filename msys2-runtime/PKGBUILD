@@ -4,7 +4,7 @@
 pkgbase=msys2-runtime
 pkgname=('msys2-runtime' 'msys2-runtime-devel')
 pkgver=3.5.4
-pkgrel=4
+pkgrel=5
 pkgdesc="Cygwin POSIX emulation engine"
 arch=('x86_64')
 url="https://www.cygwin.com/"
@@ -81,9 +81,10 @@ source=('msys2-runtime'::git+https://github.com/cygwin/cygwin#tag=cygwin-${pkgve
         0052-Fix-SSH-hangs.patch
         0053-Cygwin-find_fast_cwd-don-t-run-assembler-checking-co.patch
         0054-cygthread-suspend-thread-before-terminating.patch
-        0055-fixup-cygthread-suspend-thread-before-terminating.patch)
+        0055-fixup-cygthread-suspend-thread-before-terminating.patch
+        0056-Cygwin-revert-use-of-CancelSyncronousIo-on-wait_thre.patch)
 sha256sums=('3812485e2a6ab8360e5b9d566a47b982852ff2b140cea4e332ded19c11c77663'
-            'd6b70c10a740be79a95afdb65c4f557f8f4aaaf24e67010f6efe6ff5c21ed5db'
+            '827a95d14b6a6c5ec2875c571a38b82d136a845d89e44d7b895c71a9ac4b3be2'
             '9f9e1b6b05cbc9a715fe9443740b25171e9c1a276a058e6ba7e4f6eada6872c8'
             'e5b2095e543a5d702cfce6da26cd17a78f40e17620315b1bcc434b94a007ae9b'
             'f13b15dc14aa6ee1dd628a2487564bb484e74ff2f3e4059b9d9d64446a327db1'
@@ -138,7 +139,8 @@ sha256sums=('3812485e2a6ab8360e5b9d566a47b982852ff2b140cea4e332ded19c11c77663'
             '75e22e453011ea15c6cf6b6904c33256530d6f4ba273f03bc6a37d9245064c8c'
             '7fe562197a1f3b67b1e794808186c10ff0186b0fcf8d09a8021499b952d04d2c'
             '957ea63fbe8e950276dd9deaf9ad3d52bb1558cc6ae71dd741ed3bf14d882499'
-            '0234fe3a4903fcff8c17a5eff680c357582028f5f794da4e9da68fe843a95ecb')
+            '0234fe3a4903fcff8c17a5eff680c357582028f5f794da4e9da68fe843a95ecb'
+            'da3e715e6789295d49afb6ef778f03591b710b4b579c3849674898d159f349bd')
 
 # Helper macros to help make tasks easier #
 apply_patch_with_msg() {
@@ -247,7 +249,8 @@ prepare() {
   0052-Fix-SSH-hangs.patch \
   0053-Cygwin-find_fast_cwd-don-t-run-assembler-checking-co.patch \
   0054-cygthread-suspend-thread-before-terminating.patch \
-  0055-fixup-cygthread-suspend-thread-before-terminating.patch
+  0055-fixup-cygthread-suspend-thread-before-terminating.patch \
+  0056-Cygwin-revert-use-of-CancelSyncronousIo-on-wait_thre.patch
 }
 
 build() {
