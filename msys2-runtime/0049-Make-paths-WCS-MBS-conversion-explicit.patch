@@ -1,7 +1,7 @@
-From 70b4715d0f4d38e951f01471393b5c3f254363f7 Mon Sep 17 00:00:00 2001
+From e05ee9217c75a5910d111b407f2026e439e67daf Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Fri, 18 Dec 2015 20:19:57 +0100
-Subject: [PATCH 45/N] Make paths' WCS->MBS conversion explicit
+Subject: [PATCH 49/N] Make paths' WCS->MBS conversion explicit
 
 	* dcrt0.cc (dll_crt0_1), dtable.cc (handle_to_fn), environ.cc
 	(environ_init, getwinenveq, build_env), external.cc
@@ -241,10 +241,10 @@ index 33863d8..353375a 100644
  	  ep.version = EXTERNAL_PINFO_VERSION;
  
 diff --git a/winsup/cygwin/fhandler/disk_file.cc b/winsup/cygwin/fhandler/disk_file.cc
-index 2cfac6b..5359e13 100644
+index 794c8eb..70b7765 100644
 --- a/winsup/cygwin/fhandler/disk_file.cc
 +++ b/winsup/cygwin/fhandler/disk_file.cc
-@@ -2409,7 +2409,7 @@ fhandler_disk_file::readdir_helper (DIR *dir, dirent *de, DWORD w32_err,
+@@ -2412,7 +2412,7 @@ fhandler_disk_file::readdir_helper (DIR *dir, dirent *de, DWORD w32_err,
  	  char *p = stpcpy (file, pc.get_posix ());
  	  if (p[-1] != '/')
  	    *p++ = '/';
@@ -253,7 +253,7 @@ index 2cfac6b..5359e13 100644
  			fname->Buffer, fname->Length / sizeof (WCHAR));
  	  path_conv fpath (file, PC_SYM_NOFOLLOW);
  	  if (fpath.issymlink ())
-@@ -2430,7 +2430,7 @@ fhandler_disk_file::readdir_helper (DIR *dir, dirent *de, DWORD w32_err,
+@@ -2433,7 +2433,7 @@ fhandler_disk_file::readdir_helper (DIR *dir, dirent *de, DWORD w32_err,
  	}
      }
  
@@ -456,7 +456,7 @@ index f57465a..57af967 100644
      }
  }
 diff --git a/winsup/cygwin/path.cc b/winsup/cygwin/path.cc
-index b0c45fa..01c7840 100644
+index 5d2f0a5..f89e631 100644
 --- a/winsup/cygwin/path.cc
 +++ b/winsup/cygwin/path.cc
 @@ -621,7 +621,8 @@ path_conv::check (const UNICODE_STRING *src, unsigned opt,
@@ -541,7 +541,7 @@ index b0c45fa..01c7840 100644
  	return -1;
        what = (what & ~CCP_CONVTYPE_MASK) | CCP_WIN_A_TO_POSIX;
        from = (const void *) winp;
-@@ -5257,9 +5258,9 @@ cwdstuff::get_error_desc () const
+@@ -5253,9 +5254,9 @@ cwdstuff::get_error_desc () const
  void
  cwdstuff::reset_posix (wchar_t *w_cwd)
  {
@@ -553,7 +553,7 @@ index b0c45fa..01c7840 100644
  }
  
  char *
-@@ -5284,7 +5285,7 @@ cwdstuff::get (char *buf, int need_posix, int with_chroot, unsigned ulen)
+@@ -5280,7 +5281,7 @@ cwdstuff::get (char *buf, int need_posix, int with_chroot, unsigned ulen)
    if (!need_posix)
      {
        tocopy = tp.c_get ();
