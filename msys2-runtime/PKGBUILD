@@ -4,7 +4,7 @@
 pkgbase=msys2-runtime
 pkgname=('msys2-runtime' 'msys2-runtime-devel')
 pkgver=3.5.5
-pkgrel=2
+pkgrel=3
 pkgdesc="Cygwin POSIX emulation engine"
 arch=('x86_64')
 url="https://www.cygwin.com/"
@@ -81,9 +81,13 @@ source=('msys2-runtime'::git+https://github.com/cygwin/cygwin#tag=cygwin-${pkgve
         0052-msys2-runtime-restore-fast-path-for-current-user-pri.patch
         0053-Fix-SSH-hangs.patch
         0054-Cygwin-signal-Do-not-handle-signal-when-__SIGFLUSHFA.patch
-        0055-fixup-Avoid-sharing-cygheaps-across-Cygwin-versions.patch)
+        0055-fixup-Avoid-sharing-cygheaps-across-Cygwin-versions.patch
+        0056-fixup-Cygwin-signal-Do-not-handle-signal-when-__SIGF.patch
+        0057-Cygwin-cygwait-Make-cygwait-reentrant.patch
+        0058-Cygwin-signal-Do-not-handle-signal-when-__SIGFLUSHFA.patch
+        0059-Cygwin-signal-Avoid-frequent-TLS-lock-unlock-for-SIG.patch)
 sha256sums=('b946762515173a45371a88060e9e672a4aaa290541fd6400660bf35a286a375f'
-            '1827504a147c8fb6f9a85a1051024018e3193d14c85c170a468409cf6365522b'
+            'dba1028d2e161ce034b066acacade0280a4ddbded90636bd0cde8881cd78ede4'
             '76e37d572d2aba473aab8f5a1984af2084e6069f9195795c71bc45778edbd1eb'
             '5c79b09f9337cc8a5f993db6dd1f54df269f8390ab3348a94e5a139a5d060e39'
             'ad84aab9a9f88b5f7510f04b33b77bbe380ce48e29a9a4feb54b485a3def3114'
@@ -138,7 +142,11 @@ sha256sums=('b946762515173a45371a88060e9e672a4aaa290541fd6400660bf35a286a375f'
             '0bb8eda3871e4f639b933b5a5cdae089d70b55d9f52a9d5980d3c7ffec51dd17'
             '4e8127cea653273e44ef04a565d51a01c3d0e72307ccb6e374a6ff3c1dedd2a5'
             '20da59f62c2d4d051758e857eb78aa143821816f762bf1e84b5d1946d1ab1b03'
-            'c3adb9d99255a025cd402c40b4a9923464818131fbe41c8df8d56747f6c4bf5e')
+            'c3adb9d99255a025cd402c40b4a9923464818131fbe41c8df8d56747f6c4bf5e'
+            '97a7992a66b505eacf9203dc55d1746228089c96a2089801a623124a198fe238'
+            '7983913f1df1d744093c279d6f4e209dcb6ff97a56ecbfbcc39be961ef89546d'
+            '740740dbfcc73ae486c00f4de28fc94ef12149ca914f7777950936a482470969'
+            '7cecad758eae70038a4beaa611cbfcd403d3e2840dc2fb4a69de722f84df0cd7')
 
 # Helper macros to help make tasks easier #
 apply_patch_with_msg() {
@@ -247,7 +255,11 @@ prepare() {
   0052-msys2-runtime-restore-fast-path-for-current-user-pri.patch \
   0053-Fix-SSH-hangs.patch \
   0054-Cygwin-signal-Do-not-handle-signal-when-__SIGFLUSHFA.patch \
-  0055-fixup-Avoid-sharing-cygheaps-across-Cygwin-versions.patch
+  0055-fixup-Avoid-sharing-cygheaps-across-Cygwin-versions.patch \
+  0056-fixup-Cygwin-signal-Do-not-handle-signal-when-__SIGF.patch \
+  0057-Cygwin-cygwait-Make-cygwait-reentrant.patch \
+  0058-Cygwin-signal-Do-not-handle-signal-when-__SIGFLUSHFA.patch \
+  0059-Cygwin-signal-Avoid-frequent-TLS-lock-unlock-for-SIG.patch
 }
 
 build() {
