@@ -1,7 +1,7 @@
-From bd1ebe7fa788e7fbc37dfe30cd0e61cd5857af24 Mon Sep 17 00:00:00 2001
+From 7f68fa3ad1ed9aae7d3c53bce9fabda53224618a Mon Sep 17 00:00:00 2001
 From: Richard Glidden <rglidden@brocksolutions.com>
 Date: Thu, 24 Aug 2023 13:36:10 -0400
-Subject: [PATCH 53/N] msys2-runtime: restore fast path for current user
+Subject: [PATCH 52/N] msys2-runtime: restore fast path for current user
  primary group
 
 Commit a5bcfe616c7e removed an optimization that fetches the

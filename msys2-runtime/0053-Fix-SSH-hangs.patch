@@ -1,7 +1,7 @@
-From 6ff968d8e27292ee33bc81ac16276092ef559c37 Mon Sep 17 00:00:00 2001
+From f92c1e956e7b95c4f22e782ee672390b94a2c058 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Thu, 10 Oct 2024 19:52:47 +0200
-Subject: [PATCH 54/N] Fix SSH hangs
+Subject: [PATCH 53/N] Fix SSH hangs
 
 It was reported in https://github.com/git-for-windows/git/issues/5199
 that as of v3.5.4, cloning or fetching via SSH is hanging indefinitely.
