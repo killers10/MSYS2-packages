@@ -1,20 +1,20 @@
-From ded6ccc89556e1bd5ab448f58e3a1103c11bddf5 Mon Sep 17 00:00:00 2001
+From 644325d16aa9c5be6632768053a73f23c91ea5e0 Mon Sep 17 00:00:00 2001
 From: Yaakov Selkowitz <yselkowi@redhat.com>
 Date: Thu, 12 May 2016 20:52:27 -0500
 Subject: [PATCH 3/3] pcre2-10.40-cygwin-jit
 
 Originally added in https://cygwin.com/git-cygwin-packages/?p=git/cygwin-packages/pcre2.git;a=commit;h=d2472e4e74b52cb7f0936f8978c955b311fb71c3
 ---
- src/sljit/sljitConfigInternal.h   |  6 ++--
- src/sljit/sljitNativeX86_64.c     | 50 +++++++++++++++----------------
- src/sljit/sljitNativeX86_common.c | 16 +++++-----
+ deps/sljit/sljit_src/sljitConfigInternal.h   |  6 +--
+ deps/sljit/sljit_src/sljitNativeX86_64.c     | 50 ++++++++++----------
+ deps/sljit/sljit_src/sljitNativeX86_common.c | 16 +++----
  3 files changed, 36 insertions(+), 36 deletions(-)
 
-diff --git a/src/sljit/sljitConfigInternal.h b/src/sljit/sljitConfigInternal.h
-index de06dd8..67daa14 100644
---- a/src/sljit/sljitConfigInternal.h
-+++ b/src/sljit/sljitConfigInternal.h
-@@ -602,15 +602,15 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_sw sljit_exec_offset(void *code);
+diff --git a/deps/sljit/sljit_src/sljitConfigInternal.h b/deps/sljit/sljit_src/sljitConfigInternal.h
+index 3ae944e..c58c3be 100644
+--- a/deps/sljit/sljit_src/sljitConfigInternal.h
++++ b/deps/sljit/sljit_src/sljitConfigInternal.h
+@@ -617,15 +617,15 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_sw sljit_exec_offset(void *code);
  #define SLJIT_NUMBER_OF_TEMPORARY_REGISTERS 2
  #define SLJIT_NUMBER_OF_FLOAT_REGISTERS 15
  #define SLJIT_NUMBER_OF_TEMPORARY_FLOAT_REGISTERS 1
@@ -27,16 +27,16 @@ index de06dd8..67daa14 100644
 +#else /* _WIN64 || __CYGWIN__ */
  #define SLJIT_NUMBER_OF_SAVED_REGISTERS 8
  #define SLJIT_NUMBER_OF_SAVED_FLOAT_REGISTERS 10
- #define SLJIT_LOCALS_OFFSET_BASE (4 * SSIZE_OF(sw))
+ #define SLJIT_LOCALS_OFFSET_BASE (4 * (sljit_s32)sizeof(sljit_sw))
 -#endif /* !_WIN64 */
 +#endif /* !_WIN64 && !__CYGWIN__ */
  #define SLJIT_TMP_DEST_REG SLJIT_TMP_R0
  #define SLJIT_TMP_MEM_REG SLJIT_TMP_R0
  #define SLJIT_TMP_DEST_FREG SLJIT_TMP_FR0
-diff --git a/src/sljit/sljitNativeX86_64.c b/src/sljit/sljitNativeX86_64.c
-index 1ab7929..d748fa7 100644
---- a/src/sljit/sljitNativeX86_64.c
-+++ b/src/sljit/sljitNativeX86_64.c
+diff --git a/deps/sljit/sljit_src/sljitNativeX86_64.c b/deps/sljit/sljit_src/sljitNativeX86_64.c
+index e4d3db8..3862568 100644
+--- a/deps/sljit/sljit_src/sljitNativeX86_64.c
++++ b/deps/sljit/sljit_src/sljitNativeX86_64.c
 @@ -447,7 +447,7 @@ static sljit_u8* generate_mov_addr_code(struct sljit_jump *jump, sljit_u8 *code_
  	return code_ptr;
  }
@@ -46,12 +46,14 @@ index 1ab7929..d748fa7 100644
  typedef struct {
  	sljit_sw regs[2];
  } sljit_sse2_reg;
-@@ -461,11 +461,11 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_enter(struct sljit_compiler *compi
+@@ -461,13 +461,13 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_enter(struct sljit_compiler *compi
  	sljit_s32 word_arg_count = 0;
  	sljit_s32 saved_arg_count = SLJIT_KEPT_SAVEDS_COUNT(options);
  	sljit_s32 saved_regs_size, tmp, i;
 -#ifdef _WIN64
 +#if defined _WIN64 || defined __CYGWIN__
+ 	sljit_s32 fscratches;
+ 	sljit_s32 fsaveds;
  	sljit_s32 saved_float_regs_size;
  	sljit_s32 saved_float_regs_offset = 0;
  	sljit_s32 float_arg_count = 0;
@@ -60,7 +62,7 @@ index 1ab7929..d748fa7 100644
  	sljit_u8 *inst;
  
  	CHECK_ERROR();
-@@ -504,7 +504,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_enter(struct sljit_compiler *compi
+@@ -513,7 +513,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_enter(struct sljit_compiler *compi
  		PUSH_REG(reg_lmap[i]);
  	}
  
@@ -69,7 +71,7 @@ index 1ab7929..d748fa7 100644
  	local_size += SLJIT_LOCALS_OFFSET;
  	saved_float_regs_size = GET_SAVED_FLOAT_REGISTERS_SIZE(fscratches, fsaveds, sse2_reg);
  
-@@ -512,16 +512,16 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_enter(struct sljit_compiler *compi
+@@ -521,16 +521,16 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_enter(struct sljit_compiler *compi
  		saved_float_regs_offset = ((local_size + 0xf) & ~0xf);
  		local_size = saved_float_regs_offset + saved_float_regs_size;
  	}
@@ -89,7 +91,7 @@ index 1ab7929..d748fa7 100644
  			switch (word_arg_count) {
  			case 0:
  				tmp = SLJIT_R2;
-@@ -536,7 +536,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_enter(struct sljit_compiler *compi
+@@ -545,7 +545,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_enter(struct sljit_compiler *compi
  				tmp = SLJIT_R3;
  				break;
  			}
@@ -98,7 +100,7 @@ index 1ab7929..d748fa7 100644
  			switch (word_arg_count + float_arg_count) {
  			case 0:
  				tmp = SLJIT_R3;
-@@ -551,7 +551,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_enter(struct sljit_compiler *compi
+@@ -560,7 +560,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_enter(struct sljit_compiler *compi
  				tmp = TMP_REG1;
  				break;
  			}
@@ -107,7 +109,7 @@ index 1ab7929..d748fa7 100644
  			if (arg_types & SLJIT_ARG_TYPE_SCRATCH_REG) {
  				if (tmp != SLJIT_R0 + word_arg_count)
  					EMIT_MOV(compiler, SLJIT_R0 + word_arg_count, 0, tmp, 0);
-@@ -561,13 +561,13 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_enter(struct sljit_compiler *compi
+@@ -570,13 +570,13 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_enter(struct sljit_compiler *compi
  			}
  			word_arg_count++;
  		} else {
@@ -123,7 +125,7 @@ index 1ab7929..d748fa7 100644
  		}
  		arg_types >>= SLJIT_ARG_SHIFT;
  	}
-@@ -575,7 +575,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_enter(struct sljit_compiler *compi
+@@ -584,7 +584,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_enter(struct sljit_compiler *compi
  	local_size = ((local_size + saved_regs_size + 0xf) & ~0xf) - saved_regs_size;
  	compiler->local_size = local_size;
  
@@ -132,7 +134,7 @@ index 1ab7929..d748fa7 100644
  	if (local_size > 0) {
  		if (local_size <= 4 * 4096) {
  			if (local_size > 4096)
-@@ -604,12 +604,12 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_enter(struct sljit_compiler *compi
+@@ -613,12 +613,12 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_enter(struct sljit_compiler *compi
  		if (local_size > 0)
  			EMIT_MOV(compiler, TMP_REG1, 0, SLJIT_MEM1(SLJIT_SP), -local_size);
  	}
@@ -147,7 +149,7 @@ index 1ab7929..d748fa7 100644
  	if (saved_float_regs_size > 0) {
  		compiler->mode32 = 1;
  
-@@ -624,7 +624,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_enter(struct sljit_compiler *compi
+@@ -633,7 +633,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_enter(struct sljit_compiler *compi
  			saved_float_regs_offset += 16;
  		}
  	}
@@ -156,24 +158,30 @@ index 1ab7929..d748fa7 100644
  
  	return SLJIT_SUCCESS;
  }
-@@ -634,23 +634,23 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_set_context(struct sljit_compiler *comp
- 	sljit_s32 fscratches, sljit_s32 fsaveds, sljit_s32 local_size)
+@@ -643,11 +643,11 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_set_context(struct sljit_compiler *comp
+ 	sljit_s32 scratches, sljit_s32 saveds, sljit_s32 local_size)
  {
  	sljit_s32 saved_regs_size;
 -#ifdef _WIN64
 +#if defined _WIN64 || defined __CYGWIN__
+ 	sljit_s32 fscratches;
+ 	sljit_s32 fsaveds;
  	sljit_s32 saved_float_regs_size;
 -#endif /* _WIN64 */
 +#endif /* _WIN64 || __CYGWIN__ */
  
  	CHECK_ERROR();
- 	CHECK(check_sljit_set_context(compiler, options, arg_types, scratches, saveds, fscratches, fsaveds, local_size));
- 	set_set_context(compiler, options, arg_types, scratches, saveds, fscratches, fsaveds, local_size);
+ 	CHECK(check_sljit_set_context(compiler, options, arg_types, scratches, saveds, local_size));
+@@ -655,7 +655,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_set_context(struct sljit_compiler *comp
+ 
+ 	scratches = ENTER_GET_REGS(scratches);
  
 -#ifdef _WIN64
 +#if defined _WIN64 || defined __CYGWIN__
- 	local_size += SLJIT_LOCALS_OFFSET;
- 	saved_float_regs_size = GET_SAVED_FLOAT_REGISTERS_SIZE(fscratches, fsaveds, sse2_reg);
+ 	saveds = ENTER_GET_REGS(saveds);
+ 	fscratches = compiler->fscratches;
+ 	fsaveds = compiler->fsaveds;
+@@ -665,9 +665,9 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_set_context(struct sljit_compiler *comp
  
  	if (saved_float_regs_size > 0)
  		local_size = ((local_size + 0xf) & ~0xf) + saved_float_regs_size;
@@ -185,7 +193,7 @@ index 1ab7929..d748fa7 100644
  
  	/* Including the return address saved by the call instruction. */
  	saved_regs_size = GET_SAVED_REGISTERS_SIZE(scratches, saveds - SLJIT_KEPT_SAVEDS_COUNT(options), 1);
-@@ -663,13 +663,13 @@ static sljit_s32 emit_stack_frame_release(struct sljit_compiler *compiler, sljit
+@@ -680,13 +680,13 @@ static sljit_s32 emit_stack_frame_release(struct sljit_compiler *compiler, sljit
  	sljit_uw size;
  	sljit_s32 local_size, i, tmp;
  	sljit_u8 *inst;
@@ -202,7 +210,7 @@ index 1ab7929..d748fa7 100644
  	saved_float_regs_offset = GET_SAVED_FLOAT_REGISTERS_SIZE(fscratches, fsaveds, sse2_reg);
  
  	if (saved_float_regs_offset > 0) {
-@@ -689,7 +689,7 @@ static sljit_s32 emit_stack_frame_release(struct sljit_compiler *compiler, sljit
+@@ -706,7 +706,7 @@ static sljit_s32 emit_stack_frame_release(struct sljit_compiler *compiler, sljit
  
  		compiler->mode32 = 0;
  	}
@@ -211,7 +219,7 @@ index 1ab7929..d748fa7 100644
  
  	local_size = compiler->local_size;
  
-@@ -766,7 +766,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_return_to(struct sljit_compiler *c
+@@ -783,7 +783,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_return_to(struct sljit_compiler *c
  /*  Call / return instructions                                           */
  /* --------------------------------------------------------------------- */
  
@@ -220,10 +228,10 @@ index 1ab7929..d748fa7 100644
  
  static sljit_s32 call_with_args(struct sljit_compiler *compiler, sljit_s32 arg_types, sljit_s32 *src_ptr)
  {
-diff --git a/src/sljit/sljitNativeX86_common.c b/src/sljit/sljitNativeX86_common.c
-index ecb7e9b..91dfcc8 100644
---- a/src/sljit/sljitNativeX86_common.c
-+++ b/src/sljit/sljitNativeX86_common.c
+diff --git a/deps/sljit/sljit_src/sljitNativeX86_common.c b/deps/sljit/sljit_src/sljitNativeX86_common.c
+index 9f599d5..1113bc4 100644
+--- a/deps/sljit/sljit_src/sljitNativeX86_common.c
++++ b/deps/sljit/sljit_src/sljitNativeX86_common.c
 @@ -88,7 +88,7 @@ static const sljit_u8 freg_map[SLJIT_NUMBER_OF_FLOAT_REGISTERS + 2] = {
  /* Note: r12 & 0x7 == 0b100, which decoded as SIB byte present
     Note: avoid to use r12 and r13 for memory addressing
@@ -242,7 +250,7 @@ index ecb7e9b..91dfcc8 100644
  #define HALFWORD_MAX 0x7fffffffl
  #define HALFWORD_MIN -0x80000000l
  #else
-@@ -1377,7 +1377,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_op0(struct sljit_compiler *compile
+@@ -1409,7 +1409,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_op0(struct sljit_compiler *compile
  	case SLJIT_DIV_UW:
  	case SLJIT_DIV_SW:
  #if (defined SLJIT_CONFIG_X86_64 && SLJIT_CONFIG_X86_64)
@@ -251,7 +259,7 @@ index ecb7e9b..91dfcc8 100644
  		SLJIT_ASSERT(
  			reg_map[SLJIT_R0] == 0
  			&& reg_map[SLJIT_R1] == 2
-@@ -1394,7 +1394,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_op0(struct sljit_compiler *compile
+@@ -1426,7 +1426,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_op0(struct sljit_compiler *compile
  
  		op = GET_OPCODE(op);
  		if ((op | 0x2) == SLJIT_DIV_UW) {
@@ -260,7 +268,7 @@ index ecb7e9b..91dfcc8 100644
  			EMIT_MOV(compiler, TMP_REG1, 0, SLJIT_R1, 0);
  			inst = emit_x86_instruction(compiler, 1, SLJIT_R1, 0, SLJIT_R1, 0);
  #else
-@@ -1405,7 +1405,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_op0(struct sljit_compiler *compile
+@@ -1437,7 +1437,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_op0(struct sljit_compiler *compile
  		}
  
  		if ((op | 0x2) == SLJIT_DIV_SW) {
@@ -269,7 +277,7 @@ index ecb7e9b..91dfcc8 100644
  			EMIT_MOV(compiler, TMP_REG1, 0, SLJIT_R1, 0);
  #endif
  
-@@ -1430,7 +1430,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_op0(struct sljit_compiler *compile
+@@ -1462,7 +1462,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_op0(struct sljit_compiler *compile
  		inst[0] = GROUP_F7;
  		inst[1] = MOD_REG | ((op >= SLJIT_DIVMOD_UW) ? reg_map[TMP_REG1] : reg_map[SLJIT_R1]);
  #else /* !SLJIT_CONFIG_X86_32 */
@@ -278,7 +286,7 @@ index ecb7e9b..91dfcc8 100644
  		size = (!compiler->mode32 || op >= SLJIT_DIVMOD_UW) ? 3 : 2;
  #else /* !_WIN64 */
  		size = (!compiler->mode32) ? 3 : 2;
-@@ -1438,7 +1438,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_op0(struct sljit_compiler *compile
+@@ -1470,7 +1470,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_op0(struct sljit_compiler *compile
  		inst = (sljit_u8*)ensure_buf(compiler, 1 + size);
  		FAIL_IF(!inst);
  		INC_SIZE(size);
@@ -287,7 +295,7 @@ index ecb7e9b..91dfcc8 100644
  		if (!compiler->mode32)
  			*inst++ = REX_W | ((op >= SLJIT_DIVMOD_UW) ? REX_B : 0);
  		else if (op >= SLJIT_DIVMOD_UW)
-@@ -1468,7 +1468,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_op0(struct sljit_compiler *compile
+@@ -1500,7 +1500,7 @@ SLJIT_API_FUNC_ATTRIBUTE sljit_s32 sljit_emit_op0(struct sljit_compiler *compile
  			inst[1] |= IDIV;
  			break;
  		}

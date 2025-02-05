@@ -1,4 +1,4 @@
-From 9d466b31c059f7045c5f424d1ddc57438c5f2284 Mon Sep 17 00:00:00 2001
+From f4312bcb770b4c11e451dbe70807a8624c48c73e Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Fri, 2 Jun 2017 17:54:57 +0200
 Subject: [PATCH 2/3] RunTest: adjust ISO-8859-1 tests for Cygwin
@@ -33,7 +33,7 @@ Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
  1 file changed, 38 insertions(+)
 
 diff --git a/RunTest b/RunTest
-index d426a59..f0df2bb 100755
+index dafef3e..9f3e7a6 100755
 --- a/RunTest
 +++ b/RunTest
 @@ -572,6 +572,44 @@ for bmode in "$test8" "$test16" "$test32"; do
@@ -61,7 +61,7 @@ index d426a59..f0df2bb 100755
 +                  s/\xaa \xb5 \xba //
 +                  # rewrap after removing three characters
 +                  N;N
-+                  s/\(\n *\)\(. . . \)/\2\1/g
++                  s/\(\n *\)\( . . .\)/\2\1/g
 +                }
 +
 +                # test E-circumflex and U-acute which Cygwin considers

@@ -2,7 +2,7 @@
 
 pkgbase=pcre2
 pkgname=('pcre2' 'libpcre2_8' 'libpcre2_16' 'libpcre2_32' 'libpcre2posix' 'pcre2-devel')
-pkgver=10.44
+pkgver=10.45
 pkgrel=1
 pkgdesc="A library that implements Perl 5-style regular expressions"
 arch=('i686' 'x86_64')
@@ -13,12 +13,12 @@ source=(https://github.com/PCRE2project/pcre2/releases/download/${pkgbase}-${pkg
         0001-Allow-building-an-MSYS-DLL.patch
         0002-RunTest-adjust-ISO-8859-1-tests-for-Cygwin.patch
         0003-pcre2-10.40-cygwin-jit.patch)
-sha256sums=('d34f02e113cf7193a1ebf2770d3ac527088d485d4e047ed10e5d217c6ef5de96'
+sha256sums=('21547f3516120c75597e5b30a992e27a592a31950b5140e7b8bfde3f192033c4'
             'SKIP'
-            '4130d1c668750006a91ad5217f3206642d5d57f4d86ce4465a09dfa3d051f245'
-            'f1fb2eac8776ad338cdbe1db94050fa785d4ec7fc69f4c658ae26287b89f8acd'
-            '055755e4eb78bb684110e41980e3b8d7d960cecc370602e72bed0c5b880f4f99')
-validpgpkeys=('45F68D54BBE23FB3039B46E59766E084FB0F43D8') # Philip Hazel <ph10@hermes.cam.ac.uk>
+            '75d0b002035698d427b31a81c2efc518beea17e0e410f59185ef02e599b45f04'
+            '0edaf45f742d388ddf96313e92d44f4942da2b0dc24ca0a0b47b5b223b6eee67'
+            'e90e776d43a57767ac551e896e6191920577bbfc659bbd6fc6b48380c2c8fd44')
+validpgpkeys=('A95536204A3BB489715231282A98E77EB6F24CA8') # Nicholas Wilson <nicholas@nicholaswilson.me.uk>
 
 prepare() {
   cd "${srcdir}"/${pkgname}-${pkgver}
@@ -78,7 +78,7 @@ package_pcre2() {
   mkdir -p ${pkgdir}/usr/bin
   cp -f ${srcdir}/dest/usr/bin/*.exe ${pkgdir}/usr/bin/
   cp -rf ${srcdir}/dest/usr/share ${pkgdir}/usr/
-  install -Dm644 ${srcdir}/${pkgname}-${pkgver}/LICENCE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 ${srcdir}/${pkgname}-${pkgver}/LICENCE.md "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE.md
 }
 
 package_libpcre2_8() {
