@@ -17,26 +17,6 @@ jobs:
       - name: install pactoys (needed for `saneman`)
         shell: bash
         run: bash -lc "pacman -S --noconfirm pactoys"
-      - name: work around curl v8.11.0-1 problem
-        shell: bash
-        run: |
-          # `git fetch` does not work with that libcurl version. For details,
-          # see https://github.com/git-for-windows/MSYS2-packages/pull/199
-          test ! -f /var/lib/pacman/local/libcurl-8.11.0-1/desc ||
-          for pkg in libcurl curl
-          do
-            for suffix in '' .sig
-            do
-              curl --retry 5 -fLO \
-                https://wingit.blob.core.windows.net/x86-64/$pkg-8.10.1-1-x86_64.pkg.tar.xz$suffix ||
-              exit 1
-            done
-            pacman -U --noconfirm $pkg-8.10.1-1-x86_64.pkg.tar.xz || exit 1
-          done
-
-          # Sadly, this does not work because the Pacman repository's index only
-          # ever lists the latest package version:
-          # pacman -S --noconfirm libcurl=8.10.1-1 curl=8.10.1-1
       - name: CI-Build
         shell: bash
         run: bash -l .ci/ci-build.sh
@@ -98,22 +78,32 @@ jobs:
           set -x &&
           mkdir -p artifacts &&
           err= &&
-          if test ! -e /usr/bin/msys-unistring-2.dll -a -e /usr/bin/msys-unistring-5.dll &&
-            grep msys-unistring-2 /usr/bin/msys-gnutls-30.dll 2>&1 >/dev/null
-          then
-            cp /usr/bin/msys-unistring-5.dll /usr/bin/msys-unistring-2.dll
-          fi &&
           for dir in $(git diff --name-only \
               ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }} |
              sed -n 's/^\([a-z][^/]*\)\/.*/\1/p' |
              sort |
-             uniq)
+             uniq |
+             sed '/^gnupg$/{
+               :1
+               N
+               ; ensure that libgpg-error comes before gnupg
+               /\nlibgpg-error$/{
+                 s/\(.*\)\(\n\)\(.*\)$/\3\2\1/
+                 b
+               }
+               $b
+               b1
+             }')
           do
             case $dir in msys2-runtime) continue;; esac
             (
               cd $dir &&
               ../.ci/fetch-validpgpkeys.sh &&
               makepkg -s --noconfirm &&
+              if test libgpg-error = $dir
+              then
+                pacman -U --noconfirm *.pkg.tar.*
+              fi &&
               cp -v *.pkg.tar.* ../artifacts/
             ) ||
             err="$err $dir"
