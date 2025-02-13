@@ -20,10 +20,10 @@ sha256sums=('9e3c670966b96ecc746c28c2c419541e3bcb787d1a73930f5e5f5e1bcbbb9bdb'
             'a04b60374178755c9db848c5e050cccd038b20dd7b0c3cab3e27fbbcd6382484'
             '3f23c42c424cdeb072769bf8748665da3155b5a172da08be22b641dd04827612')
 #These might be signed by any of these keys https://gnupg.org/signature_key.html
-validpgpkeys=('D8692123C4065DEA5E0F3AB5249B39D24F25E3B6'
-              '031EC2536E580D8EA286A9F22071B08A33BD3F06'
-              '5B80C5754298F0CB55D8ED6ABCEF7E294B092E28'
-              '6DAA6E64A76D2840571B4902528897B826403ADA')
+validpgpkeys=('5B80C5754298F0CB55D8ED6ABCEF7E294B092E28'  # Andre Heinecke (Release Signing Key)
+              '6DAA6E64A76D2840571B4902528897B826403ADA'  # Werner Koch (dist signing 2020)
+              'AC8E115BF73E2D8D47FA9908E98E9B2D19C6C8BD'  # Niibe Yutaka (GnuPG Release Key)
+              '02F38DFF731FF97CB039A1DA549E695E905BA208') # GnuPG.com (Release Signing Key 2021)
 
 prepare() {
   cd "${srcdir}/${pkgname}-${pkgver}"
