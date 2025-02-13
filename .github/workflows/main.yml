@@ -82,13 +82,28 @@ jobs:
               ${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }} |
              sed -n 's/^\([a-z][^/]*\)\/.*/\1/p' |
              sort |
-             uniq)
+             uniq |
+             sed '/^gnupg$/{
+               :1
+               N
+               ; ensure that libgpg-error comes before gnupg
+               /\nlibgpg-error$/{
+                 s/\(.*\)\(\n\)\(.*\)$/\3\2\1/
+                 b
+               }
+               $b
+               b1
+             }')
           do
             case $dir in msys2-runtime) continue;; esac
             (
               cd $dir &&
               ../.ci/fetch-validpgpkeys.sh &&
               makepkg -s --noconfirm &&
+              if test libgpg-error = $dir
+              then
+                pacman -U --noconfirm *.pkg.tar.*
+              fi &&
               cp -v *.pkg.tar.* ../artifacts/
             ) ||
             err="$err $dir"
