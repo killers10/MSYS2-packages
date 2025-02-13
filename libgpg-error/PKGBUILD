@@ -2,8 +2,8 @@
 
 pkgbase=libgpg-error
 pkgname=('libgpg-error' 'libgpg-error-devel') # 'gpg-error'
-pkgver=1.47
-pkgrel=2
+pkgver=1.51
+pkgrel=1
 pkgdesc="Support library for libgcrypt"
 arch=('i686' 'x86_64')
 url="https://gnupg.org"
@@ -14,7 +14,7 @@ source=(https://gnupg.org/ftp/gcrypt/libgpg-error/${pkgname}-${pkgver}.tar.bz2{,
         0001-gnulib-weak.patch
         0002-gpg-error-static-linking.patch
         0003-Avoid-passing-a-signed-parameter-to-isspace-and-frie.patch)
-sha256sums=('9e3c670966b96ecc746c28c2c419541e3bcb787d1a73930f5e5f5e1bcbbb9bdb'
+sha256sums=('be0f1b2db6b93eed55369cdf79f19f72750c8c7c39fc20b577e724545427e6b2'
             'SKIP'
             '8b716e8fb6ef7d4b9c5c730b5819556ed907cbb0b0a144062fa5f41a58d92da8'
             'a04b60374178755c9db848c5e050cccd038b20dd7b0c3cab3e27fbbcd6382484'
