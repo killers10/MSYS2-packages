@@ -4,7 +4,7 @@
 pkgbase=msys2-runtime
 pkgname=('msys2-runtime' 'msys2-runtime-devel')
 pkgver=3.5.7
-pkgrel=1
+pkgrel=2
 pkgdesc="Cygwin POSIX emulation engine"
 arch=('x86_64')
 url="https://www.cygwin.com/"
@@ -79,9 +79,10 @@ source=('msys2-runtime'::git+https://github.com/cygwin/cygwin#tag=cygwin-${pkgve
         0050-Use-MB_CUR_MAX-6-by-default.patch
         0051-Change-the-default-base-address-for-x86_64.patch
         0052-msys2-runtime-restore-fast-path-for-current-user-pri.patch
-        0053-Fix-SSH-hangs.patch)
+        0053-Fix-SSH-hangs.patch
+        0054-Cygwin-Adjust-CWD-magic-to-accommodate-for-the-lates.patch)
 sha256sums=('67c44fa7fcae9dc63c71d71934a5f2b7c584d967279b0492646df9bc63bc3f16'
-            'a403c45d6922cc6b6134683533dbe6667a2b7fb52ead71be3add2276296e861c'
+            '6fce92782f8832044f3caa1fe22ec9b0e1f719c0bf78e2cd9e7398d1ce4edbed'
             '87d86c95008274731cf560d929ae5fb319d962591303b2690e11bfd60f4818e7'
             'c6d091cb51440638eb9fc59b35ba40f2b63e9e32a31a56c51a2aaec2445aa88e'
             '81ec264a45c03e03e2b901037b73e5042b9d54e0454b29d372114d0c853b82e0'
@@ -134,7 +135,8 @@ sha256sums=('67c44fa7fcae9dc63c71d71934a5f2b7c584d967279b0492646df9bc63bc3f16'
             '6631588e7c3633a105ab00a84484bc09853cac454e93da79cf3952ccfc900ae9'
             '87e59ef31ae84f3d86f4d7dc632b8e0fc0a37d9efdb9422b712c76ec6088dc59'
             '8c0603f8b1a2874488a43a9779be2c5ffd05ccf392b4e8fcc8b2a282470a68a2'
-            'd441808c2f6dbbe5a6fa33bd7231ddcff2a8027292bd8325448b58a42412fd52')
+            'd441808c2f6dbbe5a6fa33bd7231ddcff2a8027292bd8325448b58a42412fd52'
+            '3850bf314368132b8a12dc7df440563153b9da64a412d4a5a100a8b710cc29f0')
 
 # Helper macros to help make tasks easier #
 apply_patch_with_msg() {
@@ -241,7 +243,8 @@ prepare() {
   0050-Use-MB_CUR_MAX-6-by-default.patch \
   0051-Change-the-default-base-address-for-x86_64.patch \
   0052-msys2-runtime-restore-fast-path-for-current-user-pri.patch \
-  0053-Fix-SSH-hangs.patch
+  0053-Fix-SSH-hangs.patch \
+  0054-Cygwin-Adjust-CWD-magic-to-accommodate-for-the-lates.patch
 }
 
 build() {
