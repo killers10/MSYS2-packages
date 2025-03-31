@@ -4,7 +4,7 @@
 pkgbase=msys2-runtime
 pkgname=('msys2-runtime' 'msys2-runtime-devel')
 pkgver=3.6.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Cygwin POSIX emulation engine"
 arch=('x86_64')
 url="https://www.cygwin.com/"
@@ -75,9 +75,12 @@ source=('msys2-runtime'::git+https://github.com/cygwin/cygwin#tag=cygwin-${pkgve
         0046-Make-paths-WCS-MBS-conversion-explicit.patch
         0047-Use-MB_CUR_MAX-6-by-default.patch
         0048-Change-the-default-base-address-for-x86_64.patch
-        0049-msys2-runtime-restore-fast-path-for-current-user-pri.patch)
+        0049-msys2-runtime-restore-fast-path-for-current-user-pri.patch
+        0050-Cygwin-pipe-Fix-hang-due-to-inadvertent-0-length-raw.patch
+        0051-Cygwin-signal-Clear-direction-flag-in-sigdeleyed.patch
+        0052-Cygwin-signal-Copy-context-to-alternate-stack-in-the.patch)
 sha256sums=('a57fc7fe47e2d766c98dbd603655ccefb871630e36165472bf1e60dd9e1996d9'
-            'ecc5a901e9de3ac5dcb8cc5cfbb14ac467ed9379369af9956c885d5c6c7edf32'
+            '615640a6a527ff282e64f2d2214f7c36ca4d2213c88d6646948822eed212ded1'
             '5945b95c6b3caf18cc8356802e9af1770746a76c27d0931b897d48d072603fcf'
             '8f2def0add5397487e2470fd7219bd80233e4d43e9f78d92d042907fede0570a'
             '0cebee2ed462579029512e46e4bd3c7bddd4d92823ef69803a938007c66d2843'
@@ -126,7 +129,10 @@ sha256sums=('a57fc7fe47e2d766c98dbd603655ccefb871630e36165472bf1e60dd9e1996d9'
             '00e16c80725435e0c1949b2a9208e766d0c0ddf754078570d113068557c96547'
             '9bcb1865d0716595a86e4589549d527c821314174ba1664e3f729d74daa27210'
             'a15a9b5a968f6e1397acf43d29b41310011841251c895b76496d76a90302f895'
-            '6fe858194859e857ea20bf6501ab95427296f9e34aed7ac10681dee0bf2a1d06')
+            '6fe858194859e857ea20bf6501ab95427296f9e34aed7ac10681dee0bf2a1d06'
+            'b38be4d385beb0c8f6815b2f285ecfcf60641c627eeb7810141ba1127fb908ea'
+            '8b891cc7ddb75e43d45c3d610cd3809ba3eed00eb68344cc79c55ef1b530bd16'
+            '753860b3fa45044d40b6cde36e4a22d2422ad254618fa2e51c554a54ae11c364')
 
 # Helper macros to help make tasks easier #
 apply_patch_with_msg() {
@@ -229,7 +235,10 @@ prepare() {
   0046-Make-paths-WCS-MBS-conversion-explicit.patch \
   0047-Use-MB_CUR_MAX-6-by-default.patch \
   0048-Change-the-default-base-address-for-x86_64.patch \
-  0049-msys2-runtime-restore-fast-path-for-current-user-pri.patch
+  0049-msys2-runtime-restore-fast-path-for-current-user-pri.patch \
+  0050-Cygwin-pipe-Fix-hang-due-to-inadvertent-0-length-raw.patch \
+  0051-Cygwin-signal-Clear-direction-flag-in-sigdeleyed.patch \
+  0052-Cygwin-signal-Copy-context-to-alternate-stack-in-the.patch
 }
 
 build() {
