@@ -1,7 +1,7 @@
-From ad8042a632d6fa9dd325548ad7a55b520409d39a Mon Sep 17 00:00:00 2001
+From 21e03ee9931bac3497da336f73b9e64274a21cbb Mon Sep 17 00:00:00 2001
 From: Karsten Blees <blees@dcon.de>
 Date: Wed, 20 May 2015 16:32:52 +0200
-Subject: [PATCH 45/N] Allow native symlinks to non-existing targets in
+Subject: [PATCH 43/N] Allow native symlinks to non-existing targets in
  'nativestrict' mode
 
 Windows native symlinks must match the type of their target (file or
