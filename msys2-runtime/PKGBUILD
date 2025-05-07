@@ -4,7 +4,7 @@
 pkgbase=msys2-runtime
 pkgname=('msys2-runtime' 'msys2-runtime-devel')
 pkgver=3.6.1
-pkgrel=2
+pkgrel=3
 pkgdesc="Cygwin POSIX emulation engine"
 arch=('x86_64')
 url="https://www.cygwin.com/"
@@ -75,9 +75,11 @@ source=('msys2-runtime'::git+https://github.com/cygwin/cygwin#tag=cygwin-${pkgve
         0046-Change-the-default-base-address-for-x86_64.patch
         0047-msys2-runtime-restore-fast-path-for-current-user-pri.patch
         0048-Cygwin-console-Fix-the-console-states-after-the-cons.patch
-        0049-fixup-Instead-of-creating-Cygwin-symlinks-use-deep-c.patch)
+        0049-fixup-Instead-of-creating-Cygwin-symlinks-use-deep-c.patch
+        0050-newlib-sys-unistd.h-Change-inline-to-__inline.patch
+        0051-Cygwin-console-Store-console-mode-only-when-console-.patch)
 sha256sums=('24c4782e0e48d59f4155885c790d37a8bb59c4ab318851b99c675ca83792f563'
-            '2280305f1f4a8f851abd3e24823f05d853e124ff34c56754fca18dabf1ea49d6'
+            'd0f53d2153351681e88a8550cfbc9147c65586b3f9a7f83b33941182f3bf4d1c'
             'f0fb7e2f29859d57fd61edf2fb5453f975117aa6c53400f79e6d0eecf9dddba2'
             '3083f60db3649474270319856e8ecb39b15015ad49df4e1ab8c93a0ad3a71152'
             '27c196e05e46f26b86b2154b048aac0727b7303c464263e49016aabf63335dfd'
@@ -126,7 +128,9 @@ sha256sums=('24c4782e0e48d59f4155885c790d37a8bb59c4ab318851b99c675ca83792f563'
             '84a91ae1cf46d7e358754a33d85c7580578c3e4f12776e4fd70f43e8258bd209'
             'b13471f6459eb725ba85ee712e0c037b92d5128329b2dc599823e37bfa87812e'
             'f2d679b59f68ddf025edb191d8888dcc783f85ea6ce63609fb9d562b5bcc9e7f'
-            '2194f705bfa4fae545fecd0251bd03acacc76a6f18783a281b8eb60dec166d9d')
+            '2194f705bfa4fae545fecd0251bd03acacc76a6f18783a281b8eb60dec166d9d'
+            '246bd2d26bb86be65e838cb03dd798d1647be210af6143f757e3bbd099a1c953'
+            '54f7fce15b7fd345a62f3e6d0212b250afd2facb81c5027489ee34eec9a563a8')
 
 # Helper macros to help make tasks easier #
 apply_patch_with_msg() {
@@ -229,7 +233,9 @@ prepare() {
   0046-Change-the-default-base-address-for-x86_64.patch \
   0047-msys2-runtime-restore-fast-path-for-current-user-pri.patch \
   0048-Cygwin-console-Fix-the-console-states-after-the-cons.patch \
-  0049-fixup-Instead-of-creating-Cygwin-symlinks-use-deep-c.patch
+  0049-fixup-Instead-of-creating-Cygwin-symlinks-use-deep-c.patch \
+  0050-newlib-sys-unistd.h-Change-inline-to-__inline.patch \
+  0051-Cygwin-console-Store-console-mode-only-when-console-.patch
 }
 
 build() {
