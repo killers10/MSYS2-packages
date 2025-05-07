@@ -17,7 +17,7 @@ die "Clean worktree required"
 git rm 0*.patch ||
 die "Could not remove previous patches"
 
-base_tag=refs/tags/"$(expr "$(git -C src/msys2-runtime/ describe --tags HEAD)" : '^\(cygwin-[0-9.]*\)')"
+base_tag=refs/tags/"$(expr "$(git -C src/msys2-runtime/ describe --match 'cygwin-[0-9]*' --tags HEAD)" : '^\(cygwin-[0-9.]*\)')"
 source_url=$(sed -ne 's/git+https:/https:/' -e 's/^source=\([^:]\+::\)\?["'\'']\?\([^"'\''#?=&,;[:space:]]\+[^)"'\''#?=&,;[:space:]]\).*/\2/p' <PKGBUILD)
 
 git -C src/msys2-runtime fetch --no-tags "$source_url" "$base_tag:$base_tag"
@@ -43,7 +43,7 @@ git -c core.abbrev=7 \
 		--subject-prefix=PATCH \
 		--output-directory ../.. \
 		$base_tag.. ${merging_rebase_start:+^$merging_rebase_start} \
-		-- ':(exclude).github/' ||
+		-- ':(exclude).github/' ':(exclude)ui-tests/' ||
 die "Could not generate new patch set"
 
 patches="$(ls 0*.patch)" &&
