@@ -1,4 +1,4 @@
-From 9ed877eab5ff9f0bf15325ae874fb7f6e20d0ff6 Mon Sep 17 00:00:00 2001
+From 634644074851d1e09704aee11a7df8897616e691 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Thu, 21 Nov 2019 14:21:01 +0100
 Subject: [PATCH 45/N] Use MB_CUR_MAX == 6 by default

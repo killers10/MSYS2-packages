@@ -1,4 +1,4 @@
-From 074bec0e7fde9bb5ed2e0653d2b3a680f36d5b4f Mon Sep 17 00:00:00 2001
+From e0605d98a02d1639201a5499d075b79ba9e4fae1 Mon Sep 17 00:00:00 2001
 From: Richard Glidden <rglidden@brocksolutions.com>
 Date: Thu, 24 Aug 2023 13:36:10 -0400
 Subject: [PATCH 47/N] msys2-runtime: restore fast path for current user
@@ -55,7 +55,7 @@ index fed87ec..821ccf7 100644
    inline bool nss_cygserver_caching () const { return caching; }
    inline void nss_disable_cygserver_caching () { caching = false; }
 diff --git a/winsup/cygwin/uinfo.cc b/winsup/cygwin/uinfo.cc
-index 12097de..5346c6b 100644
+index 7c2581d..820ee06 100644
 --- a/winsup/cygwin/uinfo.cc
 +++ b/winsup/cygwin/uinfo.cc
 @@ -637,6 +637,11 @@ cygheap_pwdgrp::nss_init_line (const char *line)
@@ -78,7 +78,7 @@ index 12097de..5346c6b 100644
    char *shell = NULL;
    char *home = NULL;
    char *gecos = NULL;
-@@ -2449,9 +2455,19 @@ pwdgrp::fetch_account_from_windows (fetch_user_arg_t &arg, cyg_ldap *pldap)
+@@ -2470,9 +2476,19 @@ pwdgrp::fetch_account_from_windows (fetch_user_arg_t &arg, cyg_ldap *pldap)
  	    uid = posix_offset + sid_sub_auth_rid (sid);
  	  if (!is_group () && acc_type == SidTypeUser)
  	    {
@@ -101,7 +101,7 @@ index 12097de..5346c6b 100644
  	    }
  
  	  if (is_domain_account)
-@@ -2459,9 +2475,11 @@ pwdgrp::fetch_account_from_windows (fetch_user_arg_t &arg, cyg_ldap *pldap)
+@@ -2480,9 +2496,11 @@ pwdgrp::fetch_account_from_windows (fetch_user_arg_t &arg, cyg_ldap *pldap)
  	      /* Skip this when creating group entries and for non-users. */
  	      if (is_group() || acc_type != SidTypeUser)
  		break;
