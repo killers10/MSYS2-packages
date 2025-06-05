@@ -1,4 +1,4 @@
-From 0f660c9e25acc19e301013a2112d0119ff763208 Mon Sep 17 00:00:00 2001
+From 6f2afa8cfca5ff7bf893f2df0f753b9d9fe01740 Mon Sep 17 00:00:00 2001
 From: Johannes Schindelin <johannes.schindelin@gmx.de>
 Date: Fri, 18 Dec 2015 20:19:57 +0100
 Subject: [PATCH 44/N] Make paths' WCS->MBS conversion explicit
@@ -562,7 +562,7 @@ index 6f04658..79eb6f6 100644
      }
    else
 diff --git a/winsup/cygwin/uinfo.cc b/winsup/cygwin/uinfo.cc
-index 7c2581d..f72fbe9 100644
+index 4323cb1..9f2685a 100644
 --- a/winsup/cygwin/uinfo.cc
 +++ b/winsup/cygwin/uinfo.cc
 @@ -385,12 +385,12 @@ cygheap_user::ontherange (homebodies what, struct passwd *pw)
