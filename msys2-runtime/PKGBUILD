@@ -4,7 +4,7 @@
 pkgbase=msys2-runtime
 pkgname=('msys2-runtime' 'msys2-runtime-devel')
 pkgver=3.6.3
-pkgrel=3
+pkgrel=4
 pkgdesc="Cygwin POSIX emulation engine"
 arch=('x86_64')
 url="https://www.cygwin.com/"
@@ -76,9 +76,13 @@ source=('msys2-runtime'::git+https://github.com/cygwin/cygwin#tag=cygwin-${pkgve
         0047-msys2-runtime-restore-fast-path-for-current-user-pri.patch
         0048-Cygwin-Fix-compatibility-with-w32api-headers-v13.patch
         0049-symlink_native-allow-linking-to.patch
-        0050-pipe-fix-SSH-hang-again.patch)
+        0050-pipe-fix-SSH-hang-again.patch
+        0051-fixup-pipe-fix-SSH-hang-again.patch
+        0052-Cygwin-pipe-Fix-SSH-hang-with-non-cygwin-pipe-reader.patch
+        0053-Cygwin-pipe-Update-source-comment-align-with-previou.patch
+        0054-Cygwin-pipe-Make-pipe_data_available-return-PDA_UNKN.patch)
 sha256sums=('53d2be8a2dcf58e7eae7823ef01a5b8ce0eba704b132d19167396eb162db378c'
-            'f61169068c110e6b5dfc5deed7fc2572a890c59ea3b4da7a0c6e171530a8f7b5'
+            '773577f853a78a36ac0f26ebfd885943386cac4f65610e7f32573c1818139e9f'
             '5538db757661949423563bab5e4f383dfa4ef0cf3301cf43f23b482392554b3b'
             '2fb9b2b297797d20cd901eaee2de735e8cdda1c1e5836e9ff77856c0d1216860'
             '780977d71e35bbe4c0dcda5272895267d68d635f311e224f7981858f7192a85e'
@@ -128,7 +132,11 @@ sha256sums=('53d2be8a2dcf58e7eae7823ef01a5b8ce0eba704b132d19167396eb162db378c'
             '6db2e2a7e45125974de355fd685d3a652c1f17e5bd2a94606cbba33520d96624'
             '37f4dcaab659da6f7730a7fdd855c91e51b642bd42820a7f35af514a866db7fd'
             'e2b046866637090bd9123fd2fcd00faac5d903e4b322959b9c13ea1161e786a2'
-            'eeca52961120ff4d258045913faf9e482a44a4e058336b8206ad76002bbf0a65')
+            'eeca52961120ff4d258045913faf9e482a44a4e058336b8206ad76002bbf0a65'
+            '0d6f7194e3c5052db24b5622d4b6d1ffac93a79b4266a1682993bf7af9b2ef35'
+            'da17d0c9b64bc866b3b9bcbbeff0f3c109e494fd96d846f7920f08a48a1c9ce5'
+            'b1acf1b24fa229da75cc522807fb76e94a5389449a652f250cf96151a6d20116'
+            'de705488bd7572e09f0847ebd96bb8e5ff58f5dcaf7d4a967891939eb48ccf6b')
 
 # Helper macros to help make tasks easier #
 apply_patch_with_msg() {
@@ -232,7 +240,11 @@ prepare() {
   0047-msys2-runtime-restore-fast-path-for-current-user-pri.patch \
   0048-Cygwin-Fix-compatibility-with-w32api-headers-v13.patch \
   0049-symlink_native-allow-linking-to.patch \
-  0050-pipe-fix-SSH-hang-again.patch
+  0050-pipe-fix-SSH-hang-again.patch \
+  0051-fixup-pipe-fix-SSH-hang-again.patch \
+  0052-Cygwin-pipe-Fix-SSH-hang-with-non-cygwin-pipe-reader.patch \
+  0053-Cygwin-pipe-Update-source-comment-align-with-previou.patch \
+  0054-Cygwin-pipe-Make-pipe_data_available-return-PDA_UNKN.patch
 }
 
 build() {
