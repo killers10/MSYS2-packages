@@ -4,7 +4,7 @@
 pkgbase=msys2-runtime
 pkgname=('msys2-runtime' 'msys2-runtime-devel')
 pkgver=3.6.3
-pkgrel=4
+pkgrel=5
 pkgdesc="Cygwin POSIX emulation engine"
 arch=('x86_64')
 url="https://www.cygwin.com/"
@@ -80,9 +80,10 @@ source=('msys2-runtime'::git+https://github.com/cygwin/cygwin#tag=cygwin-${pkgve
         0051-fixup-pipe-fix-SSH-hang-again.patch
         0052-Cygwin-pipe-Fix-SSH-hang-with-non-cygwin-pipe-reader.patch
         0053-Cygwin-pipe-Update-source-comment-align-with-previou.patch
-        0054-Cygwin-pipe-Make-pipe_data_available-return-PDA_UNKN.patch)
+        0054-Cygwin-pipe-Make-pipe_data_available-return-PDA_UNKN.patch
+        0055-Cygwin-console-Set-ENABLE_PROCESSED_INPUT-when-disab.patch)
 sha256sums=('53d2be8a2dcf58e7eae7823ef01a5b8ce0eba704b132d19167396eb162db378c'
-            '773577f853a78a36ac0f26ebfd885943386cac4f65610e7f32573c1818139e9f'
+            'dd0932cf89a81792e9c68a9f4c4689182136fa51b576ca04c443b00b1f88f8a5'
             '5538db757661949423563bab5e4f383dfa4ef0cf3301cf43f23b482392554b3b'
             '2fb9b2b297797d20cd901eaee2de735e8cdda1c1e5836e9ff77856c0d1216860'
             '780977d71e35bbe4c0dcda5272895267d68d635f311e224f7981858f7192a85e'
@@ -136,7 +137,8 @@ sha256sums=('53d2be8a2dcf58e7eae7823ef01a5b8ce0eba704b132d19167396eb162db378c'
             '0d6f7194e3c5052db24b5622d4b6d1ffac93a79b4266a1682993bf7af9b2ef35'
             'da17d0c9b64bc866b3b9bcbbeff0f3c109e494fd96d846f7920f08a48a1c9ce5'
             'b1acf1b24fa229da75cc522807fb76e94a5389449a652f250cf96151a6d20116'
-            'de705488bd7572e09f0847ebd96bb8e5ff58f5dcaf7d4a967891939eb48ccf6b')
+            'de705488bd7572e09f0847ebd96bb8e5ff58f5dcaf7d4a967891939eb48ccf6b'
+            '7de98fef5c5a79563278fdaefe95d9715477422521da15d0a51cf8e507b797e3')
 
 # Helper macros to help make tasks easier #
 apply_patch_with_msg() {
@@ -244,7 +246,8 @@ prepare() {
   0051-fixup-pipe-fix-SSH-hang-again.patch \
   0052-Cygwin-pipe-Fix-SSH-hang-with-non-cygwin-pipe-reader.patch \
   0053-Cygwin-pipe-Update-source-comment-align-with-previou.patch \
-  0054-Cygwin-pipe-Make-pipe_data_available-return-PDA_UNKN.patch
+  0054-Cygwin-pipe-Make-pipe_data_available-return-PDA_UNKN.patch \
+  0055-Cygwin-console-Set-ENABLE_PROCESSED_INPUT-when-disab.patch
 }
 
 build() {
