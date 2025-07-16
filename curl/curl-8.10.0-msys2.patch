@@ -5,15 +5,15 @@ Subject: [PATCH] MSYS2 support for cURL
 
 Signed-off-by: Johannes Schindelin <johannes.schindelin@gmx.de>
 ---
- m4/curl-compilers.m4 | 2 +-
- m4/xc-lt-iface.m4    | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ m4/curl-compilers.m4      |    2 +-
+ m4/xc-lt-iface.m4         |    2 +-
+ 2 files changed, 1644 insertions(+), 2 deletions(-)
 
 diff --git a/m4/curl-compilers.m4 b/m4/curl-compilers.m4
-index 240aa2b..a6c5c02 100644
+index dc6d3aa..fbe235d 100644
 --- a/m4/curl-compilers.m4
 +++ b/m4/curl-compilers.m4
-@@ -852,7 +852,7 @@ AC_DEFUN([CURL_SET_COMPILER_WARNING_OPTS], [
+@@ -861,7 +861,7 @@ AC_DEFUN([CURL_SET_COMPILER_WARNING_OPTS], [
              CURL_ADD_COMPILER_WARNINGS([tmp_CFLAGS], [enum-conversion])
              CURL_ADD_COMPILER_WARNINGS([tmp_CFLAGS], [sometimes-uninitialized])
              case $host_os in
@@ -23,15 +23,15 @@ index 240aa2b..a6c5c02 100644
                  dnl MinGW because the libtool wrapper executable causes them
                  ;;
 diff --git a/m4/xc-lt-iface.m4 b/m4/xc-lt-iface.m4
-index f3ac0de..c1ba53c 100644
+index a408800..2933955 100644
 --- a/m4/xc-lt-iface.m4
 +++ b/m4/xc-lt-iface.m4
 @@ -265,7 +265,7 @@ elif test "x$allow_undefined_flag" = 'xunsupported'; then
    xc_lt_shlib_use_no_undefined='yes'
  fi
  case $host_os in @%:@ (
--  cygwin* | mingw* | pw32* | cegcc* | os2* | aix*)
-+  cygwin* | msys* | mingw* | pw32* | cegcc* | os2* | aix*)
+-  cygwin* | mingw* | cegcc* | os2* | aix*)
++  cygwin* | msys* | mingw* | cegcc* | os2* | aix*)
      xc_lt_shlib_use_no_undefined='yes'
      ;;
  esac
