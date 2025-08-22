@@ -1,4 +1,4 @@
-From 705101de9261cf7835e359c3925ff1cee8b8f3e7 Mon Sep 17 00:00:00 2001
+From 3078f5f333ed9a5a63e06e4c39b552dd7472fcb4 Mon Sep 17 00:00:00 2001
 From: Mihail Konev <k.mvc@ya.ru>
 Date: Sun, 5 Mar 2017 22:58:09 +0500
 Subject: [PATCH 2/2] fix current dir inheritance for alt-f2 on msys2
@@ -9,10 +9,10 @@ Subject: [PATCH 2/2] fix current dir inheritance for alt-f2 on msys2
  2 files changed, 17 insertions(+)
 
 diff --git a/src/child.c b/src/child.c
-index 247f4ae..2b92ca9 100644
+index 52443296..4f0773ab 100644
 --- a/src/child.c
 +++ b/src/child.c
-@@ -1266,6 +1266,9 @@ extern int horsqueeze(void);  // should become horsqueeze_cols in win.h
+@@ -1408,6 +1408,9 @@ extern int horsqueeze(void);  // should become horsqueeze_cols in win.h
      if (icon_is_from_shortcut)
        setenv("MINTTY_ICON", cs__wcstoutf(cfg.icon), true);
  
@@ -23,10 +23,10 @@ index 247f4ae..2b92ca9 100644
  
  #if CYGWIN_VERSION_DLL_MAJOR >= 1005
 diff --git a/src/winmain.c b/src/winmain.c
-index ba7925f..4122c68 100644
+index efca4405..98a1f355 100644
 --- a/src/winmain.c
 +++ b/src/winmain.c
-@@ -5504,6 +5504,12 @@ opts[] = {
+@@ -6640,6 +6640,12 @@ opts[] = {
    {0, 0, 0, 0}
  };
  
@@ -39,7 +39,7 @@ index ba7925f..4122c68 100644
  int
  main(int argc, char *argv[])
  {
-@@ -6865,6 +6871,14 @@ static int dynfonts = 0;
+@@ -8106,6 +8112,14 @@ static int dynfonts = 0;
      launcher_setup_argv();
    }
  
@@ -54,6 +54,3 @@ index ba7925f..4122c68 100644
    // Create child process.
    /* We could move this below SetFocus() or win_init_drop_target() 
       in order to further reduce the delay until window display (#1113) 
--- 
-2.35.3
-
